@@ -13,4 +13,4 @@ Branches should be named using the following format:
 
 2. When a feature/change is completed, create a pull request (PR) for the feature to be merged into the main branch. Branches can only be merged if the PR is approved by majority of the team and if there are no other subtasks assigned for the issue.
 
-3. Periodically review and resolve the statuses of pull requests made by other members that have been completed during your free time to haten development.  
+3. Periodically review and resolve the statuses of pull requests made by other members that have been completed during your free time to hasten development.  
