@@ -3,7 +3,7 @@ A Bahasa Rojak translator, developed for a diploma final year team project
 
 
 ## Rules for working on the project
-1. Create a new branch out from `main` for every new feature or changes that you want to add to the project. If a feature is based on another WIP feature, create the branch under the WIP branch. **Never ever** modify the main branch directly and merge prematurely. 
+1. Create a new branch out from `main` for every new feature or changes that you want to add to the project. If a feature is based on another WIP feature, create the branch under the WIP branch. **Never ever** modify the `main` branch directly and merge prematurely. 
 Branches should be named using the following format:
 `[uniqueNo]_[brief_task_description]`
 > E.g: 
