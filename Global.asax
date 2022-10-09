@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="FYP.NET.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="RojakJelah.Global" Language="C#" %>
