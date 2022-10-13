@@ -252,9 +252,29 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Database\Models\Entity\Language.cs" />
-    <Compile Include="Database\Models\Entity\Word.cs" />
+    <Compile Include="Database\Configuration\DictionaryEntryConfiguration.cs" />
+    <Compile Include="Database\Configuration\ReportCategoryConfiguration.cs" />
+    <Compile Include="Database\Configuration\ReportConfiguration.cs" />
+    <Compile Include="Database\Configuration\ReportStatusConfiguration.cs" />
+    <Compile Include="Database\Configuration\RoleConfiguration.cs" />
+    <Compile Include="Database\Configuration\SavedTranslationConfiguration.cs" />
+    <Compile Include="Database\Configuration\SuggestionConfiguration.cs" />
+    <Compile Include="Database\Configuration\SuggestionStatusConfiguration.cs" />
+    <Compile Include="Database\Entity\Report.cs" />
+    <Compile Include="Database\Entity\ReportStatus.cs" />
+    <Compile Include="Database\Entity\ReportCategory.cs" />
+    <Compile Include="Database\Entity\SavedTranslation.cs" />
+    <Compile Include="Database\Entity\Suggestion.cs" />
+    <Compile Include="Database\Entity\SuggestionStatus.cs" />
+    <Compile Include="Database\Configuration\UserConfiguration.cs" />
+    <Compile Include="Database\Entity\DictionaryEntry.cs" />
+    <Compile Include="Database\Entity\Language.cs" />
+    <Compile Include="Database\Entity\Role.cs" />
+    <Compile Include="Database\Entity\User.cs" />
+    <Compile Include="Database\Entity\Word.cs" />
     <Compile Include="Database\DataContext.cs" />
+    <Compile Include="Database\Configuration\LanguageConfiguration.cs" />
+    <Compile Include="Database\Configuration\WordConfiguration.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
