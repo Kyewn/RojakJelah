@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
 
-namespace FYP.NET
+namespace RojakJelah
 {
     public class BundleConfig
     {

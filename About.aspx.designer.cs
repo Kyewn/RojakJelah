@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FYP.NET
+namespace RojakJelah
 {
 
 

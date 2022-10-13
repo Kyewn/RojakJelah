@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FYP.NET {
+namespace RojakJelah {
     
     
     public partial class Site_Mobile {
