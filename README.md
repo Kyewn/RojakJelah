@@ -9,7 +9,7 @@ Branches should be named using the following format:
 > E.g: 
 - w1_1_add_button_functionality ✔
 - w2_2_change_theme_font_type ✔
-- w3_fix_previous_mistake ✘ **(Not unique id and uninformative description)**
+- w3_1_fix_previous_mistake ✘ **(Not unique id if there is already an ID 1 branch and uninformative description)**
 
 2. It is recommended that you commit your changes to the branch you've created after you work on something for some time to prevent losing progress. It doesn't matter if it still isn't complete, just commit and keep a backup in this repo.
  
