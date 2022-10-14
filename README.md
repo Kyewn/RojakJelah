@@ -5,11 +5,11 @@ A Bahasa Rojak translator, developed for a diploma final year team project
 ## Rules for working on the project
 1. Create a new branch out from `main` for every new feature or changes that you want to add to the project. If a feature is based on another WIP feature, create the branch under the WIP branch. **Never ever** modify the `main` branch directly and merge prematurely. 
 Branches should be named using the following format:
-`[uniqueNo]_[brief_task_description]`
+`[weekNo]_[uniqueNo]_[brief_task_description]`
 > E.g: 
-- 1_add_button_functionality ✔
-- 2_change_theme_font_type ✔
-- 1_fix_previous_mistake ✘ **(Not unique id and uninformative description)**
+- w1_1_add_button_functionality ✔
+- w2_2_change_theme_font_type ✔
+- w3_fix_previous_mistake ✘ **(Not unique id and uninformative description)**
 
 2. It is recommended that you commit your changes to the branch you've created after you work on something for some time to prevent losing progress. It doesn't matter if it still isn't complete, just commit and keep a backup in this repo.
  
