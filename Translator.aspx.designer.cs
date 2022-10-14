@@ -11,7 +11,7 @@ namespace RojakJelah
 {
 
 
-    public partial class _Default
+    public partial class Translator
     {
     }
 }
