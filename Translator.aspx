@@ -1,12 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Translator.aspx.cs" Inherits="RojakJelah.Translator" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    
-  <!-- Banner Section  -->
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <!-- Hero Section  -->
   <section class="banner">
     <div class="banner-container">
       <div class="banner-left">
-        <img src="./image/textual_col_whitebg_nontransp 1.png" alt="Logo">
+        <img src="Content/image/textual_col_whitebg_nontransp 1.png" alt="Logo">
       </div>
       <div class="banner-right">
         <div class="title">
@@ -98,5 +97,4 @@
       <a href="#">Learn more</a>
     </div>
   </section>
-
 </asp:Content>

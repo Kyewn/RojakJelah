@@ -108,11 +108,11 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\styles.css" />
+    <Content Include="Content\image\icon_bw_blackbg 1.png" />
+    <Content Include="Content\image\RojakJelah_w 1.png" />
+    <Content Include="Content\image\textual_col_whitebg_nontransp 1.png" />
     <Content Include="Content\Site.css" />
-    <Content Include="css\About_Style.css" />
-    <Content Include="css\Master_Style.css" />
-    <Content Include="css\Dictionary_Style.css" />
-    <Content Include="css\Translator_Style.css" />
     <Content Include="Dictionary.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -127,11 +127,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="HtmlPage1.html" />
-    <Content Include="image\icon_bw_blackbg 1.png" />
-    <Content Include="image\icon_colour 1.png" />
-    <Content Include="image\RojakJelah_w 1.png" />
-    <Content Include="image\textual_col_whitebg_nontransp 1.png" />
-    <Content Include="js\script.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -139,6 +134,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\script.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
