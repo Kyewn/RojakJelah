@@ -35,7 +35,7 @@ namespace RojakJelah
                             "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/website").Include(
-                           "~/Scripts/script.js"));
+                           "~/Scripts/Mysripts/script.js"));
         }
     }
 }

@@ -1,0 +1,77 @@
+﻿/* About Us  */
+section.about-us {
+    margin: 20px 0;
+}
+
+    section.about-us .about-title h1 {
+        font-size: 30px;
+        color: #D35555;
+    }
+
+    section.about-us .about-info p {
+        font-size: 18px;
+        color: #000;
+        line-break: 10px;
+    }
+
+    /* About-container  */
+    section.about-us .about-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        section.about-us .about-container .about-context {
+            margin-top: 20px;
+        }
+
+            section.about-us .about-container .about-context .title h3 {
+                font-size: 20px;
+                color: #D35555;
+            }
+
+            section.about-us .about-container .about-context .about-info p {
+                font-size: 17px;
+                color: #000;
+                font-weight: normal;
+            }
+
+            section.about-us .about-container .about-context .about-info ul li {
+                font-size: 18px;
+                color: #000;
+                font-weight: 600;
+                list-style-type: initial;
+            }
+
+        section.about-us .about-container .about-photo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+            section.about-us .about-container .about-photo img {
+                max-width: 100%;
+            }
+
+/* Responsive Section  */
+@media screen and (max-width: 1024px) {
+    section.about-us {
+        padding: 0 2rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    section.about-us .about-container {
+        flex-direction: column;
+    }
+
+        section.about-us .about-container .about {
+            order: calc(2);
+            margin-top: 20px;
+        }
+
+        section.about-us .about-container .about-photo {
+            order: calc(1);
+        }
+}

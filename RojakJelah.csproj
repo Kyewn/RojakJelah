@@ -108,8 +108,15 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\css\styles.css" />
+    <Content Include="Content\css\about.css" />
+    <Content Include="Content\css\login.css" />
+    <Content Include="Content\css\register.css" />
+    <Content Include="Content\css\translator.css" />
+    <Content Include="Content\css\dictionary.css" />
+    <Content Include="Content\image\about-photo.svg" />
     <Content Include="Content\image\icon_bw_blackbg 1.png" />
+    <Content Include="Content\image\icon_colour 1.png" />
+    <Content Include="Content\image\logo-icon.png" />
     <Content Include="Content\image\RojakJelah_w 1.png" />
     <Content Include="Content\image\textual_col_whitebg_nontransp 1.png" />
     <Content Include="Content\Site.css" />
@@ -125,6 +132,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Login.aspx" />
+    <Content Include="Register.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="HtmlPage1.html" />
     <Content Include="Scripts\bootstrap.js" />
@@ -134,7 +143,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\script.js" />
+    <Content Include="Scripts\Myscripts\script.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -211,6 +220,20 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
