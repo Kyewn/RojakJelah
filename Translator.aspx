@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Translator.aspx.cs" Inherits="RojakJelah.Translator" %>
-
+<asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
+    <link href="<%= Page.ResolveUrl("~/Content/css/translator.css")%>" type="text/css" rel="stylesheet" />
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
  <!-- Translate  -->
@@ -8,7 +10,7 @@
     <div class="banner">
       <div class="banner-container">
         <div class="banner-left">
-          <img src="Content/image/textual_col_whitebg_nontransp 1.png" alt="Logo">
+          <img src="Content/image/textual_col_whitebg.svg" alt="Logo">
         </div>
         <div class="banner-right">
           <div class="title">
@@ -179,7 +181,8 @@
             </form>
         </div>
         <!-- Translate Output  -->
-        <div class="translate-output">
+        <div class="translate-output">           
+          <h5>Translation</h5>
           <div class="output">
               <p id="outputString">Test string. When you want to print output, get this component from backend and change the innerHTML of 
                   this p tag once you get the output. this p tag once you get the output.this p tag once you get the output.this p tag once you get the output.this p tag once you get the output.this p tag once you get the output.this p tag once you get the output.this p tag once you get the output.</p>

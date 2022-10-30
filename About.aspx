@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="RojakJelah.About" %>
-
-
+<asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
+    <link href="<%= Page.ResolveUrl("~/Content/css/about.css")%>" type="text/css" rel="stylesheet" />
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
        <!-- About Us  -->
     <section class="about-us">

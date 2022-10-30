@@ -22,13 +22,11 @@
   <link rel="stylesheet" href="Content/css/bootstrap.min.css">
 
   <!-- styles -->
-  <link rel="stylesheet" href="Content/css/styles.css" />
-  <link rel="stylesheet" href="Content/css/about.css" />
-  <link rel="stylesheet" href="Content/css/dictionary.css" />
-
+  <link rel="stylesheet" href="Content/css/master.css" />
+  <asp:ContentPlaceHolder ID="PageStylesheet" runat="server">
+  </asp:ContentPlaceHolder>
 </head>
 <body>
-
    <!-- Header Section  -->
     <header id="home">
         <!-- navbar -->
@@ -47,9 +45,9 @@
                 <div class="links-container">
                     <ul class="links">
                         <li>
-                            <a href="About.aspx" class="scroll-link active"><i
-                                    class="fa-solid fa-circle-info"></i>
-                                About</a>
+                            <a href="Translator.aspx" class="scroll-link"><i
+                                    class="fa-sharp fa-solid fa-message"></i>
+                                translator</a>
                         </li>
                         <li>
                             <a href="Dictionary.aspx" class="scroll-link"><i
@@ -57,9 +55,9 @@
                                 dictionary</a>
                         </li>
                         <li>
-                            <a href="Translator.aspx" class="scroll-link"><i
-                                    class="fa-sharp fa-solid fa-message"></i>
-                                translator</a>
+                            <a href="About.aspx" class="scroll-link"><i
+                                    class="fa-solid fa-circle-info"></i>
+                                About</a>
                         </li>
                         <li>
                             <a href="Login.aspx" class="scroll-link"><i class="fa-solid fa-right-to-bracket"></i>
@@ -78,6 +76,7 @@
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
+        </div>
   <!-- footer -->
   <footer class="footer">
     <div class="footer-container">
@@ -98,9 +97,9 @@
         <div class="menu">
           <h4>Privacy</h4>
           <div class="link">
-            <a target="_blank" href="#" class="scroll-link">terms of use</a>
-            <a target="_blank" href="#" class="scroll-link">privacy policy</a>
-            <a target="_blank" href="#" class="scroll-link">Cookies</a>
+            <a href="#" class="scroll-link">terms of use</a>
+            <a href="#" class="scroll-link">privacy policy</a>
+            <a href="#" class="scroll-link">Cookies</a>
           </div>
         </div>
       </div>
@@ -109,13 +108,12 @@
       </div>
     </div>
   </footer>
-  <a class="scroll-link top-link" href="#home">
+  <a class="top-link" href="#home">
     <i class="fas fa-arrow-up"></i>
   </a>
   <!-- javascript -->
   <script src="Content/js/bootstrap.min.js"></script>
-  <script src="Content/js/script.js"></script>
-
-    </form>
+  <script src="Content/js/master.js"></script>
+  <script src="Content/js/translator.js"></script>
 </body>
 </html>

@@ -1,18 +1,20 @@
-﻿// ********** set date ************
-const date = document.getElementById('date');
-date.innerHTML = new Date().getFullYear();
+//Master page processes
+window.addEventListener('load', () => {
+    const navLinks = document.querySelectorAll('.links li a');
+    if (window.location.pathname == "/Translator") {
+        document.querySelector(".nav-header").style.visibility = 'hidden';
+        navLinks[0].classList.add('active');
+    } else if (window.location.pathname == "/Dictionary") {
+        navLinks[1].classList.add('active');
+    } else if (window.location.pathname == "/About") {
+        navLinks[2].classList.add('active');
+    }
+});
 
 // ********** close links ************
 const navToggle = document.querySelector('.nav-toggle');
 const linksContainer = document.querySelector('.links-container');
 const links = document.querySelector('.links');
-
-
-document.addEventListener('load', () => {
-    if (window.location.pathname == "/Translator") {
-        document.querySelector(".nav-header").style.visibility = 'hidden';
-    }
-});
 
 navToggle.addEventListener('click', () => {
     // linksContainer.classList.toggle('show-links')
@@ -38,25 +40,16 @@ window.addEventListener('scroll', () => {
     } else {
         navbar.classList.remove('fixed-nav');
     }
+    if (window.location.pathname == "/Translator") {
+        if (scrollHeight > navHeight) {
+            document.querySelector(".nav-header").style.visibility = 'visible';
+        } else {
+            document.querySelector(".nav-header").style.visibility = 'hidden';
+        }
+    }
     if (scrollHeight > 500) {
-        topLink.classList.add('show-link')
+        topLink.classList.add('show-link');
     } else {
-        topLink.classList.remove('show-link')
+        topLink.classList.remove('show-link');
     }
 })
-
-// Top Show Input Value 
-function getTextBoxValue() {
-    var result;
-    result = document.getElementById("inputValue").value;
-    //alert(st);
-    document.getElementById("inputValueResult").value = result;
-}
-
-// Bottom Show Input Value 
-function getTextBoxValue2() {
-    var result2;
-    result2 = document.getElementById("inputValue2").value;
-    //alert(st);
-    document.getElementById("inputValueResult2").value = result2;
-}
