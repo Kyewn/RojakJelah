@@ -9,90 +9,73 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RojakJeLah</title>
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/bundles/modernizr") %>
-    </asp:PlaceHolder>
-   <%-- <webopt:BundleReference runat="server" Path="~/Content/css" />--%>
 
-   <!-- Google Font  -->
-   <link
-     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Mitr:wght@300;400;500;600;700&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+ <!-- Google Font  -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Mitr:wght@300;400;500;600;700&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
-    <!-- font-awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- font-awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- Bootstrap Css  -->
-    <link rel="stylesheet" href="./Content/bootstrap.min.css">
+  <!-- Bootstrap Css  -->
+  <link rel="stylesheet" href="Content/css/bootstrap.min.css">
 
-    <!-- styles -->
-    <link rel="stylesheet" href="./Content/css/translator.css" />
-    <link rel="stylesheet" href="./Content/css/dictionary.css" />
-    <link rel="stylesheet" href="./Content/css/about.css" />
-    <link rel="stylesheet" href="./Content/css/login.css" />
-    <link rel="stylesheet" href="./Content/css/register.css" />
+  <!-- styles -->
+  <link rel="stylesheet" href="Content/css/styles.css" />
+  <link rel="stylesheet" href="Content/css/about.css" />
+  <link rel="stylesheet" href="Content/css/dictionary.css" />
 
 </head>
-
 <body>
-
-   <!-- Header Section  -->
-    <header id="home">
-        <!-- navbar -->
-        <nav id="nav">
-            <div class="nav-center">
-                <!-- nav header -->
-                <div class="nav-header">
-                    <a href="Translator.aspx">
-                        <div class="logo">
-                            <img src="/Content/image/logo-icon.png" alt="logo" />
-                            <p>RojakJelah</p>
-                        </div>
-                    </a>
-                    <button class="nav-toggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-                <!-- links -->
-                <div class="links-container">
-                    <ul class="links">
-                        <li>
-                            <a href="About.aspx" class="scroll-link list-group-item active"><i
-                                    class="fa-solid fa-circle-info"></i>
-                                About</a>
-                        </li>
-                        <li>
-                            <a href="Dictionary.aspx" class="scroll-link list-group-item"><i
-                                    class="fa-solid fa-file-contract"></i>
-                                dictionary</a>
-                        </li>
-                        <li>
-                            <a href="Translator.aspx" class="scroll-link list-group-item"><i
-                                    class="fa-sharp fa-solid fa-message"></i>
-                                translator</a>
-                        </li>
-                        <li>
-                            <a href="Login.aspx" class="scroll-link list-group-item"><i class="fa-solid fa-right-to-bracket"></i>
-                                Log In</a>
-                        </li>
-                    </ul>
-                </div>
+    <form runat="server">
+        <!-- Header Section  -->
+  <header id="home">
+    <!-- navbar -->
+    <nav id="nav">
+      <div class="nav-center">
+        <!-- nav header -->
+        <div class="nav-header">
+          <a href="#">
+            <div class="logo">
+              <img src="Content/image/logo-icon.png" alt="logo" />
+              <p>RojakJelah</p>
             </div>
-        </nav>
-    </header>
-
-    <!--Main COntent-->
-        <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
+          </a>
+          <button class="nav-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
         </div>
+        <!-- links -->
+        <div class="links-container">
+          <ul class="links">
+            <li>
+              <a href="About.aspx" class="scroll-link"><i class="fa-solid fa-circle-info"></i>
+                About</a>
+            </li>
+            <li>
+              <a href="Dictionary.aspx" class="scroll-link"><i class="fa-solid fa-file-contract"></i> dictionary</a>
+            </li>
+            <li>
+              <a href="/Translator.aspx" class="scroll-link"><i class="fa-sharp fa-solid fa-message"></i> translator</a>
+            </li>
+            <li>
+              <a href="Login.aspx" class="scroll-link"><i class="fa-solid fa-right-to-bracket"></i> login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
 
-<!-- footer -->
+            </asp:ContentPlaceHolder>
+  <!-- footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
         <div class="logo">
-          <img src="./Content/image/RojakJelah_w 1.png" alt="Logo">
+          <img src="Content/image/RojakJelah_w 1.png" alt="Logo">
           <p> <span id="date"></span>. &copy; All rights reserved
           </p>
         </div>
@@ -114,19 +97,17 @@
         </div>
       </div>
       <div class="footer-right">
-        <img src="./Content/image/icon_bw_blackbg 1.png" alt="">
+        <img src="Content/image/icon_bw_blackbg 1.png" alt="">
       </div>
     </div>
   </footer>
   <a class="scroll-link top-link" href="#home">
     <i class="fas fa-arrow-up"></i>
   </a>
-    <script src=”/Scipts/bootstrap.min.js”></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src=”/Scipts/jquery-3.4.1.min.js”></script>
+  <!-- javascript -->
+  <script src="Content/js/bootstrap.min.js"></script>
+  <script src="Content/js/script.js"></script>
 
-      <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/bundles/website") %>
-    </asp:PlaceHolder>
+    </form>
 </body>
 </html>

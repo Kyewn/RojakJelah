@@ -2,7 +2,7 @@
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-        <!-- About Us  -->
+       <!-- About Us  -->
     <section class="about-us">
         <div class="about-title">
             <h1>About Us</h1>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="about-photo">
-                <img src="./Content/image/about-photo.svg" alt="">
+                <img src="Content/image/about-photo.svg" alt="">
             </div>
 
         </div>

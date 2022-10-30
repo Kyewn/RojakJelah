@@ -2,13 +2,13 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-  <!-- Translate  -->
+ <!-- Translate  -->
   <section class="translate-content">
     <!-- Banner Section  -->
     <div class="banner">
       <div class="banner-container">
         <div class="banner-left">
-          <img src="/Content/image/textual_col_whitebg_nontransp 1.png" alt="Logo">
+          <img src="Content/image/textual_col_whitebg_nontransp 1.png" alt="Logo">
         </div>
         <div class="banner-right">
           <div class="title">
@@ -27,9 +27,6 @@
     <!-- Source Message  -->
     <!-- Source Message  -->
     <div class="translate">
-      <div class="title">
-        <h5>Source message</h5>
-      </div>
       <div class="translate-item">
         <div class="translate-container">
           <!-- Translate Input  -->
@@ -180,9 +177,6 @@
         </div>
         <!-- Translate Output  -->
         <div class="translate-output">
-          <div class="title">
-            <h5>Bahasa Rojak translation</h5>
-          </div>
           <div class="output">
             <textarea name="" id="inputValueResult" cols="" rows="3" placeholder="Output here...."></textarea>
           </div>
@@ -192,6 +186,14 @@
     </div>
 
   </section>
+
+
+
+
+
+
+
+
 
 
   <!-- User Generate -->
@@ -229,4 +231,5 @@
       </div>
     </div>
   </section>
+
 </asp:Content>
