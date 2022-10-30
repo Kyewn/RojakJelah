@@ -14,7 +14,14 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    // Redirect user to Translator page
+                    Response.Redirect("Default.aspx", true);
+                }
+            }
         }
 
         protected void BtnRegister_Click(object sender, EventArgs e)
@@ -103,12 +110,11 @@ namespace RojakJelah
                 {
                     Username = username,
                     Password = passwordHash,
-                    CreationDate = DateTime.Now,
                     Role = dataContext.Roles.SingleOrDefault(x => x.Name == "User"),
+                    CreationDate = DateTime.Now,
                     ModificationDate = DateTime.Now
                 };
                 dataContext.Users.Add(newUser);
-
                 dataContext.SaveChanges();
 
                 // Redirect user to Login page

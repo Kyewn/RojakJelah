@@ -1,8 +1,12 @@
-﻿using RojakJelah.Database;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
+using RojakJelah.Database;
 using RojakJelah.Database.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,7 +17,14 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    // Redirect user to Translator page
+                    Response.Redirect("Default.aspx", true);
+                }
+            }
         }
 
         protected void BtnLogin_Click(object sender, EventArgs e)
@@ -76,7 +87,21 @@ namespace RojakJelah
             else
             {
                 // Log the user into the system
-                
+                var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+
+                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, username) },
+                    DefaultAuthenticationTypes.ApplicationCookie,
+                    ClaimTypes.Name, ClaimTypes.Role);
+
+                foreach (var role in dataContext.Roles.ToList())
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, role.Name));
+                }
+
+                authenticationManager.SignIn(new AuthenticationProperties
+                {
+                    IsPersistent = false
+                }, identity);
 
                 // Redirect user to Translator page
                 Response.Redirect("Default.aspx", true);

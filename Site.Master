@@ -65,7 +65,9 @@
                         <li><a runat="server" href="~/">Home</a></li>
                         <li><a runat="server" href="~/About">About</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
-                        <li><a runat="server" href="~/Login">Login</a></li>
+                        <li><a id="lnkSuggestions" runat="server" href="~/Suggestions">Admin Pages</a></li>
+                        <li><a id="lnkLogin" runat="server" href="~/Login">Login</a></li>
+                        <li><asp:LinkButton ID="lnkLogout" runat="server" OnClick="LnkLogout_Click" Text="Logout" Visible="false"/></li>
                     </ul>
                 </div>
             </div>
