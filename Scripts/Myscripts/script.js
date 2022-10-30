@@ -7,6 +7,13 @@ const navToggle = document.querySelector('.nav-toggle');
 const linksContainer = document.querySelector('.links-container');
 const links = document.querySelector('.links');
 
+
+document.addEventListener('load', () => {
+    if (window.location.pathname == "/Translator") {
+        document.querySelector(".nav-header").style.visibility = 'hidden';
+    }
+});
+
 navToggle.addEventListener('click', () => {
     // linksContainer.classList.toggle('show-links')
 
@@ -37,7 +44,6 @@ window.addEventListener('scroll', () => {
         topLink.classList.remove('show-link')
     }
 })
-
 
 // Top Show Input Value 
 function getTextBoxValue() {

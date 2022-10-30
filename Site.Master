@@ -16,7 +16,7 @@
 
    <!-- Google Font  -->
    <link
-     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Mitr:wght@300;400;500;600;700&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+     href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Rubik:wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
     <!-- font-awesome -->
@@ -49,39 +49,39 @@
                             <p>RojakJelah</p>
                         </div>
                     </a>
-                    <button class="nav-toggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
                 </div>
                 <!-- links -->
                 <div class="links-container">
                     <ul class="links">
                         <li>
-                            <a href="About.aspx" class="scroll-link list-group-item active"><i
+                            <a href="About.aspx" class="scroll-link active"><i
                                     class="fa-solid fa-circle-info"></i>
                                 About</a>
                         </li>
                         <li>
-                            <a href="Dictionary.aspx" class="scroll-link list-group-item"><i
+                            <a href="Dictionary.aspx" class="scroll-link"><i
                                     class="fa-solid fa-file-contract"></i>
                                 dictionary</a>
                         </li>
                         <li>
-                            <a href="Translator.aspx" class="scroll-link list-group-item"><i
+                            <a href="Translator.aspx" class="scroll-link"><i
                                     class="fa-sharp fa-solid fa-message"></i>
                                 translator</a>
                         </li>
                         <li>
-                            <a href="Login.aspx" class="scroll-link list-group-item"><i class="fa-solid fa-right-to-bracket"></i>
+                            <a href="Login.aspx" class="scroll-link"><i class="fa-solid fa-right-to-bracket"></i>
                                 Log In</a>
                         </li>
                     </ul>
+                    <button class="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!--Main COntent-->
+    <!--Main Content-->
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -93,23 +93,23 @@
       <div class="footer-left">
         <div class="logo">
           <img src="./Content/image/RojakJelah_w 1.png" alt="Logo">
-          <p> <span id="date"></span>. &copy; All rights reserved
+          <p> <span id="date"></span> &copy; All rights reserved
           </p>
         </div>
         <div class="menu">
           <h4>Navigation</h4>
           <div class="link">
-            <a href="#translate-details" class="scroll-link">translate-details</a>
-            <a href="#dictionary" class="scroll-link">dictionary</a>
-            <a href="#translator" class="scroll-link">translator</a>
+            <a href="#" class="scroll-link">translator</a>
+            <a target="_blank" href="/Dictionary" class="scroll-link">dictionary</a>
+            <a target="_blank" href="/About" class="scroll-link">about</a>
           </div>
         </div>
         <div class="menu">
           <h4>Privacy</h4>
           <div class="link">
-            <a href="#translate-details" class="scroll-link">trams of use</a>
-            <a href="#dictionary" class="scroll-link">privacy policy</a>
-            <a href="#translator" class="scroll-link">Cookies</a>
+            <a target="_blank" href="#" class="scroll-link">terms of use</a>
+            <a target="_blank" href="#" class="scroll-link">privacy policy</a>
+            <a target="_blank" href="#" class="scroll-link">Cookies</a>
           </div>
         </div>
       </div>
@@ -121,9 +121,10 @@
   <a class="scroll-link top-link" href="#home">
     <i class="fas fa-arrow-up"></i>
   </a>
-    <script src=”/Scipts/bootstrap.min.js”></script>
+    <script src=”/Scripts/Myscripts.script.js”></script>
+    <script src=”/Scripts/bootstrap.min.js”></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src=”/Scipts/jquery-3.4.1.min.js”></script>
+    <script src=”/Scripts/jquery-3.4.1.min.js”></script>
 
       <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/website") %>
