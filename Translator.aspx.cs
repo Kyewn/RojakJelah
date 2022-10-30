@@ -11,7 +11,12 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine(inputValue.Value);
+        }
 
+        protected void translateBtn_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(inputValue.Value);
         }
     }
 }

@@ -10,9 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RojakJeLah</title>
 
- <!-- Google Font  -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Mitr:wght@300;400;500;600;700&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+   <!-- Google Font  -->
+   <link
+     href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Rubik:wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
   <!-- font-awesome -->
@@ -22,54 +22,61 @@
   <link rel="stylesheet" href="Content/css/bootstrap.min.css">
 
   <!-- styles -->
-  <link rel="stylesheet" href="Content/css/styles.css" />
-  <link rel="stylesheet" href="Content/css/about.css" />
-  <link rel="stylesheet" href="Content/css/dictionary.css" />
-
+  <link rel="stylesheet" href="Content/css/master.css" />
+  <asp:ContentPlaceHolder ID="PageStylesheet" runat="server">
+  </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form runat="server">
-        <!-- Header Section  -->
-  <header id="home">
-    <!-- navbar -->
-    <nav id="nav">
-      <div class="nav-center">
-        <!-- nav header -->
-        <div class="nav-header">
-          <a href="#">
-            <div class="logo">
-              <img src="Content/image/logo-icon.png" alt="logo" />
-              <p>RojakJelah</p>
+   <!-- Header Section  -->
+    <header id="home">
+        <!-- navbar -->
+        <nav id="nav">
+            <div class="nav-center">
+                <!-- nav header -->
+                <div class="nav-header">
+                    <a href="Translator.aspx">
+                        <div class="logo">
+                            <img src="/Content/image/logo-icon.png" alt="logo" />
+                            <p>RojakJelah</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- links -->
+                <div class="links-container">
+                    <ul class="links">
+                        <li>
+                            <a href="Translator.aspx" class="scroll-link"><i
+                                    class="fa-sharp fa-solid fa-message"></i>
+                                translator</a>
+                        </li>
+                        <li>
+                            <a href="Dictionary.aspx" class="scroll-link"><i
+                                    class="fa-solid fa-file-contract"></i>
+                                dictionary</a>
+                        </li>
+                        <li>
+                            <a href="About.aspx" class="scroll-link"><i
+                                    class="fa-solid fa-circle-info"></i>
+                                About</a>
+                        </li>
+                        <li>
+                            <a href="Login.aspx" class="scroll-link"><i class="fa-solid fa-right-to-bracket"></i>
+                                Log In</a>
+                        </li>
+                    </ul>
+                    <button class="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </div>
-          </a>
-          <button class="nav-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-        </div>
-        <!-- links -->
-        <div class="links-container">
-          <ul class="links">
-            <li>
-              <a href="About.aspx" class="scroll-link"><i class="fa-solid fa-circle-info"></i>
-                About</a>
-            </li>
-            <li>
-              <a href="Dictionary.aspx" class="scroll-link"><i class="fa-solid fa-file-contract"></i> dictionary</a>
-            </li>
-            <li>
-              <a href="/Translator.aspx" class="scroll-link"><i class="fa-sharp fa-solid fa-message"></i> translator</a>
-            </li>
-            <li>
-              <a href="Login.aspx" class="scroll-link"><i class="fa-solid fa-right-to-bracket"></i> login</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </nav>
+    </header>
 
+    <!--Main Content-->
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
+        </div>
   <!-- footer -->
   <footer class="footer">
     <div class="footer-container">
@@ -82,17 +89,17 @@
         <div class="menu">
           <h4>Navigation</h4>
           <div class="link">
-            <a href="#translate-details" class="scroll-link">translate-details</a>
-            <a href="#dictionary" class="scroll-link">dictionary</a>
-            <a href="#translator" class="scroll-link">translator</a>
+            <a href="#" class="scroll-link">translator</a>
+            <a target="_blank" href="/Dictionary" class="scroll-link">dictionary</a>
+            <a target="_blank" href="/About" class="scroll-link">about</a>
           </div>
         </div>
         <div class="menu">
           <h4>Privacy</h4>
           <div class="link">
-            <a href="#translate-details" class="scroll-link">trams of use</a>
-            <a href="#dictionary" class="scroll-link">privacy policy</a>
-            <a href="#translator" class="scroll-link">Cookies</a>
+            <a href="#" class="scroll-link">terms of use</a>
+            <a href="#" class="scroll-link">privacy policy</a>
+            <a href="#" class="scroll-link">Cookies</a>
           </div>
         </div>
       </div>
@@ -101,13 +108,12 @@
       </div>
     </div>
   </footer>
-  <a class="scroll-link top-link" href="#home">
+  <a class="top-link" href="#home">
     <i class="fas fa-arrow-up"></i>
   </a>
   <!-- javascript -->
   <script src="Content/js/bootstrap.min.js"></script>
-  <script src="Content/js/script.js"></script>
-
-    </form>
+  <script src="Content/js/master.js"></script>
+  <script src="Content/js/translator.js"></script>
 </body>
 </html>
