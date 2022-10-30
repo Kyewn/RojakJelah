@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Dictionary.aspx.cs" Inherits="RojakJelah.Dictionary" %>
-
+<asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
+    <link href="<%= Page.ResolveUrl("~/Content/css/dictionary.css")%>" type="text/css" rel="stylesheet" />
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <!-- Header Search / Add Suggest  -->
     <!-- Header Search / Add Suggest  -->
