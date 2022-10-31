@@ -60,6 +60,10 @@
                                 About</a>
                         </li>
                         <li>
+                            <a href="ManageSuggestions.aspx" class="scroll-link"><i class="fa-solid fa-screwdriver-wrench"></i>
+                                Admin panel</a>
+                        </li>
+                        <li>
                             <a href="Login.aspx" class="scroll-link"><i class="fa-solid fa-right-to-bracket"></i>
                                 Log In</a>
                         </li>
@@ -115,5 +119,6 @@
   <script src="Content/js/bootstrap.min.js"></script>
   <script src="Content/js/master.js"></script>
   <script src="Content/js/translator.js"></script>
+  <script src="Content/js/manageSuggestions.js"></script>
 </body>
 </html>

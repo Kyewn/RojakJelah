@@ -1,0 +1,134 @@
+﻿* {
+    --primary-color: #d35555;
+    --primary-color-hover: #E39090;
+    --primary-color-active: #F2CCCC;
+    --listItem-bg-color: #EAEAEA;
+    --secondary-color-yellow: #FFF96D;
+}
+
+form {
+    height: 150vh;
+    padding: 2em 0;
+}
+
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.contentContainer {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.leftContainer {
+    flex: 0.7;
+    display: flex;
+    flex-direction: column;
+}
+
+.rightContainer {
+    flex: 0.3;
+}
+
+/* Left container css */
+/* Left container css */
+/* Left container css */
+
+/* Search Container */
+/* Search Container */
+/* Search Container */
+.searchContainer {
+    display: flex;
+    align-items: flex-start;
+    margin: 1.5em 0;
+}
+
+.filterContainer h6, .searchBarContainer h6 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.filterContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 0.2;
+    margin-right: 2em;
+}
+
+.searchBarContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 0.8;
+}
+
+.cboFilter, .txtSearch {
+    padding: 1em 1em;
+    height: 2em;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+}
+
+.cboFilter:focus, .txtSearch:focus {
+    border: 3px solid var(--primary-color);
+ }
+
+/* listItemContainer */
+/* listItemContainer */
+/* listItemContainer */
+.listItemContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.listItem {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 1.5em;
+    margin-top: 1em;
+    background: var(--listItem-bg-color);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.listItem:first-child {
+    margin-top: 0;
+}
+
+.listItem:hover {
+    background: rgba(var(--listItem-bg-color, 0.6));
+}
+
+.topRow {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+.itemDetail {
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+    overflow: hidden;
+}
+
+.topRow .itemDetail {
+    flex: 0.2;
+}
+
+.bottomRow .itemDetail {
+    flex: 1;
+}
+
+.itemDetail span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.itemDetail span:first-child{
+    font-weight: bold;
+}

@@ -1,8 +1,5 @@
-﻿using RojakJelah.Database;
-using RojakJelah.Database.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
