@@ -2,6 +2,8 @@
 using RojakJelah.Database.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -96,30 +98,81 @@ namespace RojakJelah
             if (hasError)
             {
                 // Display error notification
-                notificationTitle.InnerText = errorTitle;
-                notificationMessage.InnerHtml = errorMessage;
-                notification.Style.Add("display", "block");
+                ShowErrorNotification(errorTitle, errorMessage);
             }
             else
             {
-                // Generate password hash
-                string passwordHash = PasswordHasher.Hash(password, 100000);
-
-                // Add user account into database
-                User newUser = new User()
+                try
                 {
-                    Username = username,
-                    Password = passwordHash,
-                    Role = dataContext.Roles.SingleOrDefault(x => x.Name == "User"),
-                    CreationDate = DateTime.Now,
-                    ModificationDate = DateTime.Now
-                };
-                dataContext.Users.Add(newUser);
-                dataContext.SaveChanges();
+                    // Generate password hash
+                    string passwordHash = PasswordHasher.Hash(password, 100000);
 
-                // Redirect user to Login page
-                Response.Redirect("Login.aspx", true);
+                    // Add user account into database
+                    User newUser = new User()
+                    {
+                        Username = username,
+                        Password = passwordHash,
+                        Role = dataContext.Roles.SingleOrDefault(x => x.Name == "User"),
+                        CreationDate = DateTime.Now,
+                        ModificationDate = DateTime.Now
+                    };
+
+                    dataContext.Users.Add(newUser);
+                    dataContext.SaveChanges();
+
+                    // Redirect user to Login page
+                    Response.Redirect("Login.aspx", true);
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    // Display error notification
+                    errorTitle = "Unknown error";
+                    errorMessage = "An unexpected error has occured, please contact support.";
+
+                    ShowErrorNotification(errorTitle, errorMessage);
+
+                    PrintDbEntityValidationErrors(dbEx);
+                }
+                catch (Exception ex)
+                {
+                    // Display error notification
+                    errorTitle = "Unknown error";
+                    errorMessage = "An unexpected error has occured, please contact support.";
+
+                    ShowErrorNotification(errorTitle, errorMessage);
+
+                    Debug.WriteLine(ex.ToString());
+                }
             }
+        }
+
+        /// <summary>
+        /// Prints detailed exception message for DbEntityValidationExceptions.
+        /// </summary>
+        /// <param name="validationException">DbEntityValidationException to retrieve exception message from.</param>
+        protected void PrintDbEntityValidationErrors(DbEntityValidationException validationException)
+        {
+            // Retrieve and display the error messages
+            foreach (DbEntityValidationResult validationResult in validationException.EntityValidationErrors)
+            {
+                string entityName = validationResult.Entry.Entity.GetType().Name;
+                foreach (DbValidationError error in validationResult.ValidationErrors)
+                {
+                    Debug.WriteLine("[DbEntityValidationException] " + entityName + "." + error.PropertyName + ": " + error.ErrorMessage);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Displays error notification popup.
+        /// </summary>
+        /// <param name="title">Title of error.</param>
+        /// <param name="message">Error message.</param>
+        protected void ShowErrorNotification(string title, string message)
+        {
+            notificationTitle.InnerText = title;
+            notificationMessage.InnerHtml = message;
+            notification.Style.Add("display", "block");
         }
     }
 }

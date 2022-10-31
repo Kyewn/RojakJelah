@@ -25,7 +25,7 @@
                 <h1 class="form-header">Log in</h1>
                 <div class="form-field">
                     <label>Username</label>
-                    <input id="txtUsername" runat="server" type="text" placeholder="Username" autocomplete="off"/>
+                    <input id="txtUsername" runat="server" type="text" maxlength="30" placeholder="Username" autocomplete="off"/>
                 </div>
                 <div class="form-field">
                     <label>Password</label>
