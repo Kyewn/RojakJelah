@@ -11,25 +11,25 @@ namespace RojakJelah
 {
 
 
-    public partial class SiteMaster
+    public partial class Translator
     {
 
         /// <summary>
-        /// PageStylesheet control.
+        /// inputValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder PageStylesheet;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea inputValue;
 
         /// <summary>
-        /// MainContent control.
+        /// btnTranslate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+        protected global::System.Web.UI.WebControls.Button btnTranslate;
     }
 }

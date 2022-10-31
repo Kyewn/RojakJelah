@@ -3,69 +3,117 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
+
 <head runat="server">
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title>RojakJeLah</title>
 
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/bundles/modernizr") %>
-    </asp:PlaceHolder>
+   <!-- Google Font  -->
+   <link
+     href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Rubik:wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <!-- font-awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+  <!-- Bootstrap Css  -->
+  <link rel="stylesheet" href="Content/css/bootstrap.min.css">
+
+  <!-- styles -->
+  <link rel="stylesheet" href="Content/css/master.css" />
+  <asp:ContentPlaceHolder ID="PageStylesheet" runat="server">
+  </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form runat="server">
-        <asp:ScriptManager runat="server">
-            <Scripts>
-                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
-                <%--Framework Scripts--%>
-                <asp:ScriptReference Name="MsAjaxBundle" />
-                <asp:ScriptReference Name="jquery" />
-                <asp:ScriptReference Name="bootstrap" />
-                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-                <%--Site Scripts--%>
-            </Scripts>
-        </asp:ScriptManager>
-
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" runat="server" href="~/">Application name</a>
+   <!-- Header Section  -->
+    <header id="home">
+        <!-- navbar -->
+        <nav id="nav">
+            <div class="nav-center">
+                <!-- nav header -->
+                <div class="nav-header">
+                    <a href="Translator.aspx">
+                        <div class="logo">
+                            <img src="/Content/image/logo-icon.png" alt="logo" />
+                            <p>RojakJelah</p>
+                        </div>
+                    </a>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
+                <!-- links -->
+                <div class="links-container">
+                    <ul class="links">
+                        <li>
+                            <a href="Translator.aspx" class="scroll-link"><i
+                                    class="fa-sharp fa-solid fa-message"></i>
+                                translator</a>
+                        </li>
+                        <li>
+                            <a href="Dictionary.aspx" class="scroll-link"><i
+                                    class="fa-solid fa-file-contract"></i>
+                                dictionary</a>
+                        </li>
+                        <li>
+                            <a href="About.aspx" class="scroll-link"><i
+                                    class="fa-solid fa-circle-info"></i>
+                                About</a>
+                        </li>
+                        <li>
+                            <a href="Login.aspx" class="scroll-link"><i class="fa-solid fa-right-to-bracket"></i>
+                                Log In</a>
+                        </li>
                     </ul>
+                    <button class="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
                 </div>
             </div>
-        </div>
+        </nav>
+    </header>
+
+    <!--Main Content-->
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
-            </footer>
         </div>
-
-    </form>
+  <!-- footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="logo">
+          <img src="Content/image/RojakJelah_w 1.png" alt="Logo">
+          <p> <span id="date"></span>. &copy; All rights reserved
+          </p>
+        </div>
+        <div class="menu">
+          <h4>Navigation</h4>
+          <div class="link">
+            <a href="#" class="scroll-link">translator</a>
+            <a target="_blank" href="/Dictionary" class="scroll-link">dictionary</a>
+            <a target="_blank" href="/About" class="scroll-link">about</a>
+          </div>
+        </div>
+        <div class="menu">
+          <h4>Privacy</h4>
+          <div class="link">
+            <a href="#" class="scroll-link">terms of use</a>
+            <a href="#" class="scroll-link">privacy policy</a>
+            <a href="#" class="scroll-link">Cookies</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <img src="Content/image/icon_bw_blackbg 1.png" alt="">
+      </div>
+    </div>
+  </footer>
+  <a class="top-link" href="#home">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+  <!-- javascript -->
+  <script src="Content/js/bootstrap.min.js"></script>
+  <script src="Content/js/master.js"></script>
+  <script src="Content/js/translator.js"></script>
 </body>
 </html>
