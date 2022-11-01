@@ -265,9 +265,6 @@
 	<Compile Include="Dictionary.aspx.designer.cs">
 		<DependentUpon>Dictionary.aspx</DependentUpon>
 	</Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Database\Configuration\DictionaryEntryConfiguration.cs" />
     <Compile Include="Database\Configuration\ReportCategoryConfiguration.cs" />
     <Compile Include="Database\Configuration\ReportConfiguration.cs" />
@@ -291,13 +288,6 @@
     <Compile Include="Database\DataContext.cs" />
     <Compile Include="Database\Configuration\LanguageConfiguration.cs" />
     <Compile Include="Database\Configuration\WordConfiguration.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ForgotPassword.aspx.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
