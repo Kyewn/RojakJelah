@@ -1,6 +1,13 @@
 ﻿/*  Site.Master pages styles */
 /*  Site.Master pages styles */
 /*  Site.Master pages styles */
+* {
+    --primary-color: #d35555;
+    --primary-color-hover: #E39090;
+    --primary-color-active: #F2CCCC;
+    --secondary-color-yellow: #FFF96D;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -126,7 +133,7 @@ nav {
 
     .nav-header .logo p {
         font-size: 24px;
-        color: #000;
+        color: #323232;
         font-family: 'Mitr', sans-serif;
         font-weight: 600;
         margin: 0;
@@ -178,11 +185,11 @@ nav {
 }
 
 .scroll-link:hover {
-    background: #E39090;
+    background: var(--primary-color-hover);
 }
 
 .scroll-link:active {
-    background: #d39494;
+    background: var(--primary-color-active);
 }
 
 /* Responsive Section  */
@@ -353,6 +360,7 @@ footer {
 }
 
 .top-link:hover {
+    color: var(--secondary-color-yellow);
     text-decoration: none;
 }
 

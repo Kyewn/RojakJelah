@@ -48,6 +48,27 @@
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.19.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Protobuf.3.19.4\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4, Version=1.2.6.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>packages\K4os.Compression.LZ4.1.2.6\lib\net46\K4os.Compression.LZ4.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4.Streams, Version=1.2.6.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>packages\K4os.Compression.LZ4.Streams.1.2.6\lib\net46\K4os.Compression.LZ4.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Hash.xxHash, Version=1.0.6.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
+      <HintPath>packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data, Version=8.0.30.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="MySql.Data.EntityFramework, Version=8.0.30.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
@@ -179,6 +200,7 @@
     <Content Include="Dictionary.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="ForgotPassword.aspx" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -189,6 +211,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Login.aspx" />
+    <Content Include="Reports.aspx" />
+    <Content Include="Suggestions.aspx" />
     <Content Include="Register.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="ManageSuggestions.aspx" />
@@ -241,11 +265,55 @@
       <DependentUpon>Dictionary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Dictionary.aspx.designer.cs">
-      <DependentUpon>Dictionary.aspx</DependentUpon>
+	<Compile Include="Dictionary.aspx.designer.cs">
+		<DependentUpon>Dictionary.aspx</DependentUpon>
+	</Compile>
+    <Compile Include="Database\Configuration\DictionaryEntryConfiguration.cs" />
+    <Compile Include="Database\Configuration\ReportCategoryConfiguration.cs" />
+    <Compile Include="Database\Configuration\ReportConfiguration.cs" />
+    <Compile Include="Database\Configuration\ReportStatusConfiguration.cs" />
+    <Compile Include="Database\Configuration\RoleConfiguration.cs" />
+    <Compile Include="Database\Configuration\SavedTranslationConfiguration.cs" />
+    <Compile Include="Database\Configuration\SuggestionConfiguration.cs" />
+    <Compile Include="Database\Configuration\SuggestionStatusConfiguration.cs" />
+    <Compile Include="Database\Entity\Report.cs" />
+    <Compile Include="Database\Entity\ReportStatus.cs" />
+    <Compile Include="Database\Entity\ReportCategory.cs" />
+    <Compile Include="Database\Entity\SavedTranslation.cs" />
+    <Compile Include="Database\Entity\Suggestion.cs" />
+    <Compile Include="Database\Entity\SuggestionStatus.cs" />
+    <Compile Include="Database\Configuration\UserConfiguration.cs" />
+    <Compile Include="Database\Entity\DictionaryEntry.cs" />
+    <Compile Include="Database\Entity\Language.cs" />
+    <Compile Include="Database\Entity\Role.cs" />
+    <Compile Include="Database\Entity\User.cs" />
+    <Compile Include="Database\Entity\Word.cs" />
+    <Compile Include="Database\DataContext.cs" />
+    <Compile Include="Database\Configuration\LanguageConfiguration.cs" />
+    <Compile Include="Database\Configuration\WordConfiguration.cs" />
+    <Compile Include="ForgotPassword.aspx.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForgotPassword.aspx.designer.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Reports.aspx.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports.aspx.designer.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Suggestions.aspx.cs">
+      <DependentUpon>Suggestions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Suggestions.aspx.designer.cs">
+      <DependentUpon>Suggestions.aspx</DependentUpon>
     </Compile>
     <Compile Include="ManageSuggestions.aspx.cs">
       <DependentUpon>ManageSuggestions.aspx</DependentUpon>
