@@ -2,7 +2,7 @@
 
 <asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadContent" runat="server">
     
-    <link rel="stylesheet" href="Content/Styles/register.css" />
+    <link rel="stylesheet" href="Content/css/register.css" />
     <script src="Scripts/Custom/register.js"></script>
 
 </asp:Content>
