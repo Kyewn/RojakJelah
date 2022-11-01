@@ -1,0 +1,371 @@
+﻿/* Header Search / Add Suggest  */
+/* Header Search / Add Suggest  */
+/* Header Search / Add Suggest  */
+.dictionary-header {
+    margin: 20px 0;
+}
+
+    .dictionary-header .header-title {
+        display: flex;
+        align-items: center;
+    }
+
+        .dictionary-header .header-title h1 {
+            font-size: 22px;
+            color: #D35555;
+        }
+
+        .dictionary-header .header-title .report {
+            padding-left: 0.5rem;
+        }
+
+            .dictionary-header .header-title .report button {
+                border: none;
+                border: 2px solid #d35555;
+                padding: 5px 7px;
+                background: none;
+                border-radius: 5px;
+                transition: 0.4s;
+                border-radius: 5px;
+            }
+
+                .dictionary-header .header-title .report button:hover {
+                    border-color: #e29090;
+                }
+
+                    .dictionary-header .header-title .report button:hover i {
+                        color: #e29090;
+                    }
+
+                .dictionary-header .header-title .report button:focus {
+                    border-color: #f2cccc;
+                }
+
+                    .dictionary-header .header-title .report button:focus i {
+                        color: #f2cccc;
+                    }
+
+            .dictionary-header .header-title .report i {
+                font-size: 20px;
+                color: #D35555;
+            }
+
+    /* Search or Add Suggest */
+    /* Search or Add Suggest */
+    /* Search or Add Suggest */
+    .dictionary-header .header-search {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .dictionary-header .header-search .search-box {
+            width: 70%;
+        }
+
+            .dictionary-header .header-search .search-box input {
+                border: none;
+                padding: 10px;
+                color: #D35555;
+                font-size: 15px;
+                border: 1px solid #D35555;
+                width: 100%;
+            }
+
+                .dictionary-header .header-search .search-box input:focus {
+                    outline: 0;
+                    box-shadow: none;
+                    border: 2px solid #D35555;
+                }
+
+
+
+        /* Add Suggest Terms  */
+        /* Add Suggest Terms  */
+        .dictionary-header .header-search .add-suggest div#addSuggestItem {
+            top: 90px;
+        }
+
+        .dictionary-header .header-search .add-suggest .suggest-btn {
+            font-weight: 400;
+            border: none;
+            background: #d35555;
+            color: #ffff;
+            font-size: 20px;
+            padding: 5px 20px;
+            border-radius: 5px;
+            transition: 0.4s;
+        }
+
+            .dictionary-header .header-search .add-suggest .suggest-btn:hover {
+                background: #da4343;
+            }
+
+            .dictionary-header .header-search .add-suggest .suggest-btn :focus {
+                background: #e29090;
+            }
+
+
+        /* Add Suggest Modal Form  */
+        .dictionary-header .header-search .add-suggest .modal-header .suggest-title {
+            font-size: 25px;
+            color: #D35555;
+        }
+
+
+
+        /* Add Suggest Form */
+        .dictionary-header .header-search .add-suggest .modal-body form .form-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field {
+                width: 48%;
+            }
+
+                .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field label {
+                    color: #D35555;
+                    font-size: 18px;
+                    padding: 0.5rem;
+                }
+
+                .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field input {
+                    width: 100%;
+                    border: none;
+                    color: #000;
+                    padding: 5px 10px;
+                    border: 1px solid #D35555;
+                    border-radius: 5px;
+                }
+
+                    .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field input:focus {
+                        outline: 0;
+                        box-shadow: none;
+                        border: 2px solid #D35555;
+                    }
+
+
+        /* Select Language Dropdown  */
+        .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field {
+            width: 55%;
+            margin-top: 20px;
+        }
+
+            .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field label {
+                color: #D35555;
+                font-size: 18px;
+                padding: 0.2rem;
+            }
+
+            .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field select {
+                width: 100%;
+                border: none;
+                color: #000;
+                padding: 5px 10px;
+                border: 1px solid #D35555;
+                border-radius: 5px;
+            }
+
+                .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field select:focus {
+                    outline: 0;
+                    box-shadow: none;
+                    border: 2px solid #D35555;
+                }
+
+
+        /* Example  */
+        .dictionary-header .header-search .add-suggest .modal-body form .example .form-field {
+            width: 100%;
+        }
+
+            .dictionary-header .header-search .add-suggest .modal-body form .example .form-field label {
+                color: #D35555;
+                font-size: 18px;
+                padding: 0.5rem;
+            }
+
+            .dictionary-header .header-search .add-suggest .modal-body form .example .form-field textarea {
+                width: 100%;
+                border: none;
+                color: #000;
+                padding: 5px 10px;
+                border: 1px solid #D35555;
+                border-radius: 5px;
+            }
+
+                .dictionary-header .header-search .add-suggest .modal-body form .example .form-field textarea:focus {
+                    outline: 0;
+                    box-shadow: none;
+                    border: 2px solid #D35555;
+                }
+
+        .dictionary-header .header-search .add-suggest form .button {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+            .dictionary-header .header-search .add-suggest form .button .cancel {
+                border: none;
+                border: 2px solid #d35555;
+                width: 100px;
+                padding: 5px 0;
+                background: none;
+                border-radius: 5px;
+                transition: 0.4s;
+            }
+
+                .dictionary-header .header-search .add-suggest form .button .cancel:hover {
+                    border-color: #e29090;
+                    color: #e29090;
+                }
+
+
+                .dictionary-header .header-search .add-suggest form .button .cancel:focus {
+                    outline: 0;
+                    box-shadow: none;
+                    border-color: #f2cccc;
+                    color: #f2cccc;
+                }
+
+            .dictionary-header .header-search .add-suggest form .button .submit {
+                border: none;
+                background: #d35555;
+                color: #ffff;
+                font-size: 20px;
+                padding: 5px 0;
+                width: 100px;
+                border-radius: 5px;
+                transition: 0.4s;
+            }
+
+                .dictionary-header .header-search .add-suggest form .button .submit:hover {
+                    background: #da4343;
+                }
+
+                .dictionary-header .header-search .add-suggest form .button .submit:focus {
+                    background: #e29090;
+                }
+
+/* Add Suggest Success message  */
+/* #submitForm {
+    display: block;
+} */
+.addSuggest-message {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 100%;
+}
+
+#successMessage {
+    background: #D35555;
+    padding: 1rem;
+    color: #fff;
+    position: relative;
+    width: 30%;
+    margin: auto;
+    display: none;
+}
+
+    #successMessage #cls-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: #fff;
+        border: none;
+        background: none;
+    }
+
+        #successMessage #cls-btn i {
+            font-size: 20px;
+            color: #fff;
+        }
+
+@media screen and (max-width: 992px) {
+    .dictionary-header .header-search {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .dictionary-header .header-search .search-box {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .dictionary-header .header-search .search-box {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 468px) {
+    .dictionary-header .header-search {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .dictionary-header .header-search .search-box {
+            width: 100%;
+        }
+
+        .dictionary-header .header-search .add-suggest {
+            margin-top: 20px;
+        }
+}
+
+
+/* Dictionary Container  */
+/* Dictionary Container  */
+/* Dictionary Container  */
+
+.dictionary-container .dictionary-item {
+    background: #eaeaea;
+    padding: 1rem;
+    margin-top: 20px;
+}
+
+    .dictionary-container .dictionary-item .title h3 {
+        font-size: 20px;
+        color: #D35555;
+    }
+
+    .dictionary-container .dictionary-item .item-content {
+        display: flex;
+    }
+
+        .dictionary-container .dictionary-item .item-content .left-item {
+            width: 20%;
+        }
+
+            .dictionary-container .dictionary-item .item-content .left-item p {
+                color: #000;
+                font-size: 18px;
+            }
+
+        .dictionary-container .dictionary-item .item-content .right-item {
+            width: 70%;
+        }
+
+            .dictionary-container .dictionary-item .item-content .right-item p {
+                color: #D35555;
+                font-size: 18px;
+            }
+
+
+@media screen and (max-width: 492px) {
+    .dictionary-container .dictionary-item .item-content {
+        flex-direction: column;
+    }
+
+        .dictionary-container .dictionary-item .item-content .left-item {
+            width: 100%;
+        }
+
+        .dictionary-container .dictionary-item .item-content .right-item {
+            width: 100%;
+        }
+}

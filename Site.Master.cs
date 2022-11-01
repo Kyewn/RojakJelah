@@ -11,19 +11,18 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            // Check if user is logged in
+            if (Page.User.Identity.IsAuthenticated)
             {
-                if (Page.User.Identity.IsAuthenticated)
-                {
-                    lnkLogin.Visible = false;
-                    lnkLogout.Visible = true;
-                    lnkLogout.Text = "Logout \"" + Page.User.Identity.Name + "\"";
-                }
+                // Hide Login button and show Logout button
+                lnkLogin.Visible = false;
+                lnkLogout.Visible = true;
             }
         }
 
         protected void LnkLogout_Click(object sender, EventArgs e)
         {
+            // Log the user out
             var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
             authenticationManager.SignOut();
             Response.Redirect("Login.aspx");

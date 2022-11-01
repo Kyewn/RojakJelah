@@ -1,24 +1,25 @@
-﻿<%@ Page Title="Register "Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="RojakJelah.Register" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="RojakJelah.Register" %>
 
-<asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadContent" runat="server">
-    
-    <link rel="stylesheet" href="Content/css/register.css" />
-    <script src="Scripts/Custom/register.js"></script>
+<asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
+    <link rel="stylesheet" type="text/css" href="<%= Page.ResolveUrl("~/Content/css/register.css") %>" />
+</asp:Content>
 
+<asp:Content ID="PageJavaScript" ContentPlaceHolderID="PageJavaScript" runat="server">
+    <script src="Content/js/register.js"></script>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <section id="sctRegister">
-        <!-- Login Page Header -->
+        <!-- Register Page Header -->
         <div id="divRegisterHeader">
-            <a class="link-back-to-home" href="Default.aspx">
+            <a class="link-back-to-home" href="Translator.aspx">
                 <i class="fa-solid fa-arrow-left"></i>
                 <span class="gray-animated-link-text">Back to Home</span>
             </a>
         </div>
 
-        <!-- Login Form Container -->
+        <!-- Register Form Container -->
         <div class="form-container">
             <!-- Input Form -->
             <div id="divRegisterForm">
@@ -44,7 +45,7 @@
 
             <!-- Site Logo -->
             <div class="form-logo">
-                <img src="Images/rojakjelah_icon-logo.png" alt="RojakJelah Text Logo" />
+                <img src="Content/image/rojakjelah_logo-icon_coloured.png" alt="RojakJelah Logo" />
             </div>
         </div>
     </section>

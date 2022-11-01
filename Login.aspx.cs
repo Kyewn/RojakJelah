@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace RojakJelah
@@ -17,19 +18,25 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Hide header and footer
+            HtmlControl header = Master.FindControl("pageHeader") as HtmlControl;
+            HtmlControl footer = Master.FindControl("pageFooter") as HtmlControl;
+            header.Visible = false;
+            footer.Visible = false;
+
             if (!IsPostBack)
             {
                 if (User.Identity.IsAuthenticated)
                 {
                     // Redirect user to Translator page
-                    Response.Redirect("Default.aspx", true);
+                    Response.Redirect("Translator.aspx", true);
                 }
             }
         }
 
         protected void BtnLogin_Click(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
+            DataContext dataContext = new DataContext("server=localhost;user=root;database=rojakjelahv3;port=3306;password=2020twz05!8MSQL");
 
             // Hide notification
             notification.Style.Add("display", "none");
@@ -104,7 +111,7 @@ namespace RojakJelah
                 }, identity);
 
                 // Redirect user to Translator page
-                Response.Redirect("Default.aspx", true);
+                Response.Redirect("Translator.aspx", true);
             }
         }
     }

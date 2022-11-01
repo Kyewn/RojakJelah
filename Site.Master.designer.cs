@@ -15,31 +15,31 @@ namespace RojakJelah
     {
 
         /// <summary>
-        /// HeadContent control.
+        /// PageStylesheet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder PageStylesheet;
 
         /// <summary>
-        /// bodyForm control.
+        /// mainForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm bodyForm;
+        protected global::System.Web.UI.HtmlControls.HtmlForm mainForm;
 
         /// <summary>
-        /// lnkSuggestions control.
+        /// pageHeader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkSuggestions;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pageHeader;
 
         /// <summary>
         /// lnkLogin control.
@@ -67,5 +67,23 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+
+        /// <summary>
+        /// pageFooter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pageFooter;
+
+        /// <summary>
+        /// PageJavaScript control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder PageJavaScript;
     }
 }
