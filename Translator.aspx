@@ -32,7 +32,7 @@
              <div class="title">
                 <h5>Source message</h5>
              </div>
-             <form class="translate-container" runat="server">
+             <div class="translate-container" runat="server">
               <!-- Translate Input  -->
               <div class="context">
                 <textarea runat="server" name="inputValue" id="inputValue" rows="3" placeholder="Enter message here..." required></textarea>
@@ -178,7 +178,7 @@
                   </div>
                 </div>
               </div>
-            </form>
+            </div>
         </div>
         <!-- Translate Output  -->
         <div class="translate-output">           

@@ -1,20 +1,23 @@
 ﻿* {
-    --primary-color: #d35555;
-    --primary-color-hover: #E39090;
-    --primary-color-active: #F2CCCC;
     --listItem-bg-color: #EAEAEA;
-    --secondary-color-yellow: #FFF96D;
+    --actionMenu-bg-color: #F5F5F5;
+    --theme-black: #323232;
 }
 
-form {
-    height: 150vh;
-    padding: 2em 0;
+.container {
+    max-width: none;
+    width: 100vw;
+    height: 110vh;
+    margin: 0;
+    padding: 0;
 }
 
 .contentWrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 110vh;
+    padding: 2em 0;
+    margin: 0 5rem;
 }
 
 .contentContainer {
@@ -31,6 +34,9 @@ form {
 
 .rightContainer {
     flex: 0.3;
+    display: flex;
+    flex-direction: column;
+    margin-left: 2em;
 }
 
 /* Left container css */
@@ -131,4 +137,108 @@ form {
 
 .itemDetail span:first-child{
     font-weight: bold;
+}
+
+/* Right container */
+/* Right container */
+/* Right container */
+.actionMenuWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5em;
+    overflow: hidden;
+}
+
+.menuContainer {
+    display: flex;
+    flex-direction: column;
+    max-height: 95%;
+    width: 100%;
+    background: var(--actionMenu-bg-color);
+    border-radius: 5px;
+    padding: 1.5em 1.5em 2em;
+
+}
+
+.buttonContainer {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em
+}
+
+.detailContainer {
+    overflow-y: auto;
+    margin-bottom: 1em;
+}
+
+.detailContainer .itemDetail {
+    margin-bottom: 2em;
+}
+
+.detailContainer .itemDetail h6 {
+    margin: 0;
+    font-size: smaller;
+    color: var(--primary-color);
+}
+
+.detailContainer .itemDetail span {
+    font-size: medium;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+#btnAccept, #btnReject{
+    flex: 0.5;
+}
+
+#btnAccept {
+    margin-right: 1em;
+}
+
+#btnEdit {
+    flex: 1;
+}
+
+/* Main content complete */
+/* Main content complete */
+/* Main content complete */
+
+
+/* Edit Modal content */
+/* Edit Modal content */
+/* Edit Modal content */
+#modalWindow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100vw;
+    height: 110vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all .5s ease-out;
+}
+
+.modalBody {
+    width: 50%;
+    max-height: 70%;
+    background: var(--theme-white);
+    border-radius: 5px;
+    padding: 1.5em 2em;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    to {
+        opacity: 1;
+        visibility: visible;
+    }
 }

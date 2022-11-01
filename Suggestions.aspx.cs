@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Diagnostics;
+using System.Web.UI.HtmlControls;
 
 namespace RojakJelah
 {
@@ -45,16 +47,24 @@ namespace RojakJelah
 
             var listItem = new LiteralControl(listItemHTML);
             listItemContainer.Controls.Add(listItem);
+            Debug.WriteLine(listItemContainer.Style.Value);
+            lblExample.InnerText = "Hello World";
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            addListItem();
         }
 
         protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void btnEdit_Click(object sender, EventArgs e)
+        {
+            //HtmlGenericControl modalWindowDiv = (HtmlGenericControl)this.Master.FindControl("modalWindow");
+            modalWindow.Style.Add("animation", "fadeIn .3s ease-out forwards");
         }
     }
 }

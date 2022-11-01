@@ -27,6 +27,7 @@
   </asp:ContentPlaceHolder>
 </head>
 <body>
+    <form runat="server">
    <!-- Header Section  -->
     <header id="home">
         <!-- navbar -->
@@ -77,6 +78,7 @@
     </header>
 
     <!--Main Content-->
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -115,6 +117,7 @@
   <a class="top-link" href="#home">
     <i class="fas fa-arrow-up"></i>
   </a>
+  </form>
   <!-- javascript -->
   <script src="Content/js/bootstrap.min.js"></script>
   <script src="Content/js/master.js"></script>
