@@ -46,9 +46,9 @@
 .banner .banner-container .banner-right .info p {
     display:inline-block;
     width: 75%;
-  font-size: 18px;
-  line-break: 10px !important;
-  margin: 0;
+    font-size: 21px;
+    line-break: 10px !important;
+    margin: 0;
 }
 
 /* Responsive Section  */
