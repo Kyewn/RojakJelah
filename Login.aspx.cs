@@ -36,7 +36,7 @@ namespace RojakJelah
 
         protected void BtnLogin_Click(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=rojakjelahv3;port=3306;password=2020twz05!8MSQL");
+            DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
 
             // Hide notification
             notification.Style.Add("display", "none");

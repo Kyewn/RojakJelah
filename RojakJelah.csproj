@@ -223,7 +223,10 @@
     <Content Include="Content\image\rojakjelah_logo-icon_coloured.png" />
     <Content Include="Content\image\rojakjelah_logo-icon_bw.png" />
     <Content Include="Content\image\rojakjelah_text-icon_white.png" />
+    <Content Include="Content\image\textual_col_whitebg.svg" />
     <Content Include="Content\image\textual_col_whitebg_nontransp.png" />
+    <Content Include="Content\image\translatorOutput_endQuote.svg" />
+    <Content Include="Content\image\translatorOutput_startQuote.svg" />
     <Content Include="Content\js\about.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\dictionary.js" />
