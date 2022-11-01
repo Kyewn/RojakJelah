@@ -1,6 +1,6 @@
-﻿<%@ Page Title="Manage Suggestions" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ManageSuggestions.aspx.cs" Inherits="RojakJelah.ManageSuggestions" %>
+﻿<%@ Page Title="Manage Suggestions" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Suggestions.aspx.cs" Inherits="RojakJelah.Suggestions" %>
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
-    <link href="<%= Page.ResolveUrl("~/Content/css/manageSuggestions.css")%>" type="text/css" rel="stylesheet" />
+    <link href="<%= Page.ResolveUrl("~/Content/css/suggestions.css")%>" type="text/css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <form ID="manageSuggestionsForm" runat="server">

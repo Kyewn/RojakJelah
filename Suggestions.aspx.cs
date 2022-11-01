@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace RojakJelah
 {
-    public partial class ManageSuggestions : System.Web.UI.Page
+    public partial class Suggestions : System.Web.UI.Page
     {
         private void addListItem()
         {
