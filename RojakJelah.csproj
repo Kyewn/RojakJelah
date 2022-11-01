@@ -215,7 +215,6 @@
     <Content Include="Suggestions.aspx" />
     <Content Include="Register.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="ManageSuggestions.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -265,9 +264,9 @@
       <DependentUpon>Dictionary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-	<Compile Include="Dictionary.aspx.designer.cs">
-		<DependentUpon>Dictionary.aspx</DependentUpon>
-	</Compile>
+    <Compile Include="Dictionary.aspx.designer.cs">
+      <DependentUpon>Dictionary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Database\Configuration\DictionaryEntryConfiguration.cs" />
     <Compile Include="Database\Configuration\ReportCategoryConfiguration.cs" />
     <Compile Include="Database\Configuration\ReportConfiguration.cs" />
@@ -314,13 +313,6 @@
     </Compile>
     <Compile Include="Suggestions.aspx.designer.cs">
       <DependentUpon>Suggestions.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ManageSuggestions.aspx.cs">
-      <DependentUpon>ManageSuggestions.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ManageSuggestions.aspx.designer.cs">
-      <DependentUpon>ManageSuggestions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
