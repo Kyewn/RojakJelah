@@ -36,7 +36,7 @@ namespace RojakJelah
 
         protected void BtnLogin_Click(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
             // Hide notification
             notification.Style.Add("display", "none");
@@ -100,10 +100,7 @@ namespace RojakJelah
                     DefaultAuthenticationTypes.ApplicationCookie,
                     ClaimTypes.Name, ClaimTypes.Role);
 
-                foreach (var role in dataContext.Roles.ToList())
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, role.Name));
-                }
+                identity.AddClaim(new Claim(ClaimTypes.Role, existingUsers.SingleOrDefault(x => x.Username == username).Role.Name));
 
                 authenticationManager.SignIn(new AuthenticationProperties
                 {
