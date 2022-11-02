@@ -1,0 +1,166 @@
+﻿﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    padding: 0;
+    margin: 0;
+}
+
+#mainForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+}
+
+/* Main Container */
+.container, .body-content {
+    width: 98%;
+    height: 96%;
+    margin: 0;
+    padding: 0;
+    max-width: 3000px;
+}
+
+#sctLogin {
+    margin: auto;
+    padding: 0 6rem;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border: 4px var(--primary-color);
+    border-radius: 8px;
+}
+
+/* Login Page Header */
+#divLoginHeader {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 14%;
+}
+
+.link-back-to-home {
+    margin-left: 8rem;
+    color: #323232;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.link-back-to-home:hover {
+    color: #323232;
+    text-decoration: none;
+}
+
+
+.link-back-to-home i {
+    margin-right: 0.5rem;
+}
+
+/* Login Form */
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    height: 86%;
+}
+
+#divLoginForm {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.8fr 0.8fr 0.8fr 0.2fr;
+    grid-row-gap: 0.5rem;
+    padding: 0 6rem 8rem 8rem;
+    align-items: center;
+}
+
+.form-header {
+    color: var(--primary-color);
+    font-family: 'Mitr', Arial, sans-serif;
+    font-size: 72px;
+    font-weight: 500;
+}
+
+.form-field label {
+    display: block;
+    padding-bottom: 2px;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.form-field input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 2px;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.form-field input:focus {
+    box-shadow: 0 0 0 2px var(--primary-color);
+    outline: none;
+}
+
+.form-button {
+    width: 100%;
+    height: 60%;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: 0.4s;
+}
+
+.form-button:hover {
+    background-color: var(--primary-color-hover);
+    cursor: pointer;
+}
+
+.form-button:active {
+    background-color: var(--primary-color-active);
+}
+
+.form-tip {
+    font-family: 'Rubik', Arial, sans-serif;
+    text-align: center;
+}
+
+.form-tip a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.form-logo {
+    display: flex;
+}
+
+.form-logo img {
+    display: block;
+    width: 80%;
+    height: auto;
+    margin: auto;
+}

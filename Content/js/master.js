@@ -1,7 +1,7 @@
 //Master page processes
 window.addEventListener('load', () => {
     const navLinks = document.querySelectorAll('.links li a');
-    if (window.location.pathname == "/Translator") {
+    if (window.location.pathname == "/Translator" || window.location.pathname == "/") {
         document.querySelector(".nav-header").style.visibility = 'hidden';
         navLinks[0].classList.add('active');
     } else if (window.location.pathname == "/Dictionary") {

@@ -52,7 +52,7 @@
                                             <!-- Add Suggest Form  -->
                                             <!-- Add Suggest Form  -->
                                             <!-- Add Suggest Form  -->
-                                            <form id="submitForm" action="#">
+                                            <div id="submitForm">
                                                 <!-- Suggest  -->
                                                 <div class="form-item">
                                                     <div class="form-field">
@@ -95,7 +95,7 @@
                                                         <button class="submit" onclick="addSuggest()">Submit</button>
                                                     </div>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

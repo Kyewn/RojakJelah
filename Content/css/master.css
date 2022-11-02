@@ -34,8 +34,6 @@ a {
     text-decoration: none;
 }
 
-
-
 img {
     max-width: 100%;
 }
@@ -60,14 +58,14 @@ option {
     font-family: 'Rubik', sans-serif;
 }
 
-    input,
-    textarea,
-    button:focus {
-        outline: 0;
-        box-shadow: none;
-    }
+input,
+textarea,
+button:focus {
+    outline: 0;
+    box-shadow: none;
+}
 
-/* navbar */
+/* Navbar */
 nav {
     background: #d35555;
     width: 100%;
@@ -75,7 +73,7 @@ nav {
     min-height: 8vh;
 }
 
-/* fixed nav */
+/* Fixed nav */
 .fixed-nav {
     position: fixed;
     top: 0;
@@ -86,9 +84,9 @@ nav {
     z-index: 9999;
 }
 
-    .fixed-nav .links a {
-        color: #fff;
-    }
+.fixed-nav .links a {
+    color: #fff;
+}
 
 .nav-center {
     max-width: 85%;
@@ -118,26 +116,26 @@ nav {
     cursor: pointer;
 }
 
-    .nav-toggle:hover {
-        color: hsl(209, 61%, 16%);
-    }
+.nav-toggle:hover {
+    color: hsl(209, 61%, 16%);
+}
 
 .nav-header .logo {
     display: flex;
     align-items: center;
 }
 
-    .nav-header .logo img {
-        width: 60px;
-    }
+.nav-header .logo img {
+    width: 60px;
+}
 
-    .nav-header .logo p {
-        font-size: 24px;
-        color: #323232;
-        font-family: 'Mitr', sans-serif;
-        font-weight: 600;
-        margin: 0;
-    }
+.nav-header .logo p {
+    font-size: 24px;
+    color: #323232;
+    font-family: 'Mitr', sans-serif;
+    font-weight: 600;
+    margin: 0;
+}
 
 .links {
     display: flex;
@@ -191,6 +189,104 @@ nav {
 .scroll-link:active {
     background: var(--primary-color-active);
 }
+
+/* Notification */
+.notification {
+    display: none;
+    position: fixed;
+    top: 3rem;
+    right: 3rem;
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+    width: 300px;
+    background-color: var(--primary-color);
+    border-radius: 6px;
+    transition: opacity 0.1s linear;
+}
+
+.notification:hover {
+    cursor: pointer;
+    opacity: 70%;
+}
+
+.notification-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    color: white;
+}
+
+.notification-title h4 {
+    padding-left: 0.5rem;
+    margin: 0;
+    font-family: 'Mitr', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    word-wrap: break-word;
+}
+
+.notification-message {
+    padding-top: 0.4rem;
+    width: 100%;
+    color: white;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+ul.notification-message {
+    margin: 0;
+    padding: 0.1rem 0 0 1rem;
+    font-size: 12px;
+    list-style-type: disc;
+}
+
+.notification-tip {
+    display: block;
+    padding-top: 1rem;
+    color: white;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 11px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Animated Link Text */
+.gray-animated-link-text {
+    display: inline-block;
+}
+
+.gray-animated-link-text::after {
+    content: '';
+    width: 0px;
+    height: 1.5px;
+    display: block;
+    background: #323232;
+    transition: 300ms;
+}
+
+.gray-animated-link-text:hover::after {
+    width: 100%;
+}
+
+.red-animated-link-text {
+    display: inline-block;
+}
+
+.red-animated-link-text::after {
+    content: '';
+    width: 0px;
+    height: 1.5px;
+    display: block;
+    background: var(--primary-color);
+    transition: 300ms;
+}
+
+.red-animated-link-text:hover::after {
+    width: 100%;
+}
+
 
 /* Responsive Section  */
 @media screen and (min-width: 800px) {

@@ -1,80 +1,59 @@
-﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="RojakJelah.WebForm1" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="RojakJelah.Login" %>
 
-<!DOCTYPE html>
-<html lang="en">
+<asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
+    <link rel="stylesheet" type="text/css" href="<%= Page.ResolveUrl("~/Content/css/login.css") %>" />
+</asp:Content>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RojakJeLah-Translator </title>
+<asp:Content ID="PageJavaScript" ContentPlaceHolderID="PageJavaScript" runat="server">
+    <script src="Content/js/login.js"></script>
+</asp:Content>
 
-    <!-- Google Font  -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Mitr:wght@300;400;500;600;700&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
+    <section id="sctLogin">
+        <!-- Login Page Header -->
+        <div id="divLoginHeader">
+            <a class="link-back-to-home" href="Translator.aspx">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="gray-animated-link-text">Back to Home</span>
+            </a>
+        </div>
 
-    <!-- font-awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Bootstrap Css  -->
-    <link href="Content/css/bootstrap.min.css" rel="stylesheet" />
-
-
-    <!-- styles -->
-    <link href="Content/css/login.css" rel="stylesheet" />
-</head>
-
-<body>
-
-    <section class="login">
-        <div class="login-container">
-            <div class="login-form">
-                <div class="login-header">
-                    <div class="back-home">
-                        <a href="Translator.aspx"><i class="fa-solid fa-arrow-left"></i> Back To Home</a>
-                    </div>
-                    <div class="report-message">
-                        <p><i class="fa-solid fa-circle-exclamation"></i> Status message title here!</p>
-                        <p class="p2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, ducimus.</p>
-                    </div>
+        <!-- Login Form Container -->
+        <div class="form-container">
+            <!-- Input Form -->
+            <div id="divLoginForm">
+                <h1 class="form-header">Log in</h1>
+                <div class="form-field">
+                    <label>Username</label>
+                    <input id="txtUsername" runat="server" type="text" maxlength="30" placeholder="Username" autocomplete="off"/>
                 </div>
-                <div class="login-title">
-                    <h1>Login</h1>
+                <div class="form-field">
+                    <label>Password</label>
+                    <input id="txtPassword" runat="server" type="password" placeholder="Password" />
                 </div>
-
-                <!-- Login Form  -->
-                <div class="form-container">
-                    <div class="login-field">
-                        <form action="#">
-                            <div class="form-field">
-                                <label for="">Username</label><br>
-                                <input type="text" placeholder="Label Name" required>
-                            </div>
-                            <div class="form-field">
-                                <label for="">Password</label><br>
-                                <input type="password" placeholder="Label Password" required>
-                            </div>
-                            <div class="form-field">
-                                <button class="login-button">Login</button>
-                            </div>
-                        </form>
-                        <div class="register">
-                            <p>Don't have and account?</p>
-                            <a href="register.aspx">Register now</a>
-                        </div>
-                    </div>
-
-                    <!-- Login Right  -->
-                    <div class="login-right">
-                        <img src="Content/image/icon_colour 1.png" alt="">
-                    </div>
+                <asp:Button ID="btnLogin" class="form-button" runat="server" OnClick="BtnLogin_Click" Text="Login" />
+                <div class="form-tip">
+                    <p>Don't have an account?</p>
+                    <a href="Register.aspx" class="red-animated-link-text">Register now</a>
                 </div>
+            </div>
+
+            <!-- Site Logo -->
+            <div class="form-logo">
+                <img src="Content/image/rojakjelah_logo-icon_coloured.png" alt="RojakJelah Text Logo" />
             </div>
         </div>
     </section>
 
-</body>
+     <!-- Status Notification Popup -->
+    <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
+        <div class="notification-title">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <h4 id="notificationTitle" runat="server"></h4>
+        </div>
+        <p id="notificationMessage" class="notification-message" runat="server"></p>
+        <small class="notification-tip">CLICK TO CLOSE</small>
+    </div>
 
-</html>
+</asp:Content>
