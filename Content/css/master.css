@@ -157,6 +157,10 @@ nav {
     height: inherit;
 }
 
+.links li:first-child, .links li:nth-child(5), .links li:nth-child(6){
+    display: none;
+}
+
 .scroll-link i {
     color: #fff;
     font-size: 17px;

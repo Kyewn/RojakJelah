@@ -48,6 +48,12 @@
                         <ul class="links">
                             <li>
                                 <a class="scroll-link" href="Translator.aspx">
+                                    <i class="fa-solid fa-left-long"></i>
+                                    Back
+                                </a>
+                            </li>
+                            <li>
+                                <a class="scroll-link" href="Translator.aspx">
                                     <i class="fa-sharp fa-solid fa-message"></i>
                                     Translator
                                 </a>
@@ -65,10 +71,22 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="scroll-link" href="Suggestions.aspx" >
+                                <a class="scroll-link" href="Suggestions.aspx">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    Suggestions
+                                </a>
+                            </li>
+                            <li>
+                                <a class="scroll-link" href="Reports.aspx">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    Reports
+                                </a>
+                            </li>
+                            <li>
+                                <asp:LinkButton ID="lnkAdminPanel" runat="server" class="scroll-link" href="Suggestions.aspx" Visible="false">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                     Admin panel
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li>
                                 <a id="lnkLogin" runat="server" class="scroll-link" href="Login.aspx">

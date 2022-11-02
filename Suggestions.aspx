@@ -2,6 +2,11 @@
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
     <link href="<%= Page.ResolveUrl("~/Content/css/suggestions.css")%>" type="text/css" rel="stylesheet" />
 </asp:Content>
+
+<asp:Content ID="PageJavaScript" ContentPlaceHolderID="PageJavaScript" runat="server">
+    <script src="Content/js/suggestions.js"></script>
+</asp:Content>
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div ID="editModalWindow" ClientIDMode="Static" runat="server">
         <div class="editModalBody">

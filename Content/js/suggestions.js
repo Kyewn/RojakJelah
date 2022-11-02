@@ -1,10 +1,12 @@
-﻿const listItemContainer = document.querySelector('.listItemContainer');
+﻿// Main view
+// Main view
+// Main view
+const listItemContainer = document.querySelector('.listItemContainer');
 listItemContainer.addEventListener('click', (e) => {
     const listItem = e.target.closest('.listItem');
 
     //Populate action menu on the right with information
 });
-
 
 // Modal window
 // Modal window
