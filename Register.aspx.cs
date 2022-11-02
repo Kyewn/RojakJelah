@@ -35,7 +35,7 @@ namespace RojakJelah
 
         protected void BtnRegister_Click(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
             // Hide notification
             notification.Style.Add("display", "none");
@@ -81,11 +81,11 @@ namespace RojakJelah
                  * - (?=.*[a-z]): lowercase letters (lookahead)
                  * - (?=.*[A-Z]): uppercase letters (lookahead)
                  * - (?=.*\d): digits (lookahead)
-                 * - (?=.*[@$!%*?&]): symbols (lookahead)
-                 * - [A-Za-z\d@$!%*?&]: all required charaters (character set)
+                 * - (?=.*[!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~]): symbols (lookahead)
+                 * - [A-Za-z\d!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~]: all required charaters (character set)
                  * - {8,}: length of 8 or more characters
                  */
-                Regex regexPassword = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+                Regex regexPassword = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$");
 
                 // Password is too weak
                 if (!regexPassword.IsMatch(password))
