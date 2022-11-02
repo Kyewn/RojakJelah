@@ -15,13 +15,13 @@ namespace RojakJelah
     {
 
         /// <summary>
-        /// modalWindow control.
+        /// editModalWindow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl modalWindow;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl editModalWindow;
 
         /// <summary>
         /// txtEditId control.
@@ -58,6 +58,24 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTextArea txtExample;
+
+        /// <summary>
+        /// btnEditCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEditCancel;
+
+        /// <summary>
+        /// btnEditConfirm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEditConfirm;
 
         /// <summary>
         /// cboFilter control.

@@ -1,12 +1,16 @@
 ﻿const listItemContainer = document.querySelector('.listItemContainer');
 listItemContainer.addEventListener('click', (e) => {
     const listItem = e.target.closest('.listItem');
-    console.log(listItem);
+
+    //Populate action menu on the right with information
 });
 
-const modalWindow = document.getElementById('modalWindow');
+
+// Modal window
+// Modal window
+// Modal window
+const modalWindow = document.getElementById('editModalWindow');
+const body = document.querySelector('body');
 modalWindow.addEventListener('click', (e) => {
-    console.log("test");
-    const body = document.querySelector('body');
     body.style.pointerEvents = 'none';
 })

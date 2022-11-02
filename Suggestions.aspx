@@ -3,28 +3,41 @@
     <link href="<%= Page.ResolveUrl("~/Content/css/suggestions.css")%>" type="text/css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <div ID="modalWindow" ClientIDMode="Static" runat="server">
-        <div class="modalBody">
-            <div>
+    <div ID="editModalWindow" ClientIDMode="Static" runat="server">
+        <div class="editModalBody">
+            <div class="header">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <h3>Edit suggestion</h3>
+            </div>
+            <div class="editIdRow">
                 <h5>ID</h5>
                 <span ID="txtEditId" runat="server"></span>
             </div>
-            <div>
-                <h5>Slang</h5>
-                <!-- <asp:TextBox ID="txtEditSlang" runat="server"></asp:TextBox> -->
+            <div class="editTopRow">
+                <div>
+                    <h5>Slang</h5>
+                    <asp:TextBox ID="txtEditSlang" runat="server"></asp:TextBox>
+                </div>
+                <div>
+                    <h5>Translation</h5>
+                    <asp:TextBox ID="txtEditTranslation" runat="server"></asp:TextBox>
+                </div>
             </div>
-            <div>
-                <h5>Translation</h5>
-                <!-- <asp:TextBox ID="txtEditTranslation" runat="server"></asp:TextBox> -->
-            </div>
-            <div>
+            <div class="editBottomRow">
                 <h5>Example</h5>
-                <!-- <textarea ID="txtExample" runat="server"/> -->
+                <textarea ID="txtExample" runat="server"/>
+            </div>
+            <div class="editButtonContainer">
+                <asp:Button ID="btnEditCancel" ClientIDMode="Static" runat="server" Text="Cancel" OnClick="btnEditCancel_Click"/>
+                <asp:Button ID="btnEditConfirm" ClientIDMode="Static" runat="server" Text="Confirm" />
             </div>
         </div>
     </div>
     <div class="contentWrapper">
-        <h3>Dictionary suggestions</h3>
+        <div class="header">
+            <i class="fa-solid fa-spell-check"></i>
+            <h3>Dictionary suggestions</h3>
+        </div>
         <div class="contentContainer">
             <div class="leftContainer">
                 <div class="searchContainer">
@@ -67,6 +80,10 @@
                                 <span>Testvalue</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="listItem noData">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>No data found</span>
                     </div>
                 </div>
             </div>

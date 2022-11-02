@@ -11,6 +11,9 @@ namespace RojakJelah
 {
     public partial class Suggestions : System.Web.UI.Page
     {
+        private string[] filterEntries = new string[] { 
+            "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)"
+        };
         private void addListItem()
         {
             var listItemHTML = @"
@@ -53,6 +56,10 @@ namespace RojakJelah
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            foreach (string entry in filterEntries)
+            {
+                cboFilter.Items.Add(entry);
+            }
             addListItem();
         }
 
@@ -63,8 +70,13 @@ namespace RojakJelah
 
         protected void btnEdit_Click(object sender, EventArgs e)
         {
-            //HtmlGenericControl modalWindowDiv = (HtmlGenericControl)this.Master.FindControl("modalWindow");
-            modalWindow.Style.Add("animation", "fadeIn .3s ease-out forwards");
+            editModalWindow.Style.Add("animation", "fadeIn .3s ease-out forwards");
+        }
+        protected void btnEditCancel_Click(object sender, EventArgs e)
+        {
+            editModalWindow.Style.Remove("animation");
+            editModalWindow.Style.Add("opacity", "0");
+            editModalWindow.Style.Add("visibility", "hidden");
         }
     }
 }
