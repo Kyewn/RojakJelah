@@ -1,7 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Translator.aspx.cs" Inherits="RojakJelah.Translator" %>
+
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
-    <link href="<%= Page.ResolveUrl("~/Content/css/translator.css")%>" type="text/css" rel="stylesheet" />
+    <link  rel="stylesheet" type="text/css" href="<%= Page.ResolveUrl("~/Content/css/translator.css")%>" />
 </asp:Content>
+
+<asp:Content ID="PageJavaScript" ContentPlaceHolderID="PageJavaScript" runat="server">
+    <script src="Content/js/translator.js"></script>
+</asp:Content>
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
  <!-- Translate  -->
@@ -23,7 +29,6 @@
       </div>
     </div>
 
-
     <!-- Source Message  -->
     <!-- Source Message  -->
     <!-- Source Message  -->
@@ -32,10 +37,10 @@
              <div class="title">
                 <h5>Source message</h5>
              </div>
-             <form class="translate-container" runat="server">
+             <div class="translate-container">
               <!-- Translate Input  -->
               <div class="context">
-                <textarea runat="server" name="inputValue" id="inputValue" rows="3" placeholder="Enter message here..." required></textarea>
+                <textarea runat="server" name="inputValue" id="inputValue" rows="3" placeholder="Enter message here..."></textarea>
               </div>
               <!-- Translate Button  -->
               <div class="translate-button">
@@ -88,7 +93,6 @@
                       </div>
                     </div>
                   </div>
-
 
                   <!-- Translation History  -->
                   <div class="button history">
@@ -151,7 +155,7 @@
                           <div class="modal-body">
                             <div class="body-top">
                               <h4>Issue Category<span>*</span></h4>
-                              <form action="#">
+                              <div>
                                 <select id="label" name="label" required>
                                   <option value="">Label One</option>
                                   <option value="">Label Two</option>
@@ -165,7 +169,7 @@
                                       aria-label="Close">Cancel</button></div>
                                   <div><button class="submit">Submit</button></div>
                                 </div>
-                              </form>
+                              </div>
 
                             </div>
                             <div class="modal-footer">
@@ -178,7 +182,7 @@
                   </div>
                 </div>
               </div>
-            </form>
+            </div>
         </div>
         <!-- Translate Output  -->
         <div class="translate-output">           
@@ -191,8 +195,8 @@
           </div>
         </div>
     </div>
-
   </section>
+
   <!-- User Generate -->
   <!-- User Generate -->
   <!-- User Generate -->
