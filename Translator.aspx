@@ -39,7 +39,7 @@
                 <div class="translate-container">
                     <!-- Translation Input Field -->
                     <div class="context">
-                        <textarea id="txtInput" runat="server" name="inputValue" rows="3" placeholder="Enter message here..."></textarea>
+                        <textarea id="txtInput" runat="server" name="inputValue" rows="3" maxlength="5000" placeholder="Enter message here..."></textarea>
                     </div>
 
                     <!-- Translate Buttons  -->
@@ -50,7 +50,7 @@
                         <div class="translate-user">
                             <!-- Saved Translations -->
                             <div class="button saved">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdlSavedTranslations">
+                                <button id="btnViewSavedTranslations" type="button" class="btn btn-primary" runat="server" data-bs-toggle="modal" data-bs-target="#mdlSavedTranslations">
                                     <i class="fa-solid fa-star"></i>
                                 </button>
                             </div>
@@ -75,7 +75,12 @@
 
             <!-- Translate Output  -->
             <div class="translate-output">
-                <h5>Translation</h5>
+                <div class="translate-output-title">
+                    <h5>Translation</h5>
+                    <asp:LinkButton ID="lnkSaveTranslation" CssClass="translate-btn-save" runat="server" OnClick="LnkSaveTranslation_Click">
+                        <i id="iconSave" class="fa-regular fa-bookmark" runat="server"></i>
+                    </asp:LinkButton>
+                </div>
                 <div class="output">
                     <p id="txtOutput" runat="server"></p>
                     <img id="startQuote" src="Content/image/translatorOutput_startQuote.svg" />
@@ -118,74 +123,36 @@
     </section>
 
     <!-- Modals -->
-    <!-- Saved Translation Modal -->
-    <div id="mdlSavedTranslations" class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="translateSaved" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Saved Translations Modal -->
+    <div id="mdlSavedTranslations" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="translateSaved" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 id="translateSaved" class="modal-title">Saved translations</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fa-solid fa-x"></i>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="body-top">
-                        <h2>What is this what why how?</h2>
-                        <h4>Translation</h4>
-                        <div class="click-btn">
-                            <div>
-                                <h3>Apa ni what why how</h3>
-                            </div>
-                            <div>
-                                <button>Click Now</button></div>
-                        </div>
-                        <div class="ext-btn">
-                            <button><i class="fa-solid fa-x"></i></button>
-                        </div>
-                    </div>
-                    <div class="body-top">
-                        <h2>What is this what why how?</h2>
-                        <h4>Translation</h4>
-                        <div class="ext-btn">
-                            <button><i class="fa-solid fa-x"></i></button>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
+                <div id="divSavedTranslationsModalBody" class="modal-body" runat="server">
+                </div>
+                <div class="modal-footer">
+                    <p id="savedTranslationFooterText" runat="server"></p>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <!-- Translation History Modal -->
     <div id="mdlTranslationHistory" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="translateHistory" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 id="translateHistory" class="modal-title">Translation history</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fa-solid fa-x"></i>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="body-top">
-                        <h2>What is this what why how?</h2>
-                        <h4>Translation</h4>
-                        <div class="click-btn">
-                            <div>
-                                <h3>Apa ni what why how</h3>
-                            </div>
-                            <div>
-                                <button>Click Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="body-top">
-                        <h2>What is this what why how?</h2>
-                        <h4>Translation</h4>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
+                <div id="divTranslationHistoryModalBody" class="modal-body" runat="server">
+                </div>
+                <div class="modal-footer">
+                    <p id="translationHistoryFooterText" runat="server"></p>
                 </div>
             </div>
         </div>
@@ -197,22 +164,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title" id="translateReport">Report</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fa-solid fa-x"></i>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="body-top">
+                    <div class="modal-item">
                         <h4>Issue Category<span>*</span></h4>
                         <div>
-                            <select id="label" name="label" required>
+                            <select id="label" name="label">
                                 <option value="">Label One</option>
                                 <option value="">Label Two</option>
                                 <option value="">Label Three</option>
                                 <option value="">Label Four</option>
                             </select>
                             <h4 class="pt-2">Description</h4>
-                            <textarea name="" id="" cols="" rows="2" placeholder="Text here...." required></textarea>
+                            <textarea name="" id="" cols="" rows="2" placeholder="Text here...."></textarea>
                             <div class="button pt-3">
                                 <div class="px-2">
                                     <button type="button" class="cancel" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
@@ -228,6 +193,16 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Status Notification Popup -->
+    <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
+        <div class="notification-title">
+            <i id="notificationIcon" runat="server"></i>
+            <h4 id="notificationTitle" runat="server"></h4>
+        </div>
+        <p id="notificationMessage" class="notification-message" runat="server"></p>
+        <small class="notification-tip">CLICK TO CLOSE</small>
     </div>
 
 </asp:Content>

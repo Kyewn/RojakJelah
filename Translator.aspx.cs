@@ -1,11 +1,14 @@
-﻿using RojakJelah.Database;
+﻿using Newtonsoft.Json;
+using RojakJelah.Database;
 using RojakJelah.Database.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace RojakJelah
@@ -13,56 +16,114 @@ namespace RojakJelah
     public partial class Translator : System.Web.UI.Page
     {
         /// Hash function divisor for modulo operator
-        private const int hashDivisor = 97;
+        private const int HashDivisor = 97;
+
+        /// FontAwesome icon class strings
+        private const string IconSolidBookmark = "fa-solid fa-bookmark";
+        private const string IconRegularBookmark = "fa-regular fa-bookmark";
+        private const string IconExclamation = "fa-solid fa-circle-exclamation";
+        private const string IconAccessDenied = "fa-solid fa-ban";
+        private const string IconFloppyDisk = "fa-solid fa-floppy-disk";
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Hide nav header
+            HtmlControl navHeader = Master.FindControl("navHeader") as HtmlControl;
+            navHeader.Style.Add("visibility", "hidden");
+
             if (!IsPostBack)
             {
-                DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
+                var rojakHashtable = InitializeRojakHashtable();
+                ManageSession(rojakHashtable);
+            }
 
-                // Initialize Rojak HashTable
-                Dictionary<string, List<string>>[] rojakHashtable = new Dictionary<string, List<string>>[26];
-                for (int i = 0; i < rojakHashtable.Length; i++)
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Disable saved translations modal
+                btnViewSavedTranslations.Attributes.Remove("data-bs-toggle");
+                btnViewSavedTranslations.Attributes.Remove("data-bs-target");
+                // Display error notification if unauthorized user attempts to open modal
+                btnViewSavedTranslations.Attributes.Add("onclick",
+                    String.Format("showNotification('{0}', '{1}', '{2}')", IconAccessDenied, "Access denied", "You need to be logged in to use this feature."));
+            }
+            else
+            {
+                PrepopulateSavedTranslations();
+            }
+
+            PrepopulateTranslationHistory();
+        }
+
+        /// <summary>
+        /// Initializes a hash table to store Rojak dictionary entries.
+        /// </summary>
+        /// <returns>Hashtable representing rojak dictionary.</returns>
+        protected Dictionary<string, List<string>>[] InitializeRojakHashtable()
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+            // Initialize array
+            Dictionary<string, List<string>>[] rojakHashtable = new Dictionary<string, List<string>>[26];
+            for (int i = 0; i < rojakHashtable.Length; i++)
+            {
+                rojakHashtable[i] = new Dictionary<string, List<string>>();
+            }
+
+            // Query database for all dictionary entries
+            var dictionaryEntries = dataContext.DictionaryEntries.ToList();
+
+            // Sort dictionary entries into rojakHashtable by hashing
+            foreach (var dictionaryEntry in dictionaryEntries)
+            {
+                string currentTranslation = dictionaryEntry.Translation.WordValue;
+                string currentSlang = dictionaryEntry.Slang.WordValue;
+
+                // Get hash index (a = 0, b = 1, c = 2 ...)
+                int index = currentTranslation[0] % HashDivisor;
+
+                // If rojakHashtable already contains this translation, add the slang to existing slang list of the slang
+                if (rojakHashtable[index].ContainsKey(currentTranslation))
                 {
-                    rojakHashtable[i] = new Dictionary<string, List<string>>();
+                    rojakHashtable[index][currentTranslation].Add(currentSlang);
                 }
-
-                // Query database for all dictionary entries
-                var dictionaryEntries = dataContext.DictionaryEntries.ToList();
-
-                // Sort dictionary entries into rojakHashtable by hashing
-                foreach (var dictionaryEntry in dictionaryEntries)
+                // Else, create a new slang list before adding
+                else
                 {
-                    string currentTranslation = dictionaryEntry.Translation.WordValue;
-                    string currentSlang = dictionaryEntry.Slang.WordValue;
-
-                    // Get hash index (a = 0, b = 1, c = 2 ...)
-                    int index = (int)(currentTranslation[0]) % hashDivisor;
-
-                    // If rojakHashtable already contains this slang, add the translation to existing translation list of the slang
-                    if (rojakHashtable[index].ContainsKey(currentTranslation))
-                    {
-                        rojakHashtable[index][currentTranslation].Add(currentSlang);
-                    }
-                    // Else, create a new translation list before adding
-                    else
-                    {
-                        List<string> slangList = new List<string>();
-                        slangList.Add(currentSlang);
-                        rojakHashtable[index].Add(currentTranslation, slangList);
-                    }
+                    List<string> slangList = new List<string>();
+                    slangList.Add(currentSlang);
+                    rojakHashtable[index].Add(currentTranslation, slangList);
                 }
+            }
 
-                // Initialize session variables
-                Session["RojakHashtable"] = rojakHashtable;
-                Session["SavedTranslations"] = new List<SavedTranslation>();
+            return rojakHashtable;
+        }
+
+        /// <summary>
+        /// Manages session variables.
+        /// </summary>
+        /// <param name="rojakHashtable">Hash table storing Rojak dictionary entries.</param>
+        protected void ManageSession(Dictionary<string, List<string>>[] rojakHashtable)
+        {
+            // Store rojakHashtable in session
+            Session["RojakHashtable"] = rojakHashtable;
+
+            // Retrieve translation history from session
+            var translationHistory = Session["TranslationHistory"] as List<SavedTranslation>;
+            if (translationHistory == null)
+            {
+                Session["TranslationHistory"] = new List<SavedTranslation>();
             }
         }
 
         protected void BtnTranslate_Click(Object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+            // Hide notification
+            notification.Style.Add("display", "none");
+
+            // Update save icon
+            iconSave.Attributes.Add("class", IconRegularBookmark);
 
             // Clear output
             txtOutput.InnerText = "";
@@ -84,7 +145,7 @@ namespace RojakJelah
                 foreach (string word in inputWords)
                 {
                     // Get hash index
-                    int index = (int)(Char.ToLower(word[0])) % hashDivisor;
+                    int index = Char.ToLower(word[0]) % HashDivisor;
 
                     // If rojakHashtable contains the input word, add its corresponding slang to output words
                     if (index < rojakHashtable.Length && rojakHashtable[index].ContainsKey(word.ToLower()))
@@ -101,7 +162,7 @@ namespace RojakJelah
                         outputWords.Add(word.All(c => Char.IsUpper(c)) ? matchedSlang.ToUpper() :
                                         Char.IsUpper(word[0]) ? Char.ToUpper(matchedSlang[0]) + matchedSlang.Substring(1) : matchedSlang);
                     }
-                    // Else, simply add the original input word back into output words
+                    // Else, add the original input word back into output words
                     else
                     {
                         outputWords.Add(word);
@@ -116,52 +177,174 @@ namespace RojakJelah
                 }
 
                 // Save translation into session-based translation history
-                List<SavedTranslation> sessionTranslations = Session["SavedTranslations"] as List<SavedTranslation>;
+                List<SavedTranslation> translationHistory = Session["TranslationHistory"] as List<SavedTranslation>;
 
-                sessionTranslations.Add(new SavedTranslation()
+                translationHistory.Add(new SavedTranslation()
                 {
                     Input = inputText,
                     Output = txtOutput.InnerText,
-                    CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == "System"),
+                    CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name) ?? null,
                     CreationDate = DateTime.Now
                 });
-
-                //translationHistory.InnerText = "";
-                //int n = 1;
-                //foreach (var translation in sessionTranslations)
-                //{
-                //    translationHistory.InnerHtml += n + ". Input: " + translation.Input + "<br />"
-                //        + "Output: " + translation.Output + "<br />";
-                //    n++;
-                //}
             }
+
+            PrepopulateTranslationHistory();
         }
 
-        protected void BtnSave_Click(Object sender, EventArgs e)
+        protected void LnkSaveTranslation_Click(Object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
+            // Hide notification
+            notification.Style.Add("display", "none");
 
-            string inputText = txtInput.InnerText;
-            string outputText = txtOutput.InnerText;
-
-            if (String.IsNullOrWhiteSpace(inputText) || String.IsNullOrWhiteSpace(outputText))
+            if (!User.Identity.IsAuthenticated)
             {
-                // Show error message
+                ShowStatusNotification(IconAccessDenied, "Access denied", "You need to be logged in to use this feature.");
             }
             else
             {
-                SavedTranslation newSavedTranslation = new SavedTranslation()
+                DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+                string inputText = txtInput.InnerText;
+                string outputText = txtOutput.InnerText;
+
+                // Check if there is data to save
+                if (String.IsNullOrWhiteSpace(inputText) || String.IsNullOrWhiteSpace(outputText))
                 {
-                    Input = inputText,
-                    Output = outputText,
-                    CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == "System"),
-                    CreationDate = DateTime.Now
-                };
+                    // Show error notification
+                    ShowStatusNotification(IconExclamation, "Unable to save", "Source message and translation output cannot be empty.");
+                }
+                else
+                {
+                    // Save translation into database
+                    SavedTranslation newSavedTranslation = new SavedTranslation()
+                    {
+                        Input = inputText,
+                        Output = outputText,
+                        CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name),
+                        CreationDate = DateTime.Now
+                    };
 
-                dataContext.SavedTranslations.Add(newSavedTranslation);
+                    dataContext.SavedTranslations.Add(newSavedTranslation);
+                    dataContext.SaveChanges();
 
-                dataContext.SaveChanges();
+                    // Show success notification
+                    ShowStatusNotification(IconFloppyDisk, "Save success", "This translation has been saved successfully.");
+
+                    // Update save icon
+                    iconSave.Attributes.Add("class", IconSolidBookmark);
+
+                    PrepopulateSavedTranslations();
+                }
             }
+        }
+
+        /// <summary>
+        /// Prepopulates the saved translations modal with translations saved in the database.
+        /// </summary>
+        protected void PrepopulateSavedTranslations()
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+            var savedTranslationList = dataContext.SavedTranslations.Where(x => x.CreatedBy.Username == User.Identity.Name).ToList();
+
+            divSavedTranslationsModalBody.Controls.Clear();
+
+            if (savedTranslationList.Count == 0)
+            {
+                LiteralControl modalEmpty = new LiteralControl(
+                        @"<div class=""modal-empty"">" +
+                            @"<i class=""fa-solid fa-file-excel""></i>" +
+                            "<h1>No translations found</h1>" +
+                        "</div>");
+
+                divSavedTranslationsModalBody.Controls.Add(modalEmpty);
+            }
+            else
+            {
+                int count = 0;
+                foreach (var savedTranslation in savedTranslationList)
+                {
+                    count++;
+
+                    LiteralControl modalItem = new LiteralControl(
+                            @"<div class=""modal-item"">" +
+                                "<h2>" + savedTranslation.Input + "</h2>" +
+                                "<h4>Translation</h4>" +
+                                "<h3>" + savedTranslation.Output + "</h3>" +
+                                @"<div class=""modal-item-row"">" +
+                                    "<small>Date: " + savedTranslation.CreationDate + "</small>" +
+                                    @"<button type=""button"" class=""modal-item-btn"">Remove</button>" +
+                                "</div>" +
+                            "</div>");
+
+                    divSavedTranslationsModalBody.Controls.Add(modalItem);
+                }
+
+                savedTranslationFooterText.InnerText = savedTranslationList.Count +
+                    " translation" +
+                    (savedTranslationList.Count > 1 ? "s " : " ") +
+                    "found";
+            }
+        }
+
+        /// <summary>
+        /// Prepopulates the translation history modal with translations saved in session.
+        /// </summary>
+        protected void PrepopulateTranslationHistory()
+        {
+            var translationHistory = Session["TranslationHistory"] as List<SavedTranslation>;
+
+            divTranslationHistoryModalBody.Controls.Clear();
+
+            if (translationHistory.Count == 0)
+            {
+                LiteralControl modalEmpty = new LiteralControl(
+                        @"<div class=""modal-empty"">" +
+                            @"<i class=""fa-solid fa-file-excel""></i>" +
+                            "<h1>No translations found</h1>" +
+                        "</div>");
+
+                divTranslationHistoryModalBody.Controls.Add(modalEmpty);
+            }
+            else
+            {
+                int count = 0;
+                foreach (var savedTranslation in translationHistory)
+                {
+                    count++;
+
+                    LiteralControl modalItem = new LiteralControl(
+                            @"<div class=""modal-item"">" +
+                                "<h2>" + savedTranslation.Input + "</h2>" +
+                                "<h4>Translation</h4>" +
+                                "<h3>" + savedTranslation.Output + "</h3>" +
+                                @"<div class=""modal-item-row"">" +
+                                    "<small>Date: " + savedTranslation.CreationDate + "</small>" +
+                                    @"<button type=""button"" class=""modal-item-btn"">Remove</button>" +
+                                "</div>" +
+                            "</div>");
+
+                    divTranslationHistoryModalBody.Controls.Add(modalItem);
+                }
+
+                translationHistoryFooterText.InnerText = translationHistory.Count +
+                    " translation" +
+                    (translationHistory.Count > 1 ? "s " : " ") +
+                    "found";
+            }
+        }
+
+        /// <summary>
+        /// Displays status notification popup.
+        /// </summary>
+        /// <param name="title">Title of status.</param>
+        /// <param name="message">Status message.</param>
+        protected void ShowStatusNotification(string icon, string title, string message)
+        {
+            notificationIcon.Attributes.Add("class", icon);
+            notificationTitle.InnerText = title;
+            notificationMessage.InnerHtml = message;
+            notification.Style.Add("display", "block");
         }
     }
 }

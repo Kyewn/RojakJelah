@@ -51,6 +51,19 @@
     margin: 0;
 }
 
+.notification {
+    display: none;
+    position: fixed;
+    top: 65%;
+    right: 3%;
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+    width: 300px;
+    background-color: var(--primary-color);
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.1s linear;
+}
+
 /* Responsive Section  */
 @media screen and (max-width: 837px) {
   .banner .banner-container .banner-right .title h1 {
@@ -166,8 +179,29 @@
     margin-top: 1em;
 }
 
-.translate-output h5 {
+.translate-output-title {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    align-items: center;
+}
+
+.translate-output-title h5 {
+    margin: 0;
     color: var(--primary-color);
+}
+
+.translate-btn-save {
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+.translate-btn-save:hover {
+    color: var(--primary-color-hover);
+}
+
+.translate-btn-save:active {
+    color: var(--primary-color-active);
 }
 
 .translate .translate-output .output {
@@ -195,10 +229,11 @@
     right: 0;
 }
 
-#outputString {
+.output p {
     font-weight: 600;
     color: #323232;
     text-align: justify;
+    word-break: break-all;
 }
 
 /* Translate Button  */
@@ -242,12 +277,13 @@
 
 .translate .translate-container .translate-button .translate-user {
     display: flex;
-    margin-top: 10px;
+    margin-top: 8px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .translate .translate-container .translate-button .translate-user div.button {
-  margin: auto;
+  margin: 0;
 }
 
 .translate .translate-container .translate-button .translate-user button i {
@@ -255,13 +291,23 @@
     transition: all 0.3s ease-out;
 }
 
-.translate .translate-container .translate-button .translate-user button {
+.translate .translate-container .translate-button .translate-user a {
   border: none;
   border: 2px solid var(--primary-color);
-  padding: 5px 7px;
+  color: var(--primary-color);
+  padding: 0.4rem 0.6rem;
   background: none;
   border-radius: 5px;
   transition: all 0.3s ease-out;
+}
+
+.translate .translate-container .translate-button .translate-user button {
+    border: none;
+    border: 2px solid var(--primary-color);
+    padding: 0.4rem 0.6rem;
+    background: none;
+    border-radius: 5px;
+    transition: all 0.3s ease-out;
 }
 
 .translate .translate-container .translate-button .translate-user button:hover {
@@ -280,6 +326,120 @@
   color: var(--primary-color-active);
 }
 
+/* Modals */
+.modal-dialog {
+    overflow-y: initial;
+}
+
+.modal-content {
+    padding: 1rem 4rem 0 4rem;
+}
+
+.modal-body {
+    height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-title {
+    color: var(--primary-color);
+    font-size: 26px;
+    font-family: 'Mitr', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.modal-empty {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #eaeaea;
+}
+
+.modal-empty i {
+    color: #525252;
+    font-size: 40px;
+}
+
+.modal-empty h1 {
+    margin: 0;
+    color: #525252;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 30px;
+}
+
+.modal-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #eaeaea;
+}
+
+.modal-item h2 {
+    color: var(--primary-color);
+    font-size: 18px;
+    word-break: break-word;
+}
+
+.modal-item h4 {
+    padding-top: 0.4rem;
+    color: #323232;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.modal-item h3 {
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.modal-item-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 2rem;
+}
+
+.modal-item-row small {
+    flex: 0.9;
+    color: #323232;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.modal-item-btn {
+    flex: 0.1;
+    display: flex;
+    align-self: flex-end;
+    padding: 0 0.4rem;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: none;
+    border-radius: 4px;
+    font-family: 'Rubik', Arial, sans-serif;
+    transition: all 0.2s ease-out;
+}
+
+.modal-item-btn:hover {
+    border-color: var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
+
+.modal-item-btn:active {
+    border-color: var(--primary-color-active);
+    color: var(--primary-color-active);
+}
+
+.modal-footer p {
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    word-spacing: 0.2rem;
+}
+
 /* Saved Translate  */
 .translate .translate-container .translate-button .translate-user .saved div#saved {
   top: 90px;
@@ -292,54 +452,54 @@
   font-weight: 600;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top {
+.translate-button .translate-user .saved .modal-body .modal-item {
   background-color: #eaeaea;
   padding: 1rem;
   position: relative;
 }
 
-.translate-user .saved .modal-body .body-top .ext-btn {
+.translate-user .saved .modal-body .modal-item .ext-btn {
   position: absolute;
   right: 5px;
   top: 5px;
 }
 
-.translate-user .saved .modal-body .body-top .ext-btn button {
+.translate-user .saved .modal-body .modal-item .ext-btn button {
   border: none;
   color: #323232 !important;
 }
 
-.translate-user .saved .modal-body .body-top .ext-btn button:focus {
+.translate-user .saved .modal-body .modal-item .ext-btn button:focus {
   outline: 0;
   box-shadow: none;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top h2 {
+.translate-button .translate-user .saved .modal-body .modal-item h2 {
   color: var(--primary-color);
   font-size: 20px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top h4 {
+.translate-button .translate-user .saved .modal-body .modal-item h4 {
   color: #000;
   font-size: 18px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top {
+.translate-button .translate-user .saved .modal-body .modal-item {
   margin-top: 20px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn h3 {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-row h3 {
   color: var(--primary-color);
   font-size: 15px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn button {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-row button {
   font-weight: 600;
   border: none;
   background: var(--primary-color) !important;
@@ -350,11 +510,11 @@
   transition: 0.4s;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn button:hover {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-row button:hover {
   background: #da4343 !important;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn button:focus {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-row button:focus {
   outline: 0;
   box-shadow: none;
   background: #e29090 !important;
@@ -388,37 +548,37 @@
   font-weight: 600;
 }
 
-.translate-button .translate-user .history .modal-body .body-top {
+.translate-button .translate-user .history .modal-body .modal-item {
   background-color: #eaeaea;
   padding: 1rem;
 }
 
-.translate-button .translate-user .history .modal-body .body-top h2 {
+.translate-button .translate-user .history .modal-body .modal-item h2 {
   color: var(--primary-color);
   font-size: 20px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top h4 {
+.translate-button .translate-user .history .modal-body .modal-item h4 {
   color: #000;
   font-size: 18px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top {
+.translate-button .translate-user .history .modal-body .modal-item {
   margin-top: 20px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn h3 {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-row h3 {
   color: var(--primary-color);
   font-size: 15px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn button {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-row button {
   font-weight: 600;
   border: none;
   background: var(--primary-color) !important;
@@ -429,11 +589,11 @@
   transition: 0.4s;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn button:hover {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-row button:hover {
   background: #da4343 !important;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn button:focus {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-row button:focus {
   outline: 0;
   box-shadow: none;
   background: #e29090 !important;
@@ -477,26 +637,26 @@
   box-shadow: none;
 }
 
-.translate-button .translate-user .report .modal-body .body-top h4 {
+.translate-button .translate-user .report .modal-body .modal-item h4 {
   color: var(--primary-color);
   font-size: 20px;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form select {
+.translate-button .translate-user .report .modal-body .modal-item form select {
   padding: 7px 20px;
   font-size: 20px;
   border: none;
   border: 1px solid var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form select:focus {
+.translate-button .translate-user .report .modal-body .modal-item form select:focus {
   outline: 0;
   box-shadow: none;
   border: none;
   border: 2px solid var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form textarea {
+.translate-button .translate-user .report .modal-body .modal-item form textarea {
   padding: 10px;
   width: 100%;
   font-size: 18px;
@@ -504,7 +664,7 @@
   border: 1px solid var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form textarea:focus {
+.translate-button .translate-user .report .modal-body .modal-item form textarea:focus {
   outline: 0;
   box-shadow: none;
   border: none;
@@ -512,13 +672,13 @@
 }
 
 
-.translate-button .translate-user .report .modal-body .body-top form .button {
+.translate-button .translate-user .report .modal-body .modal-item form .button {
   display: flex;
   justify-content: right;
   align-items: center;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.cancel {
+.translate-button .translate-user .report .modal-body .modal-item form button.cancel {
   font-weight: 600;
   border: none;
   border: 2px solid var(--primary-color);
@@ -529,15 +689,15 @@
   color: var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.cancel:hover {
+.translate-button .translate-user .report .modal-body .modal-item form button.cancel:hover {
   border-color: #e29090;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.cancel:focus {
+.translate-button .translate-user .report .modal-body .modal-item form button.cancel:focus {
   border-color: #f2cccc;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.submit {
+.translate-button .translate-user .report .modal-body .modal-item form button.submit {
   font-weight: 600;
   width: 100px;
   border: none;
@@ -549,11 +709,11 @@
   transition: 0.4s;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.submit:hover {
+.translate-button .translate-user .report .modal-body .modal-item form button.submit:hover {
   background: #da4343;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.submit:focus {
+.translate-button .translate-user .report .modal-body .modal-item form button.submit:focus {
   background: #e29090;
 }
 
@@ -601,15 +761,15 @@
     font-size: 20px;
   }
 
-  .modal-body .body-top h2 {
+  .modal-body .modal-item h2 {
     font-size: 18px;
   }
 
-  .modal-body .body-top h4 {
+  .modal-body .modal-item h4 {
     font-size: 14px;
   }
 
-  .modal-body .body-top .click-btn h3 {
+  .modal-body .modal-item .modal-item-row h3 {
     font-size: 14px;
   }
 
@@ -622,15 +782,15 @@
     font-size: 20px;
   }
 
-  .translate-button .translate-user .history .modal-body .body-top h2 {
+  .translate-button .translate-user .history .modal-body .modal-item h2 {
     font-size: 18px;
   }
 
-  .translate-button .translate-user .history .modal-body .body-top h4 {
+  .translate-button .translate-user .history .modal-body .modal-item h4 {
     font-size: 14px;
   }
 
-  .translate-button .translate-user .history .modal-body .body-top .click-btn h3 {
+  .translate-button .translate-user .history .modal-body .modal-item .modal-item-row h3 {
     font-size: 14px;
   }
 
@@ -642,7 +802,7 @@
 @media screen and (max-width: 318px) {
 
   /* Translate Save  */
-  .modal-body .body-top .click-btn {
+  .modal-body .modal-item .modal-item-row {
     flex-direction: column;
     justify-content: flex-start !important;
     justify-content: left !important;
@@ -650,7 +810,7 @@
   }
 
   /* Translate History  */
-  .translate-button .translate-user .history .modal-body .body-top .click-btn {
+  .translate-button .translate-user .history .modal-body .modal-item .modal-item-row {
     flex-direction: column;
     justify-content: flex-start !important;
     justify-content: left !important;
@@ -681,7 +841,7 @@
 .user-generate .generate-container .generate-items {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
+  grid-gap: 3rem;
 }
 
 .user-generate .generate-container .generate-items .item h4 {
