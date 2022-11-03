@@ -105,6 +105,10 @@
     overflow-y: auto;
 }
 
+#txtSelectedListItem {
+    display: none;
+}
+
 .listItem {
     display: flex;
     flex-direction: column;
@@ -128,7 +132,7 @@
     font-size: 30px;
 }
 
-.listItem:first-child {
+.listItem:first-of-type {
     margin-top: 0;
 }
 
@@ -195,6 +199,7 @@
 .buttonContainer {
     flex: 1;
     display: flex;
+    visibility: hidden;
     justify-content: space-between;
     margin-bottom: 1em
 }
@@ -202,6 +207,9 @@
 .detailContainer {
     overflow-y: auto;
     margin-bottom: 1em;
+    display: flex;
+    visibility: hidden; 
+    flex-direction: column;
 }
 
 .detailContainer .itemDetail {
@@ -267,6 +275,7 @@
     border-radius: 5px;
     border: 2px solid var(--primary-color);
     transition: all .3s ease-out;
+    visibility: hidden;
 }
 
 #btnEdit:hover {
@@ -335,6 +344,10 @@
 
 .editModalBody h5 {
     color: var(--primary-color);
+}
+
+.editIdRow {
+    margin-top: 1em;
 }
 
 .editTopRow {
@@ -425,6 +438,15 @@
     border: 2px solid var(--primary-color-active);
     color: var(--primary-color-active);
 }
+
+.notification {
+    background-color: var(--notification-success);
+}
+
+.notification-title, .notification-message, .notification-tip {
+    color: var(--theme-black);
+}
+
 
 @keyframes fadeIn {
     from {

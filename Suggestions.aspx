@@ -30,100 +30,68 @@
             </div>
             <div class="editBottomRow">
                 <h5>Example</h5>
-                <textarea ID="txtExample" runat="server"/>
+                <textarea ID="txtEditExample" runat="server"/>
             </div>
             <div class="editButtonContainer">
                 <asp:Button ID="btnEditCancel" ClientIDMode="Static" runat="server" Text="Cancel" OnClick="btnEditCancel_Click"/>
-                <asp:Button ID="btnEditConfirm" ClientIDMode="Static" runat="server" Text="Confirm" />
+                <asp:Button ID="btnEditConfirm" ClientIDMode="Static" runat="server" Text="Confirm" OnClick="btnEditConfirm_Click"/>
             </div>
         </div>
     </div>
+
     <div class="contentWrapper">
         <div class="header">
             <i class="fa-solid fa-spell-check"></i>
             <h3>Dictionary suggestions</h3>
-        </div>
+        </div> 
         <div class="contentContainer">
             <div class="leftContainer">
                 <div class="searchContainer">
                     <div class="filterContainer">
                         <h6>Filter</h6>
-                        <asp:DropDownList ID="cboFilter" class="cboFilter" runat="server"></asp:DropDownList>
+                        <asp:DropDownList ID="cboFilter" class="cboFilter" runat="server" AutoPostBack="True" OnSelectedIndexChanged="cboFilter_SelectedIndexChanged"></asp:DropDownList>
                     </div>
                     <div class="searchBarContainer">
                         <h6>Search</h6>
-                        <asp:TextBox ID="txtSearch" class="txtSearch" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtSearch" class="txtSearch" placeholder="e.g. Hello World" runat="server" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
                     </div>
                 </div>
                 <div ID="listItemContainer" class="listItemContainer" runat="server">
-                    <div class="listItem">
-                        <div class="topRow">
-                            <div class="itemDetail">
-                                <span>ID</span>
-                                <span>Testvalue</span>
-                            </div>
-                            <div class="itemDetail">
-                                <span>Slang</span>
-                                <span>Testvalue</span>
-                            </div>
-                            <div class="itemDetail">
-                                <span>Translation</span>
-                                <span>Testvalue</span>
-                            </div>
-                            <div class="itemDetail">
-                                <span>Created by</span>
-                                <span>Testvalue</span>
-                            </div>
-                            <div class="itemDetail">
-                                <span>Created at</span>
-                                <span>Testvalue</span>
-                            </div>
-                        </div>
-                        <div class="bottomRow">
-                            <div class="itemDetail">
-                                <span>Example</span>
-                                <span>Testvalue</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="listItem noData">
-                        <i class="fa-solid fa-circle-exclamation"></i>
-                        <span>No data found</span>
-                    </div>
+                    <asp:TextBox ID="txtSelectedListItem" ClientIDMode="Static" runat="server" AutoPostBack="True"></asp:TextBox>
                 </div>
             </div>
             <div class="rightContainer">
                 <div class="actionMenuWrapper">
                     <h6>Actions</h6>
-                    <div class="menuContainer">
-                        <div class="buttonContainer">
+                    <div ID="menuContainer" class="menuContainer" runat="server">
+                        <div ID="buttonContainer" runat="server" class="buttonContainer">
                             <asp:Button ID="btnAccept" ClientIDMode="Static" runat="server" Text="Accept" />
                             <asp:Button ID="btnReject" ClientIDMode="Static" runat="server" Text="Reject" />
                         </div>
-                        <div class="detailContainer">
+                        <div ID="detailContainer" runat="server" class="detailContainer">
                             <div class="itemDetail">
                                 <h6>ID</h6>
-                                <span id="lblId" runat="server">Testvalue</span>
+                                <span id="lblId" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
                             <div class="itemDetail">
                                 <h6>Slang</h6>
-                                <span id="lblSlang" runat="server">Testvalue</span>
+                                <span id="lblSlang" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
                             <div class="itemDetail">
                                 <h6>Translation</h6>
-                                <span id="lblTranslation" runat="server">Testvalue</span>
+                                <span id="lblTranslation" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
                             <div class="itemDetail">
                                 <h6>Created by</h6>
-                                <span id="lblAuthor" runat="server">Testvalue</span>
+                                <span id="lblAuthor" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
                             <div class="itemDetail">
                                 <h6>Created at</h6>
-                                <span id="lblDate" runat="server">Testvalue</span>
+                                <span id="lblDate" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
                             <div class="itemDetail">
                                 <h6>Example</h6>
-                                <span id="lblExample" runat="server">Testvalue</span>
+                                <span id="lblExample" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
                         </div>
                         <asp:Button ID="btnEdit" ClientIDMode="Static" runat="server" Text="Edit" OnClick="btnEdit_Click" />
@@ -132,4 +100,15 @@
             </div>
         </div>
     </div>
+    
+    <!-- Status Notification Popup -->
+    <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
+        <div class="notification-title">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <h4 id="notificationTitle" runat="server"></h4>
+        </div>
+        <p id="notificationMessage" class="notification-message" runat="server"></p>
+        <small class="notification-tip">CLICK TO CLOSE</small>
+    </div>
+
 </asp:Content>

@@ -16,7 +16,7 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");
+            DataContext dataContext = new DataContext("server=localhost;user=root;database=rojakjelah;port=3306;password=brian89564");
 
             // Check if user is logged in
             if (Page.User.Identity.IsAuthenticated)

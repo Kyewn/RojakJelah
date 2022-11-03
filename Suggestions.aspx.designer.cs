@@ -51,13 +51,13 @@ namespace RojakJelah
         protected global::System.Web.UI.WebControls.TextBox txtEditTranslation;
 
         /// <summary>
-        /// txtExample control.
+        /// txtEditExample control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtExample;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtEditExample;
 
         /// <summary>
         /// btnEditCancel control.
@@ -105,6 +105,33 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl listItemContainer;
 
         /// <summary>
+        /// txtSelectedListItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSelectedListItem;
+
+        /// <summary>
+        /// menuContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl menuContainer;
+
+        /// <summary>
+        /// buttonContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl buttonContainer;
+
+        /// <summary>
         /// btnAccept control.
         /// </summary>
         /// <remarks>
@@ -121,6 +148,15 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnReject;
+
+        /// <summary>
+        /// detailContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailContainer;
 
         /// <summary>
         /// lblId control.
@@ -184,5 +220,32 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnEdit;
+
+        /// <summary>
+        /// notification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl notification;
+
+        /// <summary>
+        /// notificationTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl notificationTitle;
+
+        /// <summary>
+        /// notificationMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl notificationMessage;
     }
 }

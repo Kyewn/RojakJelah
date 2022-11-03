@@ -5,6 +5,8 @@ using System.Web;
 
 namespace RojakJelah.Database.Entity
 {
+
+    [Serializable]
     public class Role
     {
         public int Id { get; set; }

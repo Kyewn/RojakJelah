@@ -5,7 +5,15 @@ const listItemContainer = document.querySelector('.listItemContainer');
 listItemContainer.addEventListener('click', (e) => {
     const listItem = e.target.closest('.listItem');
 
-    //Populate action menu on the right with information
+    if (listItem.classList.contains("noData")) {
+        return;
+    } else {
+        // Send selected index to server for populating action menu on the right with information
+        const listItemTopRowInfoArr = listItem.querySelectorAll(".topRow .itemDetail span:nth-child(2)");
+
+        $('#txtSelectedListItem').val(listItemTopRowInfoArr[0].innerText);
+        __doPostBack('txtSelectedListItem');
+    }
 });
 
 // Modal window
@@ -16,3 +24,7 @@ const body = document.querySelector('body');
 modalWindow.addEventListener('click', (e) => {
     body.style.pointerEvents = 'none';
 })
+
+function closeNotification(notification) {
+    notification.css("display", "none");
+}
