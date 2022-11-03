@@ -300,6 +300,7 @@
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Database\ConnectionStrings.cs" />
     <Compile Include="Dictionary.aspx.cs">
       <DependentUpon>Dictionary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
