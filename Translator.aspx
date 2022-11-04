@@ -50,23 +50,23 @@
                         <div class="translate-user">
                             <!-- Saved Translations -->
                             <div class="button saved">
-                                <button id="btnViewSavedTranslations" type="button" class="btn btn-primary" runat="server" data-bs-toggle="modal" data-bs-target="#mdlSavedTranslations">
+                                <asp:LinkButton ID="lnkViewSavedTranslations" CssClass="btn btn-primary" runat="server" OnClick="LnkViewSavedTranslations_Click">
                                     <i class="fa-solid fa-star"></i>
-                                </button>
+                                </asp:LinkButton>
                             </div>
 
                             <!-- Translation History  -->
                             <div class="button history">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdlTranslationHistory">
+                                <asp:LinkButton ID="lnkViewTranslationHistory" CssClass="btn btn-primary" runat="server" OnClick="LnkViewTranslationHistory_Click">
                                     <i class="fa-solid fa-clock-rotate-left"></i>
-                                </button>
+                                </asp:LinkButton>
                             </div>
 
                             <!-- Make Report  -->
                             <div class="button report">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdlMakeReport">
+                                <asp:LinkButton ID="lnkMakeReport" class="btn btn-primary" runat="server" OnClick="LnkReport_Click">
                                     <i class="fa-solid fa-circle-exclamation"></i>
-                                </button>
+                                </asp:LinkButton>
                             </div>
                         </div>
                     </div>
@@ -124,14 +124,17 @@
 
     <!-- Modals -->
     <!-- Saved Translations Modal -->
-    <div id="mdlSavedTranslations" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="translateSaved" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div id="mdlSavedTranslations" class="modal-window" ClientIDMode="Static" runat="server">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 id="translateSaved" class="modal-title">Saved translations</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <i class="modal-icon fa-solid fa-star"></i>
+                    <h2 class="modal-title">Saved translations</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlSavedTranslations'))">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
-                <div id="divSavedTranslationsModalBody" class="modal-body" runat="server">
+                <div id="divSavedTranslationsModalBody" class="modal-body" CientIDMode="Static" runat="server">
                 </div>
                 <div class="modal-footer">
                     <p id="savedTranslationFooterText" runat="server"></p>
@@ -141,15 +144,17 @@
     </div>
     
     <!-- Translation History Modal -->
-    <div id="mdlTranslationHistory" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="translateHistory" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div id="mdlTranslationHistory" class="modal-window" ClientIDMode="Static" runat="server">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 id="translateHistory" class="modal-title">Translation history</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="modal-icon fa-solid fa-clock-rotate-left"></i>
+                    <h2 class="modal-title">Translation history</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlTranslationHistory'))">
+                        <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-                <div id="divTranslationHistoryModalBody" class="modal-body" runat="server">
+                <div id="divTranslationHistoryModalBody" class="modal-body" CientIDMode="Static" runat="server">
                 </div>
                 <div class="modal-footer">
                     <p id="translationHistoryFooterText" runat="server"></p>
@@ -158,44 +163,41 @@
         </div>
     </div>
 
-    <!-- Make Report Modal -->
-    <div id="mdlMakeReport" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="translateReport" aria-hidden="true">
+    <!-- Report Modal -->
+    <div id="mdlReport" class="modal-window" ClientIDMode="Static" runat="server">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title" id="translateReport">Report</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <i class="modal-icon fa-solid fa-circle-exclamation"></i>
+                    <h2 class="modal-title">Report</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlReport'))">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <div class="modal-item">
+                <div id="divReportModalBody" class="modal-body">
+                    <div>
                         <h4>Issue Category<span>*</span></h4>
-                        <div>
-                            <select id="label" name="label">
-                                <option value="">Label One</option>
-                                <option value="">Label Two</option>
-                                <option value="">Label Three</option>
-                                <option value="">Label Four</option>
-                            </select>
-                            <h4 class="pt-2">Description</h4>
-                            <textarea name="" id="" cols="" rows="2" placeholder="Text here...."></textarea>
-                            <div class="button pt-3">
-                                <div class="px-2">
-                                    <button type="button" class="cancel" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                                </div>
-                                <div>
-                                    <button class="submit">Submit</button>
-                                </div>
-                            </div>
-                        </div>
+                        <select id="label" name="label">
+                            <option value="">Label One</option>
+                            <option value="">Label Two</option>
+                            <option value="">Label Three</option>
+                            <option value="">Label Four</option>
+                        </select>
                     </div>
-                    <div class="modal-footer">
+                    <div>
+                        <h4>Description</h4>
+                        <textarea rows="3" placeholder="Describe your issue" resize="none"></textarea>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button">Submit</button>
+                    <button type="button">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Status Notification Popup -->
+    <!-- Notification Popup -->
     <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
         <div class="notification-title">
             <i id="notificationIcon" runat="server"></i>

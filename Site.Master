@@ -27,7 +27,7 @@
     </asp:ContentPlaceHolder>
 </head>
 
-<body>
+<body id="body" runat="server">
     <form id="mainForm" runat="server">
         <!-- Header Section  -->
         <header id="pageHeader" runat="server">

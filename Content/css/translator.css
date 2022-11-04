@@ -1,4 +1,8 @@
-﻿/* Banner Section */
+﻿* {
+
+}
+
+/* Banner Section */
 .translate-content {
   display: flex;
   justify-content: center;
@@ -310,33 +314,84 @@
     transition: all 0.3s ease-out;
 }
 
-.translate .translate-container .translate-button .translate-user button:hover {
+.translate .translate-container .translate-button .translate-user a:hover {
     border-color: var(--primary-color-hover);
 }
 
-.translate .translate-container .translate-button .translate-user button:active {
+.translate .translate-container .translate-button .translate-user a:active {
     border-color: var(--primary-color-active);
 }
 
-.translate .translate-container .translate-button .translate-user button:hover i {
-  color: var(--primary-color-hover);
+.translate .translate-container .translate-button .translate-user a:hover i {
+    color: var(--primary-color-hover);
 }
 
-.translate .translate-container .translate-button .translate-user button:active i {
-  color: var(--primary-color-active);
+.translate .translate-container .translate-button .translate-user a:active i {
+    color: var(--primary-color-active);
 }
 
 /* Modals */
-.modal-dialog {
-    overflow-y: initial;
+.modal-window {
+    display: none;
+    position: fixed;
+    align-items: center;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
-    padding: 1rem 4rem 0 4rem;
+.modal-dialog {
+    width: 50%;
+    padding: 2rem 5rem 1rem 5rem;
+    background-color: white;
+    border-radius: 5px;
+    overflow-y: initial;
+    animation: slideIn .3s ease-out forwards;
+}
+
+.modal-header {
+    display: flex;
+    padding-bottom: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    color: var(--primary-color);
+}
+
+.modal-icon {
+    flex: 0.06;
+    font-size: 24px;
+}
+
+.modal-title {
+    flex: 0.89;
+    text-align: left;
+}
+
+.modal-btn-close {
+    flex: 0.05;
+    background-color: white;
+    border: none;
+    color: #323232;
+    font-size: 28px;
+    transition: ease-out 0.1s;
+}
+
+.modal-btn-close:hover {
+    color: #828282;
+}
+
+.modal-btn-close:active {
+    color: #b2b2b2;
 }
 
 .modal-body {
     height: 60vh;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     overflow-y: auto;
 }
 
@@ -381,16 +436,16 @@
     word-break: break-word;
 }
 
-.modal-item h4 {
-    padding-top: 0.4rem;
-    color: #323232;
+.modal-item h3 {
+    color: var(--primary-color);
     font-family: 'Rubik', Arial, sans-serif;
     font-size: 14px;
     word-break: break-word;
 }
 
-.modal-item h3 {
-    color: var(--primary-color);
+.modal-item h4 {
+    padding-top: 0.4rem;
+    color: #323232;
     font-family: 'Rubik', Arial, sans-serif;
     font-size: 14px;
     word-break: break-word;
@@ -434,10 +489,23 @@
     color: var(--primary-color-active);
 }
 
-.modal-footer p {
+.modal-footer {
+    padding: 1rem 0;
     color: var(--primary-color);
     font-family: 'Rubik', Arial, sans-serif;
     word-spacing: 0.2rem;
+}
+
+@keyframes slideIn {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0;
+        opacity: 1;
+    }
 }
 
 /* Saved Translate  */
@@ -520,18 +588,17 @@
   background: #e29090 !important;
 }
 
-
 .translate-button .translate-user .saved .modal-body .modal-footer {
   background: #eaeaea;
   height: 60px;
   margin-top: 20px;
 }
 
-.translate .translate-container .translate-button .translate-user .saved .btn-close {
+.translate .translate-container .translate-button .translate-user .saved .modal-btn-close {
   border: none;
 }
 
-.translate .translate-container .translate-button .translate-user .saved .btn-close:focus {
+.translate .translate-container .translate-button .translate-user .saved .modal-btn-close:focus {
   border: 1px solid var(--primary-color);
 }
 
@@ -606,11 +673,11 @@
   margin-top: 20px;
 }
 
-.translate-button .translate-user .history .btn-close {
+.translate-button .translate-user .history .modal-btn-close {
   border: none !important;
 }
 
-.translate-button .translate-user .history .btn-close:focus {
+.translate-button .translate-user .history .modal-btn-close:focus {
   outline: 0;
   box-shadow: none;
 }
@@ -627,12 +694,12 @@
   font-weight: 600;
 }
 
-.translate-button .translate-user .report .btn-close {
+.translate-button .translate-user .report .modal-btn-close {
   border: none !important;
   color: red !important;
 }
 
-.translate-button .translate-user .report .btn-close:focus {
+.translate-button .translate-user .report .modal-btn-close:focus {
   outline: 0;
   box-shadow: none;
 }

@@ -33,13 +33,31 @@ namespace RojakJelah
         protected global::System.Web.UI.WebControls.Button btnTranslate;
 
         /// <summary>
-        /// btnViewSavedTranslations control.
+        /// lnkViewSavedTranslations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnViewSavedTranslations;
+        protected global::System.Web.UI.WebControls.LinkButton lnkViewSavedTranslations;
+
+        /// <summary>
+        /// lnkViewTranslationHistory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkViewTranslationHistory;
+
+        /// <summary>
+        /// lnkMakeReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkMakeReport;
 
         /// <summary>
         /// lnkSaveTranslation control.
@@ -69,6 +87,15 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl txtOutput;
 
         /// <summary>
+        /// mdlSavedTranslations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlSavedTranslations;
+
+        /// <summary>
         /// divSavedTranslationsModalBody control.
         /// </summary>
         /// <remarks>
@@ -87,6 +114,15 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl savedTranslationFooterText;
 
         /// <summary>
+        /// mdlTranslationHistory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlTranslationHistory;
+
+        /// <summary>
         /// divTranslationHistoryModalBody control.
         /// </summary>
         /// <remarks>
@@ -103,6 +139,15 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl translationHistoryFooterText;
+
+        /// <summary>
+        /// mdlReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlReport;
 
         /// <summary>
         /// notification control.

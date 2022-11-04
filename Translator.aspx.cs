@@ -31,27 +31,18 @@ namespace RojakJelah
             HtmlControl navHeader = Master.FindControl("navHeader") as HtmlControl;
             navHeader.Style.Add("visibility", "hidden");
 
+            // Reset state of any controls that may persist in postback (this is so stupid)
+            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
+            body.Style.Add("overflow-y", "auto");
+            notification.Style.Add("display", "none");
+            mdlSavedTranslations.Style.Add("display", "none");
+            mdlTranslationHistory.Style.Add("display", "none");
+
             if (!IsPostBack)
             {
                 var rojakHashtable = InitializeRojakHashtable();
                 ManageSession(rojakHashtable);
             }
-
-            if (!User.Identity.IsAuthenticated)
-            {
-                // Disable saved translations modal
-                btnViewSavedTranslations.Attributes.Remove("data-bs-toggle");
-                btnViewSavedTranslations.Attributes.Remove("data-bs-target");
-                // Display error notification if unauthorized user attempts to open modal
-                btnViewSavedTranslations.Attributes.Add("onclick",
-                    String.Format("showNotification('{0}', '{1}', '{2}')", IconAccessDenied, "Access denied", "You need to be logged in to use this feature."));
-            }
-            else
-            {
-                PrepopulateSavedTranslations();
-            }
-
-            PrepopulateTranslationHistory();
         }
 
         /// <summary>
@@ -115,12 +106,9 @@ namespace RojakJelah
             }
         }
 
-        protected void BtnTranslate_Click(Object sender, EventArgs e)
+        protected void BtnTranslate_Click(object sender, EventArgs e)
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
-
-            // Hide notification
-            notification.Style.Add("display", "none");
 
             // Update save icon
             iconSave.Attributes.Add("class", IconRegularBookmark);
@@ -187,18 +175,13 @@ namespace RojakJelah
                     CreationDate = DateTime.Now
                 });
             }
-
-            PrepopulateTranslationHistory();
         }
 
-        protected void LnkSaveTranslation_Click(Object sender, EventArgs e)
+        protected void LnkSaveTranslation_Click(object sender, EventArgs e)
         {
-            // Hide notification
-            notification.Style.Add("display", "none");
-
             if (!User.Identity.IsAuthenticated)
             {
-                ShowStatusNotification(IconAccessDenied, "Access denied", "You need to be logged in to use this feature.");
+                ShowNotification(IconAccessDenied, "Access denied", "You need to be logged in to use this feature.", true);
             }
             else
             {
@@ -211,7 +194,7 @@ namespace RojakJelah
                 if (String.IsNullOrWhiteSpace(inputText) || String.IsNullOrWhiteSpace(outputText))
                 {
                     // Show error notification
-                    ShowStatusNotification(IconExclamation, "Unable to save", "Source message and translation output cannot be empty.");
+                    ShowNotification(IconExclamation, "Unable to save", "Source message and translation output cannot be empty.", true);
                 }
                 else
                 {
@@ -228,69 +211,76 @@ namespace RojakJelah
                     dataContext.SaveChanges();
 
                     // Show success notification
-                    ShowStatusNotification(IconFloppyDisk, "Save success", "This translation has been saved successfully.");
+                    ShowNotification(IconFloppyDisk, "Save success", "This translation has been saved successfully.", false);
 
                     // Update save icon
                     iconSave.Attributes.Add("class", IconSolidBookmark);
-
-                    PrepopulateSavedTranslations();
                 }
             }
         }
 
         /// <summary>
-        /// Prepopulates the saved translations modal with translations saved in the database.
+        /// Populates and shows the saved translations modal with translations saved in the database.
         /// </summary>
-        protected void PrepopulateSavedTranslations()
+        protected void LnkViewSavedTranslations_Click(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
-
-            var savedTranslationList = dataContext.SavedTranslations.Where(x => x.CreatedBy.Username == User.Identity.Name).ToList();
-
-            divSavedTranslationsModalBody.Controls.Clear();
-
-            if (savedTranslationList.Count == 0)
+            if (!User.Identity.IsAuthenticated)
             {
-                LiteralControl modalEmpty = new LiteralControl(
-                        @"<div class=""modal-empty"">" +
-                            @"<i class=""fa-solid fa-file-excel""></i>" +
-                            "<h1>No translations found</h1>" +
-                        "</div>");
-
-                divSavedTranslationsModalBody.Controls.Add(modalEmpty);
+                ShowNotification(IconAccessDenied, "Access denied", "You need to be logged in to use this feature.", true);
             }
             else
             {
-                int count = 0;
-                foreach (var savedTranslation in savedTranslationList)
-                {
-                    count++;
+                DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
-                    LiteralControl modalItem = new LiteralControl(
-                            @"<div class=""modal-item"">" +
-                                "<h2>" + savedTranslation.Input + "</h2>" +
-                                "<h4>Translation</h4>" +
-                                "<h3>" + savedTranslation.Output + "</h3>" +
-                                @"<div class=""modal-item-row"">" +
-                                    "<small>Date: " + savedTranslation.CreationDate + "</small>" +
-                                    @"<button type=""button"" class=""modal-item-btn"">Remove</button>" +
-                                "</div>" +
+                var savedTranslationList = dataContext.SavedTranslations.Where(x => x.CreatedBy.Username == User.Identity.Name).ToList();
+
+                divSavedTranslationsModalBody.Controls.Clear();
+
+                if (savedTranslationList.Count == 0)
+                {
+                    LiteralControl modalEmpty = new LiteralControl(
+                            @"<div class=""modal-empty"">" +
+                                @"<i class=""fa-solid fa-file-excel""></i>" +
+                                "<h1>No translations found</h1>" +
                             "</div>");
 
-                    divSavedTranslationsModalBody.Controls.Add(modalItem);
+                    divSavedTranslationsModalBody.Controls.Add(modalEmpty);
+                }
+                else
+                {
+                    int count = 0;
+                    foreach (var savedTranslation in savedTranslationList)
+                    {
+                        count++;
+
+                        LiteralControl modalItem = new LiteralControl(
+                                @"<div class=""modal-item"">" +
+                                    "<h2>" + savedTranslation.Input + "</h2>" +
+                                    "<h4>Translation</h4>" +
+                                    "<h3>" + savedTranslation.Output + "</h3>" +
+                                    @"<div class=""modal-item-row"">" +
+                                        "<small>Date: " + savedTranslation.CreationDate + "</small>" +
+                                        @"<button type=""button"" class=""modal-item-btn"">Remove</button>" +
+                                    "</div>" +
+                                "</div>");
+
+                        divSavedTranslationsModalBody.Controls.Add(modalItem);
+                    }
+
+                    savedTranslationFooterText.InnerText = savedTranslationList.Count +
+                        " translation" +
+                        (savedTranslationList.Count > 1 ? "s " : " ") +
+                        "found";
                 }
 
-                savedTranslationFooterText.InnerText = savedTranslationList.Count +
-                    " translation" +
-                    (savedTranslationList.Count > 1 ? "s " : " ") +
-                    "found";
+                ShowModal(mdlSavedTranslations);
             }
         }
 
         /// <summary>
-        /// Prepopulates the translation history modal with translations saved in session.
+        /// Populates and shows the translation history modal with translations saved in session.
         /// </summary>
-        protected void PrepopulateTranslationHistory()
+        protected void LnkViewTranslationHistory_Click(Object sender, EventArgs e)
         {
             var translationHistory = Session["TranslationHistory"] as List<SavedTranslation>;
 
@@ -332,15 +322,47 @@ namespace RojakJelah
                     (translationHistory.Count > 1 ? "s " : " ") +
                     "found";
             }
+
+            ShowModal(mdlTranslationHistory);
+        }
+
+        /// <summary>
+        /// Opens report modal.
+        /// </summary>
+        protected void LnkReport_Click(object sender, EventArgs e)
+        {
+            ShowModal(mdlReport);
+        }
+
+        /// <summary>
+        /// Shows the specified modal.
+        /// </summary>
+        /// <param name="modal">Modal to show.</param>
+        protected void ShowModal(HtmlGenericControl modal)
+        {
+            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
+            body.Style.Add("overflow-y", "hidden");
+            modal.Style.Add("display", "flex");
         }
 
         /// <summary>
         /// Displays status notification popup.
         /// </summary>
+        /// <param name="icon">Icon of notification.</param>
         /// <param name="title">Title of status.</param>
         /// <param name="message">Status message.</param>
-        protected void ShowStatusNotification(string icon, string title, string message)
+        /// <param name="isError">Is error notification or not.</param>
+        protected void ShowNotification(string icon, string title, string message, bool isError = true)
         {
+            if (isError)
+            {
+                notification.Style.Add("background-color", "var(--notification-error)");
+            }
+            else
+            {
+                notification.Style.Add("background-color", "var(--notification-success)");
+            }
+
             notificationIcon.Attributes.Add("class", icon);
             notificationTitle.InnerText = title;
             notificationMessage.InnerHtml = message;
