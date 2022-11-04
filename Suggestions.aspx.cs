@@ -19,15 +19,18 @@ namespace RojakJelah
 
     public partial class Suggestions : System.Web.UI.Page
     {
-        /*DataContext dataContext = new DataContext("server=localhost;user=root;database=xx;port=3306;password=******");*/
-        DataContext dataContext = new DataContext("server=localhost;user=root;database=rojakjelah;port=3306;password=brian89564");
+        DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
         private PageState pageState;
         private string[] filterEntries = new string[] { 
-            "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)"
+            "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)", "Approved", "Rejected"
         };
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Hide notification message that may be open and isnt closed by backend yet
+            // (front end js doesnt affect backend state, so even if it is clicked backend still think its open)
+            notification.Style.Add("display", "none");
+
             pageState = ViewState["pageState"] as PageState ?? new PageState();
             
             // If page first loads, otherwise ignores POST requests
@@ -57,31 +60,49 @@ namespace RojakJelah
         protected void cboFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedIndex = cboFilter.SelectedIndex;
-            List<Suggestion> suggestionList = !String.IsNullOrEmpty(txtSearch.Text) ? 
-                handleFilterList(selectedIndex, txtSearch.Text) : dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
+            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
+            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).ToList();
+            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).ToList();
+            List<Suggestion> chosenList = new List<Suggestion>();
 
-            txtSelectedListItem.Text = ""; // Reset selected list item
-            pageState._currentList.Clear();
-            if (selectedIndex == filterEntries.Length - 2 || selectedIndex == filterEntries.Length - 1)
+            if (cboFilter.SelectedIndex == filterEntries.Length - 2)
             {
-                List<Suggestion> orderedList = new List<Suggestion>();
-
-                if (selectedIndex == filterEntries.Length - 2)
-                {
-                    // Date (asc.)
-                    orderedList.AddRange(suggestionList.OrderBy((x) => x.CreationDate));
-                }
-                else
-                {
-                    // Date (dsc.)
-                    orderedList.AddRange(suggestionList.OrderByDescending((x) => x.CreationDate));
-                }
-
-                pageState._currentList.AddRange(orderedList);
+                chosenList.AddRange(approvedSuggestionList);
+            }
+            else if (cboFilter.SelectedIndex == filterEntries.Length - 1)
+            {
+                chosenList.AddRange(rejectedSuggestionList);
             }
             else
             {
-                pageState._currentList.AddRange(suggestionList);
+                chosenList.AddRange(suggestionList);
+            }
+
+            List<Suggestion> finalList = !String.IsNullOrEmpty(txtSearch.Text) ? 
+                handleFilterList(selectedIndex, txtSearch.Text, chosenList) : chosenList;
+
+            txtSelectedListItem.Text = ""; // Reset selected list item
+            pageState._currentList.Clear();
+            if (selectedIndex == filterEntries.Length - 4 || selectedIndex == filterEntries.Length - 3)
+            {
+                List<Suggestion> orderedList = new List<Suggestion>();
+
+                if (selectedIndex == filterEntries.Length - 4)
+                {
+                    //  Date (asc.)
+                    orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
+                }
+                else
+                {
+                    //  Date (dsc.)
+                    orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
+                }
+
+                pageState._currentList.AddRange(orderedList);
+            } 
+            else
+            {
+                pageState._currentList.AddRange(finalList);
             }
         }
 
@@ -91,15 +112,44 @@ namespace RojakJelah
             var searchKeys = txtSearch.Text.ToLower().Trim();
             var filter = cboFilter.SelectedIndex;
             List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
-            List<Suggestion> filteredList = handleFilterList(filter, searchKeys);
+            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).ToList();
+            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).ToList();
+            List<Suggestion> filteredList = new List<Suggestion>();
+
+            if (cboFilter.SelectedIndex == filterEntries.Length - 2) {
+              filteredList = handleFilterList(filter, searchKeys, approvedSuggestionList);
+            } else if (cboFilter.SelectedIndex == filterEntries.Length - 1) {
+              filteredList = handleFilterList(filter, searchKeys, rejectedSuggestionList);
+            } else {
+              filteredList = handleFilterList(filter, searchKeys, suggestionList);
+            }
 
             pageState._currentList.Clear();
             if (String.IsNullOrEmpty(searchKeys) || searchKeys.Length == 0) {
-                pageState._currentList.AddRange(suggestionList);
+                if (cboFilter.SelectedIndex == filterEntries.Length - 2)
+                {
+                    pageState._currentList.AddRange(approvedSuggestionList);
+                }
+                else if (cboFilter.SelectedIndex == filterEntries.Length - 1)
+                {
+                    pageState._currentList.AddRange(rejectedSuggestionList);
+                }
+                else
+                {
+                    pageState._currentList.AddRange(suggestionList);
+                }
             }
             else {
                 pageState._currentList.AddRange(filteredList);
             }
+        }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            txtSelectedListItem.Text = String.Empty;
+            txtSearch.Text = String.Empty;
+            cboFilter.SelectedIndex = 0;
+            cboFilter_SelectedIndexChanged(sender, e);
         }
 
         protected void btnEdit_Click(object sender, EventArgs e)
@@ -112,16 +162,107 @@ namespace RojakJelah
             editModalWindow.Style.Add("animation", "fadeIn .3s ease-out forwards");
         }
 
-
-
         protected void btnEditCancel_Click(object sender, EventArgs e)
         {
             hideModal();
         }
 
+        protected void btnAccept_Click(object sender, EventArgs e)
+        {
+            string notificationTitle, notificationMessage;
+
+            try
+            {
+                //  Insert record in dictionary
+                var wordList = dataContext.Words.ToList();
+                var languageList = dataContext.Languages.ToList();
+                var userList = dataContext.Users.ToList();
+            
+                // Get slang and translation from Word table
+                Word wordSlang = wordList.SingleOrDefault(x => x.WordValue.ToLower() == lblSlang.InnerText.ToLower());
+                Word wordTranslation = wordList.SingleOrDefault(x => x.WordValue.ToLower() == lblTranslation.InnerText.ToLower());
+
+                // Get author from User table
+                User userAuthor = userList.SingleOrDefault(x => x.Username.ToLower() == lblAuthor.InnerText);
+
+                DictionaryEntry newEntry = new DictionaryEntry()
+                {
+                    Slang = wordSlang,
+                    Translation = wordTranslation,
+                    Example = lblExample.InnerText,
+                    CreatedBy = userAuthor,
+                    CreationDate = DateTime.Now,
+                    ModifiedBy = userAuthor,
+                    ModificationDate = DateTime.Now,
+                };
+
+                dataContext.DictionaryEntries.Add(newEntry);
+                dataContext.SaveChanges();
+
+                //  Update suggestion status
+                Suggestion approvedRecord = dataContext.Suggestions.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
+                approvedRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 2);
+                dataContext.SaveChanges();
+
+                //  Update UI
+                Suggestion approvedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
+                approvedUIRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 2);
+                pageState._currentList.Remove(approvedUIRecord);
+                txtSelectedListItem.Text = ""; // Reset selected list item index
+
+                // Send notification message
+                notificationTitle = "Suggestion approved";
+                notificationMessage = "The suggestion has been added to the dictionary.";
+                ShowNotification(notificationTitle, notificationMessage, false);
+            } catch (Exception ex)
+            {
+                // Display error notification
+                notificationTitle = "Unknown error";
+                notificationMessage = "An unexpected error has occured, please contact support.";
+
+                ShowNotification(notificationTitle, notificationMessage, true);
+
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        protected void btnReject_Click(object sender, EventArgs e)
+        {
+            string notificationTitle, notificationMessage;
+
+            try
+            {
+                //  Update suggestion status
+                Suggestion rejectedRecord = dataContext.Suggestions.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
+                rejectedRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 3);
+                dataContext.SaveChanges();
+
+                //  Update UI
+                Suggestion rejectedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
+                rejectedUIRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 3);
+                pageState._currentList.Remove(rejectedUIRecord);
+                txtSelectedListItem.Text = ""; // Reset selected list item index
+
+                // Send notification message
+                notificationTitle = "Suggestion rejected";
+                notificationMessage = "The suggestion has been discarded, but can still be viewed in the list using filters.";
+                ShowNotification(notificationTitle, notificationMessage, false);
+            }
+            catch (Exception ex)
+            {
+                // Display error notification
+                notificationTitle = "Unknown error";
+                notificationMessage = "An unexpected error has occured, please contact support.";
+
+                ShowNotification(notificationTitle, notificationMessage, true);
+
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
         protected void btnEditConfirm_Click(object sender, EventArgs e)
         {
-            string notifcationTitle, notificationMessage;
+            string notificationTitle, notificationMessage;
             try
             {
                 //  Update information
@@ -141,17 +282,17 @@ namespace RojakJelah
                 hideModal();
 
                 //  Send success message
-                notifcationTitle = "Update successful";
+                notificationTitle = "Update successful";
                 notificationMessage = "The record has been updated.";
-                ShowNotification(notifcationTitle, notificationMessage, false);
+                ShowNotification(notificationTitle, notificationMessage, false);
             }
             catch (Exception ex)
             {
                 // Display error notification
-                notifcationTitle = "Unknown error";
+                notificationTitle = "Unknown error";
                 notificationMessage = "An unexpected error has occured, please contact support.";
 
-                ShowNotification(notifcationTitle, notificationMessage, true);
+                ShowNotification(notificationTitle, notificationMessage, true);
 
                 Debug.WriteLine(ex.ToString());
             }
@@ -254,9 +395,23 @@ namespace RojakJelah
                 }
 
                 //  Show menu controls
-                buttonContainer.Style.Add("visibility", "visible");
                 detailContainer.Style.Add("visibility", "visible");
-                btnEdit.Style.Add("visibility", "visible");
+
+                //  Toggle button interaction based on filter
+                if (cboFilter.SelectedIndex == filterEntries.Length - 2 || cboFilter.SelectedIndex == filterEntries.Length - 1)
+                {
+                    buttonContainer.Style.Add("visibility", "hidden");
+                    btnEdit.Style.Add("visibility", "hidden");
+                    buttonContainer.Style.Add("display", "none");
+                    btnEdit.Style.Add("display", "none");
+                }
+                else
+                {
+                    buttonContainer.Style.Add("visibility", "visible");
+                    btnEdit.Style.Add("visibility", "visible");
+                    buttonContainer.Style.Add("display", "flex");
+                    btnEdit.Style.Add("display", "block");
+                }
             }
         }
 
@@ -268,9 +423,8 @@ namespace RojakJelah
 
         }
 
-        private List<Suggestion> handleFilterList(int filter, string searchKeys)
+        private List<Suggestion> handleFilterList(int filter, string searchKeys, List<Suggestion> suggestionList)
         {
-            List<Suggestion> suggestionList = dataContext.Suggestions.ToList();
             List<Suggestion> filteredList = new List<Suggestion>();
             List<Suggestion> orderedList = new List<Suggestion>();
 
@@ -297,6 +451,14 @@ namespace RojakJelah
                     //  Date (dsc.)
                     orderedList.AddRange(suggestionList.OrderByDescending((x) => x.CreationDate));
                     filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));
+                    break;
+                case 5:
+                    //  Approved
+                    filteredList.AddRange(suggestionList.Where((x) => x.Slang.ToLower().Contains(searchKeys)));
+                    break;
+                case 6:
+                    //  Rejected
+                    filteredList.AddRange(suggestionList.Where((x) => x.Slang.ToLower().Contains(searchKeys)));
                     break;
             }
 

@@ -61,7 +61,7 @@
 /* Search Container */
 .searchContainer {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     margin: 1.5em 0;
 }
 
@@ -81,7 +81,18 @@
 .searchBarContainer {
     display: flex;
     flex-direction: column;
-    flex: 0.8;
+    flex: 0.7;
+}
+
+#btnReset {
+    flex: 0.1;
+    padding: 0 0.5em;
+    height: 2em;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    background: var(--primary-color);
+    color: var(--theme-white);
+    margin-left: 2em;
 }
 
 .cboFilter, .txtSearch {
@@ -120,7 +131,6 @@
     box-shadow: none;
     transition: all .5s ease-out;
 }
-
 .noData {
     padding: 2em 0;
     flex-direction: row;
@@ -201,12 +211,11 @@
     display: flex;
     visibility: hidden;
     justify-content: space-between;
-    margin-bottom: 1em
 }
 
 .detailContainer {
     overflow-y: auto;
-    margin-bottom: 1em;
+    margin: 1em 0;
     display: flex;
     visibility: hidden; 
     flex-direction: column;
@@ -441,6 +450,9 @@
 
 .notification {
     background-color: var(--notification-success);
+    top: unset;
+    bottom: 3rem;
+    right: 3rem;
 }
 
 .notification-title, .notification-message, .notification-tip {

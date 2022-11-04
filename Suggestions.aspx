@@ -55,6 +55,7 @@
                         <h6>Search</h6>
                         <asp:TextBox ID="txtSearch" class="txtSearch" placeholder="e.g. Hello World" runat="server" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
                     </div>
+                    <asp:Button ID="btnReset" ClientIDMode="Static" runat="server" Text="Reset" OnClick="btnReset_Click"></asp:Button>
                 </div>
                 <div ID="listItemContainer" class="listItemContainer" runat="server">
                     <asp:TextBox ID="txtSelectedListItem" ClientIDMode="Static" runat="server" AutoPostBack="True"></asp:TextBox>
@@ -65,8 +66,8 @@
                     <h6>Actions</h6>
                     <div ID="menuContainer" class="menuContainer" runat="server">
                         <div ID="buttonContainer" runat="server" class="buttonContainer">
-                            <asp:Button ID="btnAccept" ClientIDMode="Static" runat="server" Text="Accept" />
-                            <asp:Button ID="btnReject" ClientIDMode="Static" runat="server" Text="Reject" />
+                            <asp:Button ID="btnAccept" ClientIDMode="Static" runat="server" Text="Accept" OnClick="btnAccept_Click"></asp:Button>
+                            <asp:Button ID="btnReject" ClientIDMode="Static" runat="server" Text="Reject" OnClick="btnReject_Click"></asp:Button>
                         </div>
                         <div ID="detailContainer" runat="server" class="detailContainer">
                             <div class="itemDetail">
