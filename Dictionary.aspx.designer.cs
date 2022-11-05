@@ -42,15 +42,6 @@ namespace RojakJelah
         protected global::System.Web.UI.WebControls.LinkButton lnkSearch;
 
         /// <summary>
-        /// lnkReport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkReport;
-
-        /// <summary>
         /// lnkSuggest control.
         /// </summary>
         /// <remarks>
@@ -58,6 +49,15 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkSuggest;
+
+        /// <summary>
+        /// divDictionaryEmpty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDictionaryEmpty;
 
         /// <summary>
         /// mdlReport control.

@@ -11,7 +11,7 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            PrepopulateControls();
         }
 
         protected void LnkSearch_Click(object sender, EventArgs e)
@@ -19,12 +19,20 @@ namespace RojakJelah
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected void LnkReport_Click(object sender, EventArgs e)
         {
 
         }
 
         protected void LnkSuggest_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void PrepopulateControls()
         {
 
         }

@@ -1,4 +1,29 @@
-﻿// ********** Set Date ************
+﻿$(document).ready(function () {
+    var dictionaryContainer = $(".dictionary-container");
+    var dictionaryItemCount = dictionaryContainer.children().length;
+
+    dictionaryContainer.mouseover(function () {
+        $(document.body).css("overflow", "hidden");
+    });
+    dictionaryContainer.mouseleave(function () {
+        $(document.body).css("overflow", "auto");
+    });
+
+    // ********** Tooltip **********
+    var timeoutId;
+    $("#lnkReport").mouseenter(function () {
+        timeoutId = setTimeout(function () {
+            $("#tooltipReport").css("visibility", "visible");
+        }, 700)
+    });
+    $("#lnkReport").mouseleave(function () {
+        clearTimeout(timeoutId);
+        $("#tooltipReport").css("visibility", "hidden");
+    });
+});
+
+
+// ********** Set Date ************
 const date = document.getElementById('date');
 date.innerHTML = new Date().getFullYear();
 
@@ -111,13 +136,26 @@ function closeAllSelect(elmnt) {
         }
     }
 }
-
 /* If the user clicks anywhere outside the select box,
 then close all select boxes: */
 document.addEventListener("click", closeAllSelect);
 
 
 
+// ********** Notification **********
 function closeNotification(notification) {
     notification.css("display", "none");
+}
+
+
+
+// ********** Modal **********
+function showModal(selectedModal) {
+    $(document.body).css("overflow", "hidden");
+    selectedModal.css("display", "flex");
+}
+
+function closeModal(selectedModal) {
+    $(document.body).css("overflow", "auto");
+    selectedModal.css("display", "none");
 }
