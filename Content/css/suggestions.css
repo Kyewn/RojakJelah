@@ -159,15 +159,20 @@
     margin-bottom: 1em;
 }
 
-.itemDetail {
+.listItem .itemDetail {
     display: flex;
     flex-direction: column;
     font-size: small;
     overflow: hidden;
+    margin-right: 1em;
+}
+
+.listItem .itemDetail:last-child {
+    margin-right: unset;
 }
 
 .topRow .itemDetail {
-    flex: 0.2;
+    flex: 0.167;
 }
 
 .bottomRow .itemDetail {
@@ -223,6 +228,19 @@
 
 .detailContainer .itemDetail {
     margin-bottom: 2em;
+}
+
+.inlineDetail {
+    display: flex;
+    align-items: center;
+}
+
+.inlineDetail .itemDetail {
+    flex: 0.5;
+}
+
+.inlineDetail .itemDetail:first-child {
+    margin-right: 1em;
 }
 
 .detailContainer .itemDetail h6 {
@@ -355,12 +373,9 @@
     color: var(--primary-color);
 }
 
-.editIdRow {
-    margin-top: 1em;
-}
-
 .editTopRow {
     display: flex;
+    align-items: center;
 }
 
 .editTopRow > div {
@@ -370,14 +385,14 @@
     margin-bottom: 0;
 }
 
-.editTopRow > div input {
+.editTopRow > div input, .cboEditLanguage {
     border-radius: 5px;
     padding: 0.5em;
     border: 2px solid var(--primary-color);
     background: var(--theme-white);
 }
 
-.editTopRow > div input:focus {
+.editTopRow > div input:focus, .cboEditLanguage:focus {
     border: 3px solid var(--primary-color);
 }
 
@@ -404,7 +419,7 @@
 }
 
 .editButtonContainer {
-    padding: 1em 0;
+    margin: 1em 0;
     display: flex;
     flex-direction: row-reverse;
 }

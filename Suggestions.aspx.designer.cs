@@ -33,6 +33,15 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl txtEditId;
 
         /// <summary>
+        /// cboEditLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboEditLanguage;
+
+        /// <summary>
         /// txtEditSlang control.
         /// </summary>
         /// <remarks>
@@ -195,6 +204,24 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblTranslation;
 
         /// <summary>
+        /// lblLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblLanguage;
+
+        /// <summary>
+        /// lblExample control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblExample;
+
+        /// <summary>
         /// lblAuthor control.
         /// </summary>
         /// <remarks>
@@ -211,15 +238,6 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblDate;
-
-        /// <summary>
-        /// lblExample control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblExample;
 
         /// <summary>
         /// btnEdit control.

@@ -12,7 +12,7 @@ using RojakJelah.Database.Entity;
 namespace RojakJelah
 {
     [Serializable]
-    public class PageState
+    public class SuggestionsPageState
     {
         public List<Suggestion> _currentList = new List<Suggestion>();
     }
@@ -20,7 +20,7 @@ namespace RojakJelah
     public partial class Suggestions : System.Web.UI.Page
     {
         DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
-        private PageState pageState;
+        private SuggestionsPageState pageState;
         private string[] filterEntries = new string[] { 
             "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)", "Approved", "Rejected"
         };
@@ -31,7 +31,7 @@ namespace RojakJelah
             // (front end js doesnt affect backend state, so even if it is clicked backend still think its open)
             notification.Style.Add("display", "none");
 
-            pageState = ViewState["pageState"] as PageState ?? new PageState();
+            pageState = ViewState["pageState"] as SuggestionsPageState ?? new SuggestionsPageState();
             
             // If page first loads, otherwise ignores POST requests
             if (!Page.IsPostBack)
@@ -41,6 +41,13 @@ namespace RojakJelah
                 foreach (string entry in filterEntries)
                 {
                     cboFilter.Items.Add(entry);
+                }
+
+                //  cboEditLanguage
+                cboEditLanguage.Items.Clear();
+                foreach (Language entry in dataContext.Languages)
+                {
+                    cboEditLanguage.Items.Add(entry.Name);
                 }
 
                 //  listItemContainer
@@ -154,10 +161,12 @@ namespace RojakJelah
 
         protected void btnEdit_Click(object sender, EventArgs e)
         {
+            var selectedItemLanguageIndex = cboEditLanguage.Items.IndexOf(cboEditLanguage.Items.FindByValue(lblLanguage.InnerText));
             txtEditId.InnerText = lblId.InnerText;
             txtEditSlang.Text = lblSlang.InnerText;
             txtEditTranslation.Text = lblTranslation.InnerText;
             txtEditExample.InnerText = lblExample.InnerText;
+            cboEditLanguage.SelectedIndex = selectedItemLanguageIndex;
 
             editModalWindow.Style.Add("animation", "fadeIn .3s ease-out forwards");
         }
@@ -266,9 +275,11 @@ namespace RojakJelah
             try
             {
                 //  Update information
+                Language updatedLanguage = dataContext.Languages.SingleOrDefault(x => x.Name == cboEditLanguage.SelectedValue);
                 Suggestion targetSuggestion = dataContext.Suggestions.SingleOrDefault(x => x.Id.ToString() == txtEditId.InnerText);
                 targetSuggestion.Slang = txtEditSlang.Text.Trim();
                 targetSuggestion.Translation = txtEditTranslation.Text.Trim();
+                targetSuggestion.Language = updatedLanguage;
                 targetSuggestion.Example = txtEditExample.Value.Trim();
                 dataContext.SaveChanges();
 
@@ -276,6 +287,7 @@ namespace RojakJelah
                 var targetRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == txtEditId.InnerText);
                 targetRecord.Slang = txtEditSlang.Text.Trim();
                 targetRecord.Translation = txtEditTranslation.Text.Trim();
+                targetRecord.Language = updatedLanguage;
                 targetRecord.Example = txtEditExample.Value.Trim();
 
                 //  Close Modal
@@ -326,6 +338,10 @@ namespace RojakJelah
                             <div class='itemDetail'>
                                 <span>Translation</span>
                                 <span>{item.Translation}</span>
+                            </div>
+                           <div class='itemDetail'>
+                                <span>Language</span>
+                                <span>{item.Language.Name}</span>
                             </div>
                             <div class='itemDetail'>
                                 <span>Created by</span>
@@ -378,6 +394,7 @@ namespace RojakJelah
                     lblId.InnerText = selectedItem.Id.ToString();
                     lblSlang.InnerText = selectedItem.Slang;
                     lblTranslation.InnerText = selectedItem.Translation;
+                    lblLanguage.InnerText = selectedItem.Language.Name;
                     lblAuthor.InnerText = selectedItem.CreatedBy.Username;
                     lblDate.InnerText = selectedItem.CreationDate.ToShortDateString();
                     lblExample.InnerText = selectedItem.Example;
@@ -389,6 +406,7 @@ namespace RojakJelah
                     lblId.InnerText = pageState._currentList[0].Id.ToString();
                     lblSlang.InnerText = pageState._currentList[0].Slang;
                     lblTranslation.InnerText = pageState._currentList[0].Translation;
+                    lblLanguage.InnerText = pageState._currentList[0].Language.Name;
                     lblAuthor.InnerText = pageState._currentList[0].CreatedBy.Username;
                     lblDate.InnerText = pageState._currentList[0].CreationDate.ToShortDateString();
                     lblExample.InnerText = pageState._currentList[0].Example;

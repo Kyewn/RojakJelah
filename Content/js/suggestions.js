@@ -9,9 +9,9 @@ listItemContainer.addEventListener('click', (e) => {
         return;
     } else {
         // Send selected index to server for populating action menu on the right with information
-        const listItemTopRowInfoArr = listItem.querySelectorAll(".topRow .itemDetail span:nth-child(2)");
+        const selectedItemId = listItem.querySelector(".topRow .itemDetail span:nth-child(2)");
 
-        $('#txtSelectedListItem').val(listItemTopRowInfoArr[0].innerText);
+        $('#txtSelectedListItem').val(selectedItemId.innerText);
         __doPostBack('txtSelectedListItem');
     }
 });

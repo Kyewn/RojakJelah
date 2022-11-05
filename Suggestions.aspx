@@ -14,9 +14,15 @@
                 <i class="fa-solid fa-pen-to-square"></i>
                 <h3>Edit suggestion</h3>
             </div>
-            <div class="editIdRow">
-                <h5>ID</h5>
-                <span ID="txtEditId" runat="server"></span>
+            <div class="editTopRow">
+                <div>
+                    <h5>ID</h5>
+                    <span ID="txtEditId" runat="server"></span>
+                </div>
+                <div>
+                    <h5>Language</h5>
+                    <asp:DropDownList ID="cboEditLanguage" class="cboEditLanguage" runat="server" AutoPostBack="True"></asp:DropDownList>
+                </div>
             </div>
             <div class="editTopRow">
                 <div>
@@ -74,25 +80,33 @@
                                 <h6>ID</h6>
                                 <span id="lblId" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
+                            <div class="inlineDetail">
+                                <div class="itemDetail">
+                                    <h6>Slang</h6>
+                                    <span id="lblSlang" ClientIDMode="Static" runat="server">Testvalue</span>
+                                </div>
+                                <div class="itemDetail">
+                                    <h6>Translation</h6>
+                                    <span id="lblTranslation" ClientIDMode="Static" runat="server">Testvalue</span>
+                                </div>                         
+                            </div>                         
                             <div class="itemDetail">
-                                <h6>Slang</h6>
-                                <span id="lblSlang" ClientIDMode="Static" runat="server">Testvalue</span>
-                            </div>
-                            <div class="itemDetail">
-                                <h6>Translation</h6>
-                                <span id="lblTranslation" ClientIDMode="Static" runat="server">Testvalue</span>
-                            </div>
-                            <div class="itemDetail">
-                                <h6>Created by</h6>
-                                <span id="lblAuthor" ClientIDMode="Static" runat="server">Testvalue</span>
-                            </div>
-                            <div class="itemDetail">
-                                <h6>Created at</h6>
-                                <span id="lblDate" ClientIDMode="Static" runat="server">Testvalue</span>
+                                <h6>Language</h6>
+                                <span id="lblLanguage" ClientIDMode="Static" runat="server">Testvalue</span>
                             </div>
                             <div class="itemDetail">
                                 <h6>Example</h6>
                                 <span id="lblExample" ClientIDMode="Static" runat="server">Testvalue</span>
+                            </div>
+                            <div class="inlineDetail">
+                                <div class="itemDetail">
+                                    <h6>Created by</h6>
+                                    <span id="lblAuthor" ClientIDMode="Static" runat="server">Testvalue</span>
+                                </div>
+                                <div class="itemDetail">
+                                    <h6>Created at</h6>
+                                    <span id="lblDate" ClientIDMode="Static" runat="server">Testvalue</span>
+                                </div>
                             </div>
                         </div>
                         <asp:Button ID="btnEdit" ClientIDMode="Static" runat="server" Text="Edit" OnClick="btnEdit_Click" />
