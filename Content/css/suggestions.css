@@ -93,6 +93,17 @@
     background: var(--primary-color);
     color: var(--theme-white);
     margin-left: 2em;
+    transition: all .3s ease-out
+}
+
+#btnReset:hover {
+    border: 2px solid var(--primary-color-hover);
+    background: var(--primary-color-hover);
+}
+
+#btnReset:active {
+    border: 2px solid var(--primary-color-active);
+    background: var(--primary-color-active);
 }
 
 .cboFilter, .txtSearch {
