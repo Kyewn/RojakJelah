@@ -26,11 +26,11 @@
             </div>
             <div class="editTopRow">
                 <div>
-                    <h5>Slang</h5>
+                    <h5>Slang *</h5>
                     <asp:TextBox ID="txtEditSlang" runat="server"></asp:TextBox>
                 </div>
                 <div>
-                    <h5>Translation</h5>
+                    <h5>Translation *</h5>
                     <asp:TextBox ID="txtEditTranslation" runat="server"></asp:TextBox>
                 </div>
             </div>

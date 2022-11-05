@@ -274,6 +274,20 @@ namespace RojakJelah
             string notificationTitle, notificationMessage;
             try
             {
+                //Error catching
+                //  Required inputs empty
+                if (String.IsNullOrWhiteSpace(txtEditSlang.Text) || String.IsNullOrEmpty(txtEditSlang.Text) || 
+                    String.IsNullOrWhiteSpace(txtEditTranslation.Text) || String.IsNullOrEmpty(txtEditTranslation.Text))
+                {
+                    // Display error notification
+                    notificationTitle = "Required fields are empty";
+                    notificationMessage = "Slang and Translation fields must be filled.";
+
+                    ShowNotification(notificationTitle, notificationMessage, true);
+
+                    return;
+                }
+
                 //  Update information
                 Language updatedLanguage = dataContext.Languages.SingleOrDefault(x => x.Name == cboEditLanguage.SelectedValue);
                 Suggestion targetSuggestion = dataContext.Suggestions.SingleOrDefault(x => x.Id.ToString() == txtEditId.InnerText);
@@ -438,7 +452,6 @@ namespace RojakJelah
             editModalWindow.Style.Remove("animation");
             editModalWindow.Style.Add("opacity", "0");
             editModalWindow.Style.Add("visibility", "hidden");
-
         }
 
         private List<Suggestion> handleFilterList(int filter, string searchKeys, List<Suggestion> suggestionList)
@@ -497,6 +510,9 @@ namespace RojakJelah
             if (isError)
             {
                 notification.Style.Add("background-color", "var(--primary-color)");
+            } else
+            {
+                notification.Style.Add("background-color", "var(--notification-success)");
             }
         }
     }
