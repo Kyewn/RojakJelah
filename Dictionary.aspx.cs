@@ -13,5 +13,20 @@ namespace RojakJelah
         {
 
         }
+
+        protected void LnkSearch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void LnkReport_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void LnkSuggest_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
