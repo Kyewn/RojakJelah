@@ -227,6 +227,18 @@ namespace RojakJelah
 
                     return;
                 }
+                
+                //  Same slang-translation input
+                if (lblTranslation.InnerText.ToLower() == lblSlang.InnerText.ToLower())
+                {
+                    // Display error notification
+                    notificationTitle = "Identical words";
+                    notificationMessage = "Slangs and translations must be different words.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+
+                    return;
+                }
 
                 //  Input validated, process input
                 //  Create word records if words do not exist in Words table
@@ -360,6 +372,18 @@ namespace RojakJelah
                     // Display error notification
                     notificationTitle = "Required fields are empty";
                     notificationMessage = "Slang and Translation fields must be filled.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+
+                    return;
+                }
+
+                //  Same slang-translation input
+                if (txtEditSlang.Text.ToLower() == txtEditTranslation.Text.ToLower())
+                {
+                    // Display error notification
+                    notificationTitle = "Identical words";
+                    notificationMessage = "Slangs and translations must be different words.";
 
                     ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
 
@@ -502,6 +526,12 @@ namespace RojakJelah
                     lblAuthor.InnerText = selectedItem.CreatedBy.Username;
                     lblDate.InnerText = selectedItem.CreationDate.ToShortDateString();
                     lblExample.InnerText = selectedItem.Example;
+/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
+/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
+/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
+
+                    /*lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
+                    lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();*/
                 }
                 else
                 {
