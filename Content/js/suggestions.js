@@ -1,6 +1,6 @@
-﻿// Main view
-// Main view
-// Main view
+﻿//  List item click
+//  List item click
+//  List item click
 const listItemContainer = document.querySelector('.listItemContainer');
 listItemContainer.addEventListener('click', (e) => {
     const listItem = e.target.closest('.listItem');
@@ -16,18 +16,17 @@ listItemContainer.addEventListener('click', (e) => {
     }
 });
 
-// Modal window
-// Modal window
-// Modal window
-const modalWindow = document.getElementById('editModalWindow');
-const body = document.querySelector('body');
-modalWindow.addEventListener('click', (e) => {
-    body.style.pointerEvents = 'none';
-})
-
+//  Confirmation dialogs
+//  Confirmation dialogs
+//  Confirmation dialogs
 const btnEditCancel = document.getElementById("btnEditCancel");
 btnEditCancel.addEventListener('click', (e) => {
     confirmCancelEdit(e);
+});
+
+const btnAccept = document.getElementById("btnAccept");
+btnAccept.addEventListener('click', (e) => {
+    confirmApprove(e);
 });
 
 const btnReject = document.getElementById("btnReject");
@@ -43,6 +42,14 @@ function confirmCancelEdit(e) {
     }
 };
 
+function confirmApprove(e) {
+    if (confirm("Are you sure you want to approve this suggestion?")) {
+        __doPostBack('btnAccept', '');
+    } else {
+        e.preventDefault();
+    }
+};
+
 function confirmReject(e) {
     if (confirm("Are you sure you want to reject this suggestion?")) {
         __doPostBack('btnReject', '');
@@ -50,6 +57,10 @@ function confirmReject(e) {
         e.preventDefault();
     }
 };
+
+//  Close Notification
+//  Close Notification
+//  Close Notification
 
 function closeNotification(notification) {
     notification.css("display", "none");

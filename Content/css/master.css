@@ -6,6 +6,7 @@
     --primary-color-hover: #E39090;
     --primary-color-active: #F2CCCC;
     --secondary-color-yellow: #FFF96D;
+    --notification-error: #d35555;
     --notification-success: #5aad7f;
 }
 
@@ -156,10 +157,6 @@ nav {
 
 .links li {
     height: inherit;
-}
-
-.links li:first-child, .links li:nth-child(5), .links li:nth-child(6){
-    display: none;
 }
 
 .scroll-link i {

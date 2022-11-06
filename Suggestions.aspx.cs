@@ -25,11 +25,15 @@ namespace RojakJelah
             "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)", "Approved", "Rejected"
         };
 
+        //  FontAwesome icons
+        private String IconExclamation = "fa-solid fa-circle-exclamation";
+        private String IconCheck = "fa-solid fa-check";
         protected void Page_Load(object sender, EventArgs e)
         {
             // Hide notification message that may be open and isnt closed by backend yet
             // (front end js doesnt affect backend state, so even if it is clicked backend still think its open)
             notification.Style.Add("display", "none");
+            modalDialog.Style.Remove("animation"); //Remove modal animation to prevent unnecessary transition on postback
 
             pageState = ViewState["pageState"] as SuggestionsPageState ?? new SuggestionsPageState();
             
@@ -59,12 +63,12 @@ namespace RojakJelah
         protected void Page_PreRender(object sender, EventArgs e)
         {
             // Populate list container based on saved list state
-            handlePopulateItems();
+            HandlePopulateItems();
             // Update previous list state to latest state based on conditions (cobFilter, txtSearch, CRUD ops) for next postback
             ViewState["pageState"] = pageState;
         }
 
-        protected void cboFilter_SelectedIndexChanged(object sender, EventArgs e)
+        protected void CboFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedIndex = cboFilter.SelectedIndex;
             List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
@@ -86,7 +90,7 @@ namespace RojakJelah
             }
 
             List<Suggestion> finalList = !String.IsNullOrEmpty(txtSearch.Text) ? 
-                handleFilterList(selectedIndex, txtSearch.Text, chosenList) : chosenList;
+                HandleFilterList(selectedIndex, txtSearch.Text, chosenList) : chosenList;
 
             txtSelectedListItem.Text = ""; // Reset selected list item
             pageState._currentList.Clear();
@@ -113,7 +117,7 @@ namespace RojakJelah
             }
         }
 
-        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        protected void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             txtSelectedListItem.Text = ""; // Reset selected list item
             var searchKeys = txtSearch.Text.ToLower().Trim();
@@ -124,11 +128,11 @@ namespace RojakJelah
             List<Suggestion> filteredList = new List<Suggestion>();
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2) {
-              filteredList = handleFilterList(filter, searchKeys, approvedSuggestionList);
+              filteredList = HandleFilterList(filter, searchKeys, approvedSuggestionList);
             } else if (cboFilter.SelectedIndex == filterEntries.Length - 1) {
-              filteredList = handleFilterList(filter, searchKeys, rejectedSuggestionList);
+              filteredList = HandleFilterList(filter, searchKeys, rejectedSuggestionList);
             } else {
-              filteredList = handleFilterList(filter, searchKeys, suggestionList);
+              filteredList = HandleFilterList(filter, searchKeys, suggestionList);
             }
 
             pageState._currentList.Clear();
@@ -151,15 +155,15 @@ namespace RojakJelah
             }
         }
 
-        protected void btnReset_Click(object sender, EventArgs e)
+        protected void BtnReset_Click(object sender, EventArgs e)
         {
             txtSelectedListItem.Text = String.Empty;
             txtSearch.Text = String.Empty;
             cboFilter.SelectedIndex = 0;
-            cboFilter_SelectedIndexChanged(sender, e);
+            CboFilter_SelectedIndexChanged(sender, e);
         }
 
-        protected void btnEdit_Click(object sender, EventArgs e)
+        protected void BtnEdit_Click(object sender, EventArgs e)
         {
             var selectedItemLanguageIndex = cboEditLanguage.Items.IndexOf(cboEditLanguage.Items.FindByValue(lblLanguage.InnerText));
             txtEditId.InnerText = lblId.InnerText;
@@ -168,17 +172,33 @@ namespace RojakJelah
             txtEditExample.InnerText = lblExample.InnerText;
             cboEditLanguage.SelectedIndex = selectedItemLanguageIndex;
 
-            editModalWindow.Style.Add("animation", "fadeIn .3s ease-out forwards");
+            ShowModal(editModalWindow);
         }
 
-        protected void btnEditCancel_Click(object sender, EventArgs e)
+        protected void BtnEditCancel_Click(object sender, EventArgs e)
         {
-            hideModal();
+            HideModal();
         }
 
-        protected void btnAccept_Click(object sender, EventArgs e)
+        protected void BtnAccept_Click(object sender, EventArgs e)
         {
             string notificationTitle, notificationMessage;
+
+            //  Check if dictionary pair already exist
+            DictionaryEntry existingSlangTranslationPair;
+
+            try
+            {
+                //  Catch error thrown when system doesnt recognize new words that doesn't exist in DB
+                //  Force the system to accept new words
+                existingSlangTranslationPair = dataContext.DictionaryEntries
+                    .Where(x => x.Slang.WordValue.ToLower() == lblSlang.InnerText.ToLower())
+                    .Where(x => x.Translation.WordValue.ToLower() == lblTranslation.InnerText.ToLower()).First();
+            }
+            catch
+            {
+                existingSlangTranslationPair = null;
+            }
 
             try
             {
@@ -186,14 +206,56 @@ namespace RojakJelah
                 var wordList = dataContext.Words.ToList();
                 var languageList = dataContext.Languages.ToList();
                 var userList = dataContext.Users.ToList();
-            
-                // Get slang and translation from Word table
+
+                //  Get slang and translation from Word table
                 Word wordSlang = wordList.SingleOrDefault(x => x.WordValue.ToLower() == lblSlang.InnerText.ToLower());
                 Word wordTranslation = wordList.SingleOrDefault(x => x.WordValue.ToLower() == lblTranslation.InnerText.ToLower());
-
-                // Get author from User table
+                //  Get author from User table
                 User userAuthor = userList.SingleOrDefault(x => x.Username.ToLower() == lblAuthor.InnerText);
+                Language slangLanguage = languageList.SingleOrDefault(x => x.Name.ToLower() == lblLanguage.InnerText.ToLower());
+                Language translationLanguage = languageList.SingleOrDefault(x => x.Name.ToLower() == "english");
 
+                //  Error catching
+                //  Existing pair in dictionary
+                if (existingSlangTranslationPair != null)
+                {
+                    // Display error notification
+                    notificationTitle = "Word pair already exist";
+                    notificationMessage = "The slang-translation pair already exist in the dictionary.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+
+                    return;
+                }
+
+                //  Input validated, process input
+                //  Create word records if words do not exist in Words table
+                if (wordSlang == null)
+                {
+                    Word newWord = new Word()
+                    {
+                        WordValue = lblSlang.InnerText,
+                        Language = slangLanguage
+                    };
+                    dataContext.Words.Add(newWord);
+                    dataContext.SaveChanges();
+                    wordSlang = newWord;
+
+                }
+                
+                if (wordTranslation == null)
+                {
+                    Word newWord = new Word()
+                    {
+                        WordValue = lblTranslation.InnerText,
+                        Language = translationLanguage
+                    };
+                    dataContext.Words.Add(newWord);
+                    dataContext.SaveChanges();
+                    wordTranslation = newWord;
+                }
+
+                //  Create dictionary entry once words are confirmed to exist in Words table
                 DictionaryEntry newEntry = new DictionaryEntry()
                 {
                     Slang = wordSlang,
@@ -212,7 +274,7 @@ namespace RojakJelah
                 Suggestion approvedRecord = dataContext.Suggestions.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
                 approvedRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 2);
                 dataContext.SaveChanges();
-
+                
                 //  Update UI
                 Suggestion approvedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
                 approvedUIRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 2);
@@ -222,20 +284,20 @@ namespace RojakJelah
                 // Send notification message
                 notificationTitle = "Suggestion approved";
                 notificationMessage = "The suggestion has been added to the dictionary.";
-                ShowNotification(notificationTitle, notificationMessage, false);
+                ShowNotification(IconCheck, notificationTitle, notificationMessage, false);
             } catch (Exception ex)
             {
                 // Display error notification
                 notificationTitle = "Unknown error";
                 notificationMessage = "An unexpected error has occured, please contact support.";
 
-                ShowNotification(notificationTitle, notificationMessage, true);
+                ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
 
                 Debug.WriteLine(ex.ToString());
             }
         }
 
-        protected void btnReject_Click(object sender, EventArgs e)
+        protected void BtnReject_Click(object sender, EventArgs e)
         {
             string notificationTitle, notificationMessage;
 
@@ -255,7 +317,7 @@ namespace RojakJelah
                 // Send notification message
                 notificationTitle = "Suggestion rejected";
                 notificationMessage = "The suggestion has been discarded, but can still be viewed in the list using filters.";
-                ShowNotification(notificationTitle, notificationMessage, false);
+                ShowNotification(IconCheck, notificationTitle, notificationMessage, false);
             }
             catch (Exception ex)
             {
@@ -263,18 +325,34 @@ namespace RojakJelah
                 notificationTitle = "Unknown error";
                 notificationMessage = "An unexpected error has occured, please contact support.";
 
-                ShowNotification(notificationTitle, notificationMessage, true);
+                ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
 
                 Debug.WriteLine(ex.ToString());
             }
         }
 
-        protected void btnEditConfirm_Click(object sender, EventArgs e)
+        protected void BtnEditConfirm_Click(object sender, EventArgs e)
         {
             string notificationTitle, notificationMessage;
+
+            //  Check if dictionary pair already exist
+            DictionaryEntry existingSlangTranslationPair;
+
             try
             {
-                //Error catching
+                //  Catch error thrown when system doesnt recognize new words that doesn't exist in DB
+                //  Force the system to accept new words
+                existingSlangTranslationPair = dataContext.DictionaryEntries
+                    .Where(x => x.Slang.WordValue.ToLower() == txtEditSlang.Text.ToLower())
+                    .Where(x => x.Translation.WordValue.ToLower() == txtEditTranslation.Text.ToLower()).First();
+            } catch 
+            {
+                existingSlangTranslationPair = null;
+            }
+            
+            try
+            {
+                //  Error catching
                 //  Required inputs empty
                 if (String.IsNullOrWhiteSpace(txtEditSlang.Text) || String.IsNullOrEmpty(txtEditSlang.Text) || 
                     String.IsNullOrWhiteSpace(txtEditTranslation.Text) || String.IsNullOrEmpty(txtEditTranslation.Text))
@@ -283,7 +361,19 @@ namespace RojakJelah
                     notificationTitle = "Required fields are empty";
                     notificationMessage = "Slang and Translation fields must be filled.";
 
-                    ShowNotification(notificationTitle, notificationMessage, true);
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+
+                    return;
+                }
+
+                //  Existing pair in dictionary
+                if (existingSlangTranslationPair != null)
+                {
+                    // Display error notification
+                    notificationTitle = "Word pair already exist";
+                    notificationMessage = "The slang-translation pair already exist in the dictionary.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
 
                     return;
                 }
@@ -305,12 +395,12 @@ namespace RojakJelah
                 targetRecord.Example = txtEditExample.Value.Trim();
 
                 //  Close Modal
-                hideModal();
+                HideModal();
 
                 //  Send success message
                 notificationTitle = "Update successful";
                 notificationMessage = "The record has been updated.";
-                ShowNotification(notificationTitle, notificationMessage, false);
+                ShowNotification(IconCheck, notificationTitle, notificationMessage, false);
             }
             catch (Exception ex)
             {
@@ -318,13 +408,13 @@ namespace RojakJelah
                 notificationTitle = "Unknown error";
                 notificationMessage = "An unexpected error has occured, please contact support.";
 
-                ShowNotification(notificationTitle, notificationMessage, true);
+                ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
 
                 Debug.WriteLine(ex.ToString());
             }
         }
 
-        private void addNoDataListItem()
+        private void AddNoDataListItem()
         {
             var listItemHTML = @"                    
                     <div class='listItem noData'>
@@ -336,7 +426,7 @@ namespace RojakJelah
             listItemContainer.Controls.Add(listItem);
         }
         
-        private void addListItem(Suggestion item)
+        private void AddListItem(Suggestion item)
         {
             var listItemHTML = $@"
                     <div class='listItem'>
@@ -378,12 +468,12 @@ namespace RojakJelah
             listItemContainer.Controls.Add(listItem);
         }
 
-        private void handlePopulateItems()
+        private void HandlePopulateItems()
         {
             if (pageState._currentList.Count == 0)
             {
                 //  Show no data message
-                addNoDataListItem();
+                AddNoDataListItem();
 
                 //  Hide menu controls
                 buttonContainer.Style.Add("visibility", "hidden");
@@ -395,7 +485,7 @@ namespace RojakJelah
                 // Populate container
                 foreach (var item in pageState._currentList)
                 {
-                    addListItem(item);
+                    AddListItem(item);
                 }
 
                 if (!String.IsNullOrEmpty(txtSelectedListItem.Text))
@@ -424,6 +514,13 @@ namespace RojakJelah
                     lblAuthor.InnerText = pageState._currentList[0].CreatedBy.Username;
                     lblDate.InnerText = pageState._currentList[0].CreationDate.ToShortDateString();
                     lblExample.InnerText = pageState._currentList[0].Example;
+
+/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
+/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
+/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
+
+                    /*lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
+                    lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();*/
                 }
 
                 //  Show menu controls
@@ -436,6 +533,7 @@ namespace RojakJelah
                     btnEdit.Style.Add("visibility", "hidden");
                     buttonContainer.Style.Add("display", "none");
                     btnEdit.Style.Add("display", "none");
+                    divModificationInfo.Style.Add("display", "flex");
                 }
                 else
                 {
@@ -443,18 +541,12 @@ namespace RojakJelah
                     btnEdit.Style.Add("visibility", "visible");
                     buttonContainer.Style.Add("display", "flex");
                     btnEdit.Style.Add("display", "block");
+                    divModificationInfo.Style.Add("display", "none");
                 }
             }
         }
 
-        private void hideModal()
-        {
-            editModalWindow.Style.Remove("animation");
-            editModalWindow.Style.Add("opacity", "0");
-            editModalWindow.Style.Add("visibility", "hidden");
-        }
-
-        private List<Suggestion> handleFilterList(int filter, string searchKeys, List<Suggestion> suggestionList)
+        private List<Suggestion> HandleFilterList(int filter, string searchKeys, List<Suggestion> suggestionList)
         {
             List<Suggestion> filteredList = new List<Suggestion>();
             List<Suggestion> orderedList = new List<Suggestion>();
@@ -495,25 +587,47 @@ namespace RojakJelah
 
             return filteredList;
         }
+        private void HideModal()
+        {
+            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
+            body.Style.Add("overflow-y", "auto");
+            editModalWindow.Style.Add("display", "none");
+        }
 
         /// <summary>
-        /// Displays error notification popup.
+        /// Shows the specified modal.
         /// </summary>
-        /// <param name="title">Title of error.</param>
-        /// <param name="message">Error message.</param>
-        protected void ShowNotification(string title, string message, bool isError)
+        /// <param name="modal">Modal to show.</param>
+        protected void ShowModal(HtmlGenericControl modal)
         {
-            Debug.WriteLine(title);
-            notificationTitle.InnerText = title;
-            notificationMessage.InnerHtml = message;
-            notification.Style.Add("display", "block");
+            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
+            body.Style.Add("overflow-y", "hidden");
+            modal.Style.Add("display", "flex");
+            modalDialog.Style.Add("animation", "slideIn .3s ease-out forwards"); 
+        }
+
+        /// <summary>
+        /// Displays status notification popup.
+        /// </summary>
+        /// <param name="icon">Icon of notification.</param>
+        /// <param name="title">Title of status.</param>
+        /// <param name="message">Status message.</param>
+        /// <param name="isError">Is error notification or not.</param>
+        protected void ShowNotification(string icon, string title, string message, bool isError = true)
+        {
             if (isError)
             {
-                notification.Style.Add("background-color", "var(--primary-color)");
-            } else
+                notification.Style.Add("background-color", "var(--notification-error)");
+            }
+            else
             {
                 notification.Style.Add("background-color", "var(--notification-success)");
             }
+
+            notificationIcon.Attributes.Add("class", icon);
+            notificationTitle.InnerText = title;
+            notificationMessage.InnerHtml = message; 
+            notification.Style.Add("display", "block");
         }
     }
 }

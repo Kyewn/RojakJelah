@@ -78,10 +78,28 @@
     margin-right: 2em;
 }
 
+.searchGroup {
+    display: flex;
+    flex: 0.7;
+    align-items: flex-end;
+}
+
 .searchBarContainer {
+    flex: 0.9;
     display: flex;
     flex-direction: column;
-    flex: 0.7;
+}
+
+#btnSearch {
+    flex: 0.1;
+    height: 1em;
+    background: var(--primary-color);
+    box-sizing: content-box;
+    padding: 0.39em 0.5em;
+    border: 2px solid var(--primary-color);
+    border-radius: 0 5px 5px 0;
+    color: white;
+    transition: all .3s ease-out;
 }
 
 #btnReset {
@@ -96,12 +114,12 @@
     transition: all .3s ease-out
 }
 
-#btnReset:hover {
+#btnReset:hover, #btnSearch:hover {
     border: 2px solid var(--primary-color-hover);
     background: var(--primary-color-hover);
 }
 
-#btnReset:active {
+#btnReset:active, #btnSearch:active {
     border: 2px solid var(--primary-color-active);
     background: var(--primary-color-active);
 }
@@ -111,6 +129,10 @@
     height: 2em;
     border: 2px solid var(--primary-color);
     border-radius: 5px;
+}
+
+.txtSearch {
+    border-radius: 5px 0 0 5px;
 }
 
 .cboFilter:focus, .txtSearch:focus {
@@ -254,6 +276,10 @@
     margin-right: 1em;
 }
 
+#divModificationInfo {
+    display: none;
+}
+
 .detailContainer .itemDetail h6 {
     margin: 0;
     font-size: smaller;
@@ -330,58 +356,69 @@
 /* Main content complete */
 /* Main content complete */
 
-
-/* Edit Modal content */
-/* Edit Modal content */
-/* Edit Modal content */
-#editModalWindow {
-    display: flex;
-    justify-content: center;
+/* Modals */
+/* Modals */
+/* Modals */
+.modal-window {
+    display: none;
+    position: fixed;
     align-items: center;
-    position: absolute;
-    width: 100vw;
-    height: 110vh;
-    pointer-events: all;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-#editModalWindow h3{
-    margin: 0;
+
+.modal-dialog {
+    width: 40%;
+    background-color: white;
+    border-radius: 5px;
+    overflow-y: initial;
 }
 
-.editModalBody {
+.modal-header {
+    display: flex;
+    padding-bottom: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    color: var(--primary-color);
+}
+
+    .modal-header i {
+        font-size: 30px;
+        margin-right: .5em;
+    }
+
+
+.modal-title {
+    flex: 0.9;
+    text-align: left;
+}
+
+.modal-icon {
+    flex: 0.1;
+    font-size: 24px;
+}
+
+.modal-content {
     display: flex;
     flex-direction: column;
-    width: 40%;
+    width: 100%;
     max-height: 70%;
     background: var(--theme-white);
     border-radius: 5px;
     padding: 1.5em 2em;
     box-shadow: 0 0 20px 1px var(--theme-black);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
 }
 
-.editModalBody div {
+.modal-body > div {
     margin-bottom: 1em;
-}
-
-.editModalBody div:last-child {
-    margin-bottom: 0;
-}
-
-.editModalBody .header {
-    display: flex;
-    align-items: center;
-}
-
-.editModalBody .header i {
-    font-size: 30px;
-    margin-right: .5em;
-}
-
-.editModalBody h5 {
-    color: var(--primary-color);
 }
 
 .editTopRow {
@@ -389,27 +426,27 @@
     align-items: center;
 }
 
-.editTopRow > div {
-    flex: 0.5;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0;
-}
+    .editTopRow > div {
+        flex: 0.5;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0;
+    }
 
-.editTopRow > div input, .cboEditLanguage {
-    border-radius: 5px;
-    padding: 0.5em;
-    border: 2px solid var(--primary-color);
-    background: var(--theme-white);
-}
+        .editTopRow > div input, .cboEditLanguage {
+            border-radius: 5px;
+            padding: 0.5em;
+            border: 2px solid var(--primary-color);
+            background: var(--theme-white);
+        }
 
-.editTopRow > div input:focus, .cboEditLanguage:focus {
-    border: 3px solid var(--primary-color);
-}
+            .editTopRow > div input:focus, .cboEditLanguage:focus {
+                box-shadow: 0 0 0 1px var(--primary-color);
+            }
 
-.editTopRow > div:first-child {
-    margin-right: 2em;
-}
+        .editTopRow > div:first-child {
+            margin-right: 2em;
+        }
 
 .editBottomRow {
     flex: 0.5;
@@ -417,22 +454,24 @@
     flex-direction: column;
 }
 
-.editBottomRow textarea {
-    padding: 1em;
-    resize: none;
-    border-radius: 5px;
-    border: 2px solid var(--primary-color);
-    background: var(--theme-white);
-}
+    .editBottomRow textarea {
+        padding: 1em;
+        resize: none;
+        border-radius: 5px;
+        border: 2px solid var(--primary-color);
+        background: var(--theme-white);
+    }
 
-.editBottomRow textarea:focus {
-    border: 3px solid var(--primary-color);
-}
+        .editBottomRow textarea:focus {
+            box-shadow: 0 0 0 1px var(--primary-color);
+        }
 
-.editButtonContainer {
-    margin: 1em 0;
-    display: flex;
-    flex-direction: row-reverse;
+
+.modal-footer {
+    padding: 1rem 0;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    word-spacing: 0.2rem;
 }
 
 #btnEditConfirm {
@@ -445,15 +484,15 @@
     transition: all .3s ease-out;
 }
 
-#btnEditConfirm:hover {
-    border: 2px solid var(--primary-color-hover);
-    background: var(--primary-color-hover);
-}
+    #btnEditConfirm:hover {
+        border: 2px solid var(--primary-color-hover);
+        background: var(--primary-color-hover);
+    }
 
-#btnEditConfirm:active {
-    border: 2px solid var(--primary-color-active);
-    background: var(--primary-color-active);
-}
+    #btnEditConfirm:active {
+        border: 2px solid var(--primary-color-active);
+        background: var(--primary-color-active);
+    }
 
 #btnEditCancel {
     border-radius: 5px;
@@ -464,36 +503,37 @@
     transition: all .3s ease-out;
 }
 
-#btnEditCancel:hover {
-    border: 2px solid var(--primary-color-hover);
-    color: var(--primary-color-hover);
+    #btnEditCancel:hover {
+        border: 2px solid var(--primary-color-hover);
+        color: var(--primary-color-hover);
+    }
+
+    #btnEditCancel:active {
+        border: 2px solid var(--primary-color-active);
+        color: var(--primary-color-active);
+    }
+
+
+@keyframes slideIn {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0;
+        opacity: 1;
+    }
 }
 
-#btnEditCancel:active {
-    border: 2px solid var(--primary-color-active);
-    color: var(--primary-color-active);
-}
 
+/* Notification */
+/* Notification */
+/* Notification */
 .notification {
     background-color: var(--notification-success);
     top: unset;
     bottom: 3rem;
     right: 3rem;
-}
-
-.notification-title, .notification-message, .notification-tip {
-    color: var(--theme-black);
-}
-
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    to {
-        opacity: 1;
-        visibility: visible;
-    }
+    z-index: 100;
 }

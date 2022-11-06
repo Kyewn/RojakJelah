@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
 using RojakJelah.Database;
 using RojakJelah.Database.Entity;
 
@@ -16,7 +17,10 @@ namespace RojakJelah
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext("server=localhost;user=root;database=rojakjelah;port=3306;password=brian89564");
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+            //Toggle admin menu and normal menu based on current page
+            ToggleNavMenu();
 
             // Check if user is logged in
             if (Page.User.Identity.IsAuthenticated)
@@ -45,6 +49,33 @@ namespace RojakJelah
             var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
             authenticationManager.SignOut();
             Response.Redirect("Login.aspx");
+        }
+
+        protected void ToggleNavMenu()
+        {
+            var links = this.FindControl("navLinks").Controls.OfType<HtmlGenericControl>().ToList();
+
+            string path = HttpContext.Current.Request.Url.AbsolutePath;
+
+            if (path.Contains("/Suggestions") || path.Contains("/Reports"))
+            {
+                links[0].Style.Add("display", "block");
+                links[4].Style.Add("display", "block");
+                links[5].Style.Add("display", "block");
+                links[1].Style.Add("display", "none");
+                links[2].Style.Add("display", "none");
+                links[3].Style.Add("display", "none");
+                links[6].Style.Add("display", "none");
+            } else
+            {
+                links[0].Style.Add("display", "none");
+                links[4].Style.Add("display", "none");
+                links[5].Style.Add("display", "none");
+                links[1].Style.Add("display", "block");
+                links[2].Style.Add("display", "block");
+                links[3].Style.Add("display", "block");
+                links[6].Style.Add("display", "block");
+            }
         }
     }
 }

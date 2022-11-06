@@ -1,6 +1,5 @@
 //Master page processes
 window.addEventListener('load', () => {
-    const links = document.querySelectorAll('.links li');
     const linkAnchors = document.querySelectorAll('.links li a');
     if (window.location.pathname == "/Translator" || window.location.pathname == "/") {
         document.querySelector(".nav-header").style.visibility = 'hidden';
@@ -10,13 +9,6 @@ window.addEventListener('load', () => {
     } else if (window.location.pathname == "/About") {
         linkAnchors[3].classList.add('active');
     } else if (window.location.pathname == "/Suggestions" || window.location.pathname == "/Reports") {
-        links[0].style.display = 'block';
-        links[4].style.display = 'block';
-        links[5].style.display = 'block';
-        links[1].style.display = 'none';
-        links[2].style.display = 'none';
-        links[3].style.display = 'none';
-        links[6].style.display = 'none';
         if (window.location.pathname == "/Suggestions") {
             linkAnchors[4].classList.add('active');
         } else {

@@ -27,7 +27,7 @@
     </asp:ContentPlaceHolder>
 </head>
 
-<body>
+<body id="body" runat="server">
     <form id="mainForm" runat="server">
         <!-- Header Section  -->
         <header id="pageHeader" runat="server">
@@ -45,44 +45,44 @@
                     </div>
                     <!-- Nav Links -->
                     <div class="links-container">
-                        <ul class="links">
-                            <li>
+                        <ul ID="navLinks" ClientIDMode="Static" class="links" runat="server">
+                            <li runat="server">
                                 <a class="scroll-link" href="Translator.aspx">
                                     <i class="fa-solid fa-left-long"></i>
                                     Back
                                 </a>
                             </li>
-                            <li>
+                            <li runat="server">
                                 <a class="scroll-link" href="Translator.aspx">
                                     <i class="fa-sharp fa-solid fa-message"></i>
                                     Translator
                                 </a>
                             </li>
-                            <li>
+                            <li runat="server">
                                 <a class="scroll-link" href="Dictionary.aspx">
                                     <i class="fa-solid fa-file-contract"></i>
                                     Dictionary
                                 </a>
                             </li>
-                            <li>
+                            <li runat="server">
                                 <a class="scroll-link" href="About.aspx">
                                     <i class="fa-solid fa-circle-info"></i>
                                     About
                                 </a>
                             </li>
-                            <li>
+                            <li runat="server">
                                 <a class="scroll-link" href="Suggestions.aspx">
                                     <i class="fa-solid fa-circle-info"></i>
                                     Suggestions
                                 </a>
                             </li>
-                            <li>
+                            <li runat="server">
                                 <a class="scroll-link" href="Reports.aspx">
                                     <i class="fa-solid fa-circle-info"></i>
                                     Reports
                                 </a>
                             </li>
-                            <li>
+                            <li runat="server">
                                 <asp:LinkButton ID="lnkAdminPanel" runat="server" class="scroll-link" href="Suggestions.aspx" Visible="false">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                     Admin panel
