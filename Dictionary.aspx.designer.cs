@@ -15,6 +15,15 @@ namespace RojakJelah
     {
 
         /// <summary>
+        /// entryCountText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl entryCountText;
+
+        /// <summary>
         /// ddlSearchFilter control.
         /// </summary>
         /// <remarks>
@@ -42,22 +51,22 @@ namespace RojakJelah
         protected global::System.Web.UI.WebControls.LinkButton lnkSearch;
 
         /// <summary>
-        /// lnkSuggest control.
+        /// btnSuggest control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkSuggest;
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnSuggest;
 
         /// <summary>
-        /// divDictionaryEmpty control.
+        /// sctDictionary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDictionaryEmpty;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sctDictionary;
 
         /// <summary>
         /// mdlReport control.
@@ -69,6 +78,15 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlReport;
 
         /// <summary>
+        /// ddlReportCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect ddlReportCategory;
+
+        /// <summary>
         /// mdlSuggestion control.
         /// </summary>
         /// <remarks>
@@ -78,6 +96,33 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlSuggestion;
 
         /// <summary>
+        /// txtSlang control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtSlang;
+
+        /// <summary>
+        /// txtTranslation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtTranslation;
+
+        /// <summary>
+        /// ddlLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect ddlLanguage;
+
+        /// <summary>
         /// notification control.
         /// </summary>
         /// <remarks>
@@ -85,6 +130,15 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl notification;
+
+        /// <summary>
+        /// notificationIcon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl notificationIcon;
 
         /// <summary>
         /// notificationTitle control.

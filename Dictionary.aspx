@@ -12,99 +12,40 @@
 
     <!-- Dictionary Header  -->
     <section class="dictionary-header">
-        <div class="dictionary-header-title">
-            <i class="fa-solid fa-file-contract"></i>
-            <h1>Dictionary</h1>
+        <div class="dictionary-header-text">
+            <div class="dictionary-header-title">
+                <i class="fa-solid fa-file-contract"></i>
+                <h1>Dictionary</h1>
+            </div>
+            <h5 id="entryCountText" runat="server" ClientIDMode="static"></h5>
         </div>
         <div class="dictionary-controls">
             <div class="search-bar">
                 <div class="dropdown">
                     <select id="ddlSearchFilter" runat="server">
                         <option value="" disabled selected>Search Option:</option>
-                        <option value="Any">Any</option>
-                        <option value="Slang">Rojak Slang</option>
-                        <option value="Translation">English Meaning</option>
                     </select>
                 </div>
-                <input type="text" id="txtSearch" ClientIDMode="Static" runat="server" placeholder="Search..."/>
+                <input type="text" id="txtSearch" ClientIDMode="Static" runat="server" placeholder="Search..." autocomplete="off"/>
                 <asp:LinkButton ID="lnkSearch" CssClass="button-small" runat="server" ClientIDMode="Static" OnClick="LnkSearch_Click">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </asp:LinkButton>
             </div>
             <div class="dictionary-buttons">
-                <button type="button" id="lnkReport" class="button-small" onclick="showModal($('#mdlReport'))">
+                <button type="button" id="btnReport" class="button-small" onclick="showModal($('#mdlReport'))">
                     <i class="fa-solid fa-circle-exclamation fa-lg"></i>
                     <span id="tooltipReport" class="tool-tip">Report</span>
                 </button>
-                <asp:LinkButton ID="lnkSuggest" CssClass="button-primary" runat="server" OnClick="LnkSuggest_Click">
+                <button type="button" id="btnSuggest" class="button-primary" runat="server" onclick="showModal($('#mdlSuggestion'))">
                     <i class="fa-solid fa-plus"></i>
                     <h3>Suggest terms</h3>
-                </asp:LinkButton>
+                </button>
             </div>
         </div>
     </section>
 
     <!-- Dictionary Container  -->
-    <section class="dictionary-container">
-        <div id="divDictionaryEmpty" class="dictionary-empty" runat="server">
-            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
-            <h4>No entries found</h4>
-        </div>
-        <div class="dictionary-item">
-            <h4 class="dictionary-item-title">Slang</h4>
-            <div class="dictionary-item-content">
-                <p class="content-title">Meaning</p>
-                <p class="content-text">(Translation)</p>
-            </div>
-            <div class="dictionary-item-content">
-                <p class="content-title">Example</p>
-                <p class="content-text">(Example)</p>
-            </div>
-        </div>
-        <div class="dictionary-item">
-            <h4 class="dictionary-item-title">Slang</h4>
-            <div class="dictionary-item-content">
-                <p class="content-title">Meaning</p>
-                <p class="content-text">(Translation)</p>
-            </div>
-            <div class="dictionary-item-content">
-                <p class="content-title">Example</p>
-                <p class="content-text">(Example)</p>
-            </div>
-        </div>
-        <div class="dictionary-item">
-            <h4 class="dictionary-item-title">Slang</h4>
-            <div class="dictionary-item-content">
-                <p class="content-title">Meaning</p>
-                <p class="content-text">(Translation)</p>
-            </div>
-            <div class="dictionary-item-content">
-                <p class="content-title">Example</p>
-                <p class="content-text">(Example)</p>
-            </div>
-        </div>
-        <div class="dictionary-item">
-            <h4 class="dictionary-item-title">Slang</h4>
-            <div class="dictionary-item-content">
-                <p class="content-title">Meaning</p>
-                <p class="content-text">(Translation)</p>
-            </div>
-            <div class="dictionary-item-content">
-                <p class="content-title">Example</p>
-                <p class="content-text">(Example)</p>
-            </div>
-        </div>
-        <div class="dictionary-item">
-            <h4 class="dictionary-item-title">Slang</h4>
-            <div class="dictionary-item-content">
-                <p class="content-title">Meaning</p>
-                <p class="content-text">(Translation)</p>
-            </div>
-            <div class="dictionary-item-content">
-                <p class="content-title">Example</p>
-                <p class="content-text">(Example)</p>
-            </div>
-        </div>
+    <section id="sctDictionary" class="dictionary-container" runat="server">
     </section>
 
     <!-- Modals -->
@@ -120,10 +61,9 @@
                     </button>
                 </div>
                 <div id="divReportModalBody" class="modal-body">
-                    <div id="" class="modal-inputfield">
+                    <div class="modal-inputfield">
                         <label class="modal-inputlabel">Issue Category *</label>
-                        <select class="modal-dropdown">
-                            <option>Test</option>
+                        <select id="ddlReportCategory" class="modal-dropdown" runat="server" ClientIDMode="static">
                         </select>
                     </div>
                     <div class="modal-inputfield">
@@ -141,7 +81,7 @@
 
     <!-- Suggestion Modal -->
     <div id="mdlSuggestion" class="modal-window" ClientIDMode="Static" runat="server">
-        <div class="modal-dialog">
+        <div id="dlgSuggestion" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <i class="modal-icon fa-solid fa-plus"></i>
@@ -150,9 +90,28 @@
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-                <div class="modal-body" CientIDMode="Static" runat="server">
+                <div id="divSuggestionModalBody" class="modal-body">
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Slang *</label>
+                        <input type="text" id="txtSlang" class="modal-textinput" runat="server" placeholder="Rojak slang" autocomplete="off" />
+                    </div>
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Translation *</label>
+                        <input type="text" id="txtTranslation" class="modal-textinput" runat="server" placeholder="English translation" autocomplete="off" />
+                    </div>
+                    <div id="divDdlLanguage" class="modal-inputfield">
+                        <label class="modal-inputlabel">Origin Language *</label>
+                        <select id="ddlLanguage" class="modal-dropdown" runat="server" ClientIDMode="static">
+                        </select>
+                    </div>
+                    <div id="divTxtExample" class="modal-inputfield">
+                        <label class="modal-inputlabel">Example</label>
+                        <textarea class="modal-textinput" rows="5" maxlength="100" placeholder="Describe an example usage of the slang"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
+                    <button class="button-primary">Submit</button>
+                    <button class="button-secondary">Cancel</button>
                 </div>
             </div>
         </div>
@@ -161,7 +120,7 @@
     <!-- Notification Popup -->
     <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
         <div class="notification-title">
-            <i class="fa-solid fa-circle-exclamation"></i>
+            <i id="notificationIcon" class="fa-solid fa-circle-exclamation" runat="server"></i>
             <h4 id="notificationTitle" runat="server"></h4>
         </div>
         <p id="notificationMessage" class="notification-message" runat="server"></p>

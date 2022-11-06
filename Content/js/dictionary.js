@@ -1,24 +1,22 @@
 ﻿$(document).ready(function () {
-    var dictionaryContainer = $(".dictionary-container");
-    var dictionaryItemCount = dictionaryContainer.children().length;
-
-    dictionaryContainer.mouseover(function () {
-        $(document.body).css("overflow", "hidden");
-    });
-    dictionaryContainer.mouseleave(function () {
-        $(document.body).css("overflow", "auto");
-    });
-
     // ********** Tooltip **********
     var timeoutId;
-    $("#lnkReport").mouseenter(function () {
+    $("#btnReport").mouseenter(function () {
         timeoutId = setTimeout(function () {
             $("#tooltipReport").css("visibility", "visible");
         }, 700)
     });
-    $("#lnkReport").mouseleave(function () {
+    $("#btnReport").mouseleave(function () {
         clearTimeout(timeoutId);
         $("#tooltipReport").css("visibility", "hidden");
+    });
+
+    // ********** Trigger search on txtSearch enter **********
+    $("#txtSearch").keypress(function (e) {
+        if (e.keyCode == 13) {
+            $("#lnkSearch")[0].click();
+            return false;
+        }
     });
 });
 

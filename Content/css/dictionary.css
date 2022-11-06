@@ -13,8 +13,8 @@ body {
 }
 
 .body-content {
-    margin: 0 10rem;
-    width: 82vw;
+    margin: 0 auto;
+    width: 80vw;
 }
 
 /* Button */
@@ -48,7 +48,7 @@ body {
 
 .button-secondary {
     padding: 0.4rem 0.9rem;
-    background-color: #ffffff;
+    background-color: transparent;
     border: 2px solid var(--primary-color);
     border-radius: 5px;
     color: var(--primary-color);
@@ -189,18 +189,29 @@ body {
 
 /* Dictionary Header */
 .dictionary-header {
-    padding: 2rem 0 1rem 0;
+    padding: 1.5rem 0 1rem 0;
 }
 
-.dictionary-header-title {
+.dictionary-header-text {
     padding-bottom: 1rem;
     display: flex;
     flex-direction: row;
-    column-gap: 2rem;
     align-items: center;
+    justify-content: space-between;
     color: var(--primary-color);
     font-family: 'Mitr', Arial, sans-serif;
     font-size: 40px;
+}
+
+.dictionary-header-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 2rem;
+}
+
+#entryCountText {
+    font-family: 'Rubik', Arial, sans-serif;
 }
 
 .dictionary-controls {
@@ -234,6 +245,8 @@ body {
     flex: 0.04;
     margin-left: -2px;
     background-color: var(--primary-color);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     color: #ffffff !important;
 }
 
@@ -245,7 +258,7 @@ body {
     background-color: var(--primary-color-active);
 }
 
-#lnkReport {
+#btnReport {
     position: relative;
 }
 
@@ -266,13 +279,13 @@ body {
     display: flex;
     flex-direction: column;
     height: 65vh;
-    border-top: 2px solid rgba(0, 0, 0, 0.2);
-    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     overflow-y: auto;
 }
 
 .dictionary-empty {
-    display: none;
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -288,11 +301,21 @@ body {
     font-size: 30px;
 }
 
+.dictionary-container > .dictionary-item:first-child {
+    margin-top: 1rem;
+}
+
 .dictionary-item {
+    display: flex;
+    flex-direction: row;
     margin-bottom: 1rem;
     padding: 1rem 2rem;
     width: 100%;
     background-color: #eaeaea;
+}
+
+.dictionary-item-content {
+    flex: 0.95;
 }
 
 .dictionary-item-title {
@@ -300,9 +323,10 @@ body {
     color: var(--primary-color);
 }
 
-.dictionary-item-content {
+.dictionary-item-text {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .content-title {
@@ -322,6 +346,16 @@ body {
     word-break: break-word;
 }
 
+.dictionary-item-controls {
+    flex: 0.05;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-delete {
+    margin-top: auto;
+    padding: 0.1rem 0.5rem;
+}
 
 /* Modals */
 .modal-window {
@@ -529,8 +563,6 @@ body {
     word-spacing: 0.2rem;
 }
 
-
-
 /* Report Modal */
 #dlgReport {
     width: 40%;
@@ -543,6 +575,34 @@ body {
     grid-template-rows: 0.3fr 0.7fr;
 }
 
+/* Suggestion Modal */
+#dlgSuggestion {
+    width: 50%;
+    height: 80%;
+}
+
+#divSuggestionModalBody {
+    padding: 1rem 0.1rem;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    grid-template-rows: 0.3fr 0.3fr 0.4fr;
+    grid-column-gap: 2rem;
+    grid-row-gap: 1rem;
+}
+
+#divDdlLanguage {
+    grid-column: auto / span 1;
+    width: 100%;
+}
+
+#ddlLanguage {
+    width: 100%;
+}
+
+#divTxtExample {
+    grid-column: auto / span 2;
+    width: 100%;
+}
 
 @keyframes slideIn {
     from {
