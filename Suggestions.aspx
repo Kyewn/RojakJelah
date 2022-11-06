@@ -76,11 +76,11 @@
                             </div>                            
                             <div id="divModificationInfo" ClientIDMode="Static" runat="server" class="inlineDetail">
                                 <div class="itemDetail">
-                                    <h6>Created by</h6>
+                                    <h6>Modified by</h6>
                                     <span id="lblModifyAuthor" ClientIDMode="Static" runat="server"></span>
                                 </div>
                                 <div class="itemDetail">
-                                    <h6>Created at</h6>
+                                    <h6>Modified at</h6>
                                     <span id="lblModifyDate" ClientIDMode="Static" runat="server"></span>
                                 </div>
                             </div>

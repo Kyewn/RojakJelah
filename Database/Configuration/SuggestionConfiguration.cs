@@ -43,6 +43,10 @@ namespace RojakJelah.Database.Configuration
                 .HasColumnName("creation_date")
                 .IsRequired();
 
+            Property(x => x.ModificationDate)
+                .HasColumnName("modification_date")
+                .IsRequired();
+
             // Foreign Keys
             HasRequired(x => x.Language)
                 .WithMany()
@@ -55,6 +59,10 @@ namespace RojakJelah.Database.Configuration
             HasRequired(x => x.CreatedBy)
                 .WithMany()
                 .Map(x => x.MapKey("created_by"));
+            
+            HasRequired(x => x.ModifiedBy)
+                .WithMany()
+                .Map(x => x.MapKey("modified_by"));
         }
     }
 }

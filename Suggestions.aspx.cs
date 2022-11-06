@@ -409,6 +409,9 @@ namespace RojakJelah
                 targetSuggestion.Translation = txtEditTranslation.Text.Trim();
                 targetSuggestion.Language = updatedLanguage;
                 targetSuggestion.Example = txtEditExample.Value.Trim();
+                targetSuggestion.ModifiedBy = dataContext.Users.ToList().Find((x) => x.Username == Page.User.Identity.Name);
+                targetSuggestion.ModificationDate = DateTime.Now;
+
                 dataContext.SaveChanges();
 
                 //  Update UI - update record in pageState._currentList
@@ -417,6 +420,8 @@ namespace RojakJelah
                 targetRecord.Translation = txtEditTranslation.Text.Trim();
                 targetRecord.Language = updatedLanguage;
                 targetRecord.Example = txtEditExample.Value.Trim();
+                targetRecord.ModifiedBy = dataContext.Users.ToList().Find((x) => x.Username == Page.User.Identity.Name);
+                targetRecord.ModificationDate = DateTime.Now;
 
                 //  Close Modal
                 HideModal();
@@ -526,12 +531,8 @@ namespace RojakJelah
                     lblAuthor.InnerText = selectedItem.CreatedBy.Username;
                     lblDate.InnerText = selectedItem.CreationDate.ToShortDateString();
                     lblExample.InnerText = selectedItem.Example;
-/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
-/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
-/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
-
-                    /*lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
-                    lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();*/
+                    lblModifyAuthor.InnerText = selectedItem.ModifiedBy.Username;
+                    lblModifyDate.InnerText = selectedItem.ModificationDate.ToShortDateString();
                 }
                 else
                 {
@@ -544,13 +545,8 @@ namespace RojakJelah
                     lblAuthor.InnerText = pageState._currentList[0].CreatedBy.Username;
                     lblDate.InnerText = pageState._currentList[0].CreationDate.ToShortDateString();
                     lblExample.InnerText = pageState._currentList[0].Example;
-
-/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
-/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
-/*UNCOMMENT ONCE DB HAVE MODIFY FIELDS*/
-
-                    /*lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
-                    lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();*/
+                    lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
+                    lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();
                 }
 
                 //  Show menu controls
