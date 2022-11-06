@@ -157,3 +157,30 @@ function closeModal(selectedModal) {
     $(document.body).css("overflow", "auto");
     selectedModal.css("display", "none");
 }
+
+function confirmDelete(event, controlID) {
+    if (confirm("This is an irreversible action. Are you sure?")) {
+        __doPostBack(controlID, "");
+    } else {
+        event.preventDefault();
+    }
+}
+
+//function promptConfirmation(event, message, controlID) {
+//    event.preventDefault();
+
+//    showModal($("#mdlConfirmation"));
+
+//    $("#dialogMessage").text(message);
+
+//    $("#btnYes")[0].on("click", function (e) {
+//        closeModal($("#mdlConfirmation"));
+//        __doPostBack("btnDelete", "");
+//    });
+//    $("#btnNo")[0].on("click", function (e) {
+//        e.preventDefault();
+//        closeModal($("#mdlConfirmation"));
+//    });
+
+//    return false;
+//}

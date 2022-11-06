@@ -14,27 +14,47 @@ namespace RojakJelah
 {
     public partial class Dictionary : System.Web.UI.Page
     {
+        private enum Sorts
+        {
+            [Description("Slang (asc.)")]
+            SlangASC,
+            [Description("Slang (desc.")]
+            SlangDESC,
+            [Description("Meaning (asc.)")]
+            TranslationASC,
+            [Description("Meaning (desc.)")]
+            TranslationDESC
+        }
+
         private enum Filters
         {
             [Description("Any")]
             Any,
-            [Description("Rojak slang")]
+            [Description("Slang")]
             Slang,
-            [Description("English meaning")]
+            [Description("Meaning")]
             Translation
         }
 
         /// FontAwesome icon class strings
         private const string IconExclamation = "fa-solid fa-circle-exclamation";
+        private const string IconCheck = "fa-regular fa-circle-check";
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Reset state of controls that may persist in postback
+            notification.Style.Add("display", "none");
+
             if (!IsPostBack)
             {
                 PrepopulateControls();
+                PopulateDictionary();
             }
+        }
 
-            PopulateDictionary();
+        protected void DdlSort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PopulateDictionary("", ddlSort.SelectedValue, "");
         }
 
         /// <summary>
@@ -43,14 +63,34 @@ namespace RojakJelah
         protected void LnkSearch_Click(object sender, EventArgs e)
         {
             string filterOption = ddlSearchFilter.Items[ddlSearchFilter.SelectedIndex].Value;
+            string sortOption = ddlSort.Items[ddlSort.SelectedIndex].Value;
             string searchKey = txtSearch.Value.Trim().ToLower();
 
-            PopulateDictionary(filterOption, searchKey);
+            PopulateDictionary(filterOption, sortOption, searchKey);
         }
 
+        /// <summary>
+        /// Deletes the specified dictionary entry.
+        /// </summary>
         protected void BtnDelete_Click(Object sender, EventArgs e)
         {
-            
+            try
+            {
+                DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+                Button sourceButton = sender as Button;
+                int dictionaryEntryId = Int32.Parse(sourceButton.Attributes["data-entryid"]);
+
+                dataContext.DictionaryEntries.Remove(dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId));
+                dataContext.SaveChanges();
+
+                PopulateDictionary();
+                ShowNotification(IconCheck, "Delete succcess", "The dictionary entry has been deleted successfully.", false);
+            }
+            catch (Exception ex)
+            {
+                ShowNotification();
+            }
         }
 
         /// <summary>
@@ -60,6 +100,13 @@ namespace RojakJelah
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
+            // Sort Options dropdown
+            foreach (Enum sortOption in Enum.GetValues(typeof(Sorts)))
+            {
+                ddlSort.Items.Add(new ListItem(GetEnumDescription(sortOption), sortOption.ToString()));
+            }
+
+            // Search Option dropdown
             foreach (Enum filterOption in Enum.GetValues(typeof(Filters)))
             {
                 ddlSearchFilter.Items.Add(new ListItem(GetEnumDescription(filterOption), filterOption.ToString()));
@@ -86,8 +133,9 @@ namespace RojakJelah
         /// Populates dictionary with specified filter or search key.
         /// </summary>
         /// <param name="filter">Filter to be applied while retrieving dictionary entries.</param>
+        /// <param name="sort">Sort option to be applied when ordering dictionary entries.</param>
         /// <param name="searchKey">Search key to be used for retreiving specific dictionary entries.</param>
-        protected void PopulateDictionary(string filter = "", string searchKey = "")
+        protected void PopulateDictionary(string filter = "", string sort = "", string searchKey = "")
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
@@ -100,13 +148,14 @@ namespace RojakJelah
                 userIsAuthorized = currentUser.Role.Name == "System" || currentUser.Role.Name == "Admin";
             }
 
-            // Filter dictionary entries if filter and/or search key is applied
+            // Filter and sort dictionary entries if filter/sort/search key is applied
             List<DictionaryEntry> dictionaryEntryList = dataContext.DictionaryEntries.ToList();
             List<DictionaryEntry> filteredEntries = null;
             searchKey = searchKey.Trim().ToLower();
 
             try
             {
+                // Filter
                 if (!String.IsNullOrWhiteSpace(filter) && !String.IsNullOrWhiteSpace(searchKey))
                 {
                     if (filter == Filters.Slang.ToString())
@@ -131,7 +180,30 @@ namespace RojakJelah
                     filteredEntries = dictionaryEntryList;
                 }
 
-                filteredEntries = filteredEntries.OrderBy(x => x.Slang.WordValue).ToList();
+                // Sort
+                if (!String.IsNullOrWhiteSpace(sort))
+                {
+                    if (sort == Sorts.SlangASC.ToString())
+                    {
+                        filteredEntries = filteredEntries.OrderBy(x => x.Slang.WordValue).ToList();
+                    }
+                    else if (sort == Sorts.SlangDESC.ToString())
+                    {
+                        filteredEntries = filteredEntries.OrderByDescending(x => x.Slang.WordValue).ToList();
+                    }
+                    else if (sort == Sorts.TranslationASC.ToString())
+                    {
+                        filteredEntries = filteredEntries.OrderBy(x => x.Translation.WordValue).ToList();
+                    }
+                    else if (sort == Sorts.TranslationDESC.ToString())
+                    {
+                        filteredEntries = filteredEntries.OrderByDescending(x => x.Translation.WordValue).ToList();
+                    }
+                }
+                else
+                {
+                    filteredEntries = filteredEntries.OrderBy(x => x.Slang.WordValue).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -200,7 +272,9 @@ namespace RojakJelah
                         btnDelete.Text = "Delete";
                         btnDelete.Attributes.Add("data-entryid", dictionaryEntry.Id.ToString());
                         btnDelete.Click += (sender, e) => { BtnDelete_Click(sender, e); };
-
+                        btnDelete.OnClientClick = $"confirmDelete(event, '{btnDelete.ID}');";
+                        //btnDelete.OnClientClick = $@"return promptConfirmation(event, 'This is an irreversible action. Are you sure?', '{btnDelete.ID}');";
+                        
                         dictionaryItemControls.Controls.Add(btnDelete);
 
                         dictionaryItem.Controls.Add(dictionaryItemControls);

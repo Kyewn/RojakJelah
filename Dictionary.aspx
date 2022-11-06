@@ -21,9 +21,12 @@
         </div>
         <div class="dictionary-controls">
             <div class="search-bar">
-                <div class="dropdown">
+                <asp:DropDownList ID="ddlSort" runat="server" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="DdlSort_SelectedIndexChanged">
+                    <asp:ListItem value="" Text="Sort by:" Selected="True" disabled />
+                </asp:DropDownList>
+                <div id="divFilterDdl" class="dropdown">
                     <select id="ddlSearchFilter" runat="server">
-                        <option value="" disabled selected>Search Option:</option>
+                        <option value="" disabled selected>Search by:</option>
                     </select>
                 </div>
                 <input type="text" id="txtSearch" ClientIDMode="Static" runat="server" placeholder="Search..." autocomplete="off"/>
@@ -116,6 +119,28 @@
             </div>
         </div>
     </div>
+
+    <%--<!-- Confirmation Modal --> this shit just doesnt work
+    <div id="mdlConfirmation" class="modal-window" ClientIDMode="Static" runat="server">
+        <div id="dlgConfirmation" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="modal-icon fa-solid fa-triangle-exclamation"></i>
+                    <h2 class="modal-title">Confirmation</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlConfirmation'))">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="dialogMessage" class="modal-dialog-message"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnYes" class="button-primary">Yes</button>
+                    <button id="btnNo" class="button-secondary">No</button>
+                </div>
+            </div>
+        </div>
+    </div>--%>
 
     <!-- Notification Popup -->
     <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
