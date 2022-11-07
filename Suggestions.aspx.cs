@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Diagnostics;
 using System.Web.UI.HtmlControls;
+using System.Data.Entity;
 using RojakJelah.Database;
 using RojakJelah.Database.Entity;
 
@@ -242,50 +243,61 @@ namespace RojakJelah
 
                 //  Input validated, process input
                 //  Create word records if words do not exist in Words table
-                if (wordSlang == null)
+                using (DbContextTransaction transaction = dataContext.Database.BeginTransaction())
                 {
-                    Word newWord = new Word()
+                    try
                     {
-                        WordValue = lblSlang.InnerText,
-                        Language = slangLanguage
-                    };
-                    dataContext.Words.Add(newWord);
-                    dataContext.SaveChanges();
-                    wordSlang = newWord;
+                        if (wordSlang == null)
+                        {
+                            Word newWord = new Word()
+                            {
+                                WordValue = lblSlang.InnerText,
+                                Language = slangLanguage
+                            };
+                            dataContext.Words.Add(newWord);
+                            dataContext.SaveChanges();
+                            wordSlang = newWord;
 
-                }
-                
-                if (wordTranslation == null)
-                {
-                    Word newWord = new Word()
+                        }
+
+                        if (wordTranslation == null)
+                        {
+                            Word newWord = new Word()
+                            {
+                                WordValue = lblTranslation.InnerText,
+                                Language = translationLanguage
+                            };
+                            dataContext.Words.Add(newWord);
+                            dataContext.SaveChanges();
+                            wordTranslation = newWord;
+                        }
+
+                        //  Create dictionary entry once words are confirmed to exist in Words table
+                        DictionaryEntry newEntry = new DictionaryEntry()
+                        {
+                            Slang = wordSlang,
+                            Translation = wordTranslation,
+                            Example = lblExample.InnerText,
+                            CreatedBy = userAuthor,
+                            CreationDate = DateTime.Now,
+                            ModifiedBy = userAuthor,
+                            ModificationDate = DateTime.Now,
+                        };
+
+                        dataContext.DictionaryEntries.Add(newEntry);
+                        dataContext.SaveChanges();
+
+                        //  Update suggestion status
+                        Suggestion approvedRecord = dataContext.Suggestions.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
+                        approvedRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 2);
+                        dataContext.SaveChanges();
+                        transaction.Commit();
+                    } catch (Exception ex)
                     {
-                        WordValue = lblTranslation.InnerText,
-                        Language = translationLanguage
-                    };
-                    dataContext.Words.Add(newWord);
-                    dataContext.SaveChanges();
-                    wordTranslation = newWord;
+                        transaction.Rollback();
+                        throw ex;
+                    }
                 }
-
-                //  Create dictionary entry once words are confirmed to exist in Words table
-                DictionaryEntry newEntry = new DictionaryEntry()
-                {
-                    Slang = wordSlang,
-                    Translation = wordTranslation,
-                    Example = lblExample.InnerText,
-                    CreatedBy = userAuthor,
-                    CreationDate = DateTime.Now,
-                    ModifiedBy = userAuthor,
-                    ModificationDate = DateTime.Now,
-                };
-
-                dataContext.DictionaryEntries.Add(newEntry);
-                dataContext.SaveChanges();
-
-                //  Update suggestion status
-                Suggestion approvedRecord = dataContext.Suggestions.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                approvedRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 2);
-                dataContext.SaveChanges();
                 
                 //  Update UI
                 Suggestion approvedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
