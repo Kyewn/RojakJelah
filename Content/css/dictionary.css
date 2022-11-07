@@ -398,7 +398,7 @@ body {
     display: none;
     position: fixed;
     align-items: center;
-    z-index: 100;
+    z-index: 10000;
     left: 0;
     top: 0;
     width: 100%;
