@@ -50,22 +50,25 @@
                         <div class="translate-user">
                             <!-- Saved Translations -->
                             <div class="button saved">
-                                <asp:LinkButton ID="lnkViewSavedTranslations" CssClass="btn btn-primary" runat="server" OnClick="LnkViewSavedTranslations_Click">
+                                <asp:LinkButton ID="lnkViewSavedTranslations" CssClass="button-small" runat="server" ClientIDMode="Static" OnClick="LnkViewSavedTranslations_Click">
                                     <i class="fa-solid fa-star"></i>
+                                    <span id="tooltipSavedTranslations" class="tool-tip">Saved translations</span>
                                 </asp:LinkButton>
                             </div>
 
                             <!-- Translation History  -->
                             <div class="button history">
-                                <asp:LinkButton ID="lnkViewTranslationHistory" CssClass="btn btn-primary" runat="server" OnClick="LnkViewTranslationHistory_Click">
+                                <asp:LinkButton ID="lnkViewTranslationHistory" CssClass="button-small" runat="server" ClientIDMode="Static" OnClick="LnkViewTranslationHistory_Click">
                                     <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <span id="tooltipTranslationHistory" class="tool-tip">Translation history</span>
                                 </asp:LinkButton>
                             </div>
 
                             <!-- Make Report  -->
                             <div class="button report">
-                                <asp:LinkButton ID="lnkMakeReport" class="btn btn-primary" runat="server" OnClick="LnkReport_Click">
+                                <asp:LinkButton ID="lnkMakeReport" CssClass="button-small" runat="server" ClientIDMode="Static" OnClick="LnkReport_Click">
                                     <i class="fa-solid fa-circle-exclamation"></i>
+                                    <span id="tooltipReport" class="tool-tip">Report</span>
                                 </asp:LinkButton>
                             </div>
                         </div>
@@ -77,8 +80,9 @@
             <div class="translate-output">
                 <div class="translate-output-title">
                     <h5>Translation</h5>
-                    <asp:LinkButton ID="lnkSaveTranslation" CssClass="translate-btn-save" runat="server" OnClick="LnkSaveTranslation_Click">
+                    <asp:LinkButton ID="lnkSaveTranslation" CssClass="translate-btn-save" runat="server" ClientIDMode="Static" OnClick="LnkSaveTranslation_Click">
                         <i id="iconSave" class="fa-regular fa-bookmark" runat="server"></i>
+                        <span id="tooltipSave" class="tool-tip">Save translation</span>
                     </asp:LinkButton>
                 </div>
                 <div class="output">
@@ -165,7 +169,7 @@
 
     <!-- Report Modal -->
     <div id="mdlReport" class="modal-window" ClientIDMode="Static" runat="server">
-        <div class="modal-dialog">
+        <div id="dlgReport" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <i class="modal-icon fa-solid fa-circle-exclamation"></i>
@@ -175,23 +179,19 @@
                     </button>
                 </div>
                 <div id="divReportModalBody" class="modal-body">
-                    <div>
-                        <h4>Issue Category<span>*</span></h4>
-                        <select id="label" name="label">
-                            <option value="">Label One</option>
-                            <option value="">Label Two</option>
-                            <option value="">Label Three</option>
-                            <option value="">Label Four</option>
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Issue Category *</label>
+                        <select id="ddlReportCategory" class="modal-dropdown" runat="server" ClientIDMode="static">
                         </select>
                     </div>
-                    <div>
-                        <h4>Description</h4>
-                        <textarea rows="3" placeholder="Describe your issue" resize="none"></textarea>
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Description *</label>
+                        <textarea class="modal-textinput" rows="5" maxlength="500" placeholder="Describe your issue"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button">Submit</button>
-                    <button type="button">Cancel</button>
+                    <button class="button-primary">Submit</button>
+                    <button class="button-secondary">Cancel</button>
                 </div>
             </div>
         </div>
