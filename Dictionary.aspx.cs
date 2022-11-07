@@ -36,6 +36,16 @@ namespace RojakJelah
             Translation
         }
 
+        private class SearchSettings
+        {
+            public string FilterOption;
+            public string SortOption;
+            public string SearchKey;
+        }
+
+        // Session variables
+        private const string StrSearchSettings = "SearchSettings";
+
         /// FontAwesome icon class strings
         private const string IconExclamation = "fa-solid fa-circle-exclamation";
         private const string IconCheck = "fa-regular fa-circle-check";
@@ -47,6 +57,13 @@ namespace RojakJelah
 
             if (!IsPostBack)
             {
+                Session[StrSearchSettings] = new SearchSettings
+                {
+                    FilterOption = "",
+                    SortOption = "",
+                    SearchKey = ""
+                };
+
                 PrepopulateControls();
             }
 
@@ -55,7 +72,10 @@ namespace RojakJelah
 
         protected void DdlSort_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PopulateDictionary("", ddlSort.SelectedValue, "");
+            SearchSettings sessionSearchSettings = Session[StrSearchSettings] as SearchSettings;
+            sessionSearchSettings.SortOption = ddlSort.Items[ddlSort.SelectedIndex].Value;
+
+            RenderDictionaryResult(true, true, true, true);
         }
 
         /// <summary>
@@ -63,11 +83,14 @@ namespace RojakJelah
         /// </summary>
         protected void LnkSearch_Click(object sender, EventArgs e)
         {
-            string filterOption = ddlSearchFilter.Items[ddlSearchFilter.SelectedIndex].Value;
-            string sortOption = ddlSort.Items[ddlSort.SelectedIndex].Value;
-            string searchKey = txtSearch.Value.Trim().ToLower();
+            Session[StrSearchSettings] = new SearchSettings
+            {
+                FilterOption = ddlSearchFilter.Items[ddlSearchFilter.SelectedIndex].Value,
+                SortOption = ddlSort.Items[ddlSort.SelectedIndex].Value,
+                SearchKey = txtSearch.Value.Trim().ToLower()
+            };
 
-            PopulateDictionary(filterOption, sortOption, searchKey);
+            RenderDictionaryResult(true, true, true, false);
         }
 
         /// <summary>
@@ -79,13 +102,16 @@ namespace RojakJelah
             {
                 DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
+                // Get dictionary entry ID
                 Button sourceButton = sender as Button;
                 int dictionaryEntryId = Int32.Parse(sourceButton.Attributes["data-entryid"]);
 
+                // Remove dictionary entry from database
                 dataContext.DictionaryEntries.Remove(dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId));
                 dataContext.SaveChanges();
 
-                PopulateDictionary();
+                RenderDictionaryResult(false, false, false, true);
+
                 ShowNotification(IconCheck, "Delete succcess", "The dictionary entry has been deleted successfully.", false);
             }
             catch (Exception ex)
@@ -128,6 +154,30 @@ namespace RojakJelah
             {
                 ddlLanguage.Items.Add(new ListItem(language.Name, language.Id.ToString()));
             }
+        }
+
+        /// <summary>
+        /// Takes filterOption, sortOption, and searchKey to render dictionary with complete, applied settings.
+        /// </summary>
+        protected void RenderDictionaryResult(bool applyFilter, bool applySort, bool applySearchKey, bool useSession)
+        {
+            string filterOption, sortOption, searchKey;
+            SearchSettings sessionSearchSettings = Session[StrSearchSettings] as SearchSettings ?? null;
+
+            if (useSession && sessionSearchSettings != null)
+            {
+                filterOption = sessionSearchSettings.FilterOption;
+                sortOption = sessionSearchSettings.SortOption;
+                searchKey = sessionSearchSettings.SearchKey;
+            }
+            else
+            {
+                filterOption = applyFilter ? ddlSearchFilter.Items[ddlSearchFilter.SelectedIndex].Value : "";
+                sortOption = applySort ? ddlSort.Items[ddlSort.SelectedIndex].Value : "";
+                searchKey = applySearchKey ? txtSearch.Value.Trim().ToLower() : "";
+            }
+
+            PopulateDictionary(filterOption, sortOption, searchKey);
         }
 
         /// <summary>

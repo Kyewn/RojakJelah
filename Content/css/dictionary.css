@@ -611,6 +611,10 @@ body {
     grid-template-rows: 0.3fr 0.7fr;
 }
 
+#ddlReportCategory {
+    width: 60%;
+}
+
 /* Suggestion Modal */
 #dlgSuggestion {
     width: 50%;
