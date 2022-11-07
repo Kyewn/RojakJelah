@@ -74,7 +74,7 @@
                                     <span id="lblDate" ClientIDMode="Static" runat="server"></span>
                                 </div>
                             </div>                            
-                            <div id="divModificationInfo" ClientIDMode="Static" runat="server" class="inlineDetail">
+                            <div class="inlineDetail">
                                 <div class="itemDetail">
                                     <h6>Modified by</h6>
                                     <span id="lblModifyAuthor" ClientIDMode="Static" runat="server"></span>

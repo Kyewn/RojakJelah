@@ -559,15 +559,12 @@ namespace RojakJelah
                     btnEdit.Style.Add("visibility", "hidden");
                     buttonContainer.Style.Add("display", "none");
                     btnEdit.Style.Add("display", "none");
-                    divModificationInfo.Style.Add("display", "flex");
-                }
-                else
+                } else
                 {
                     buttonContainer.Style.Add("visibility", "visible");
                     btnEdit.Style.Add("visibility", "visible");
                     buttonContainer.Style.Add("display", "flex");
                     btnEdit.Style.Add("display", "block");
-                    divModificationInfo.Style.Add("display", "none");
                 }
             }
         }
