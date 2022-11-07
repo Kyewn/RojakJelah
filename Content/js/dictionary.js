@@ -165,22 +165,3 @@ function confirmDelete(event, controlID) {
         event.preventDefault();
     }
 }
-
-//function promptConfirmation(event, message, controlID) {
-//    event.preventDefault();
-
-//    showModal($("#mdlConfirmation"));
-
-//    $("#dialogMessage").text(message);
-
-//    $("#btnYes")[0].on("click", function (e) {
-//        closeModal($("#mdlConfirmation"));
-//        __doPostBack("btnDelete", "");
-//    });
-//    $("#btnNo")[0].on("click", function (e) {
-//        e.preventDefault();
-//        closeModal($("#mdlConfirmation"));
-//    });
-
-//    return false;
-//}

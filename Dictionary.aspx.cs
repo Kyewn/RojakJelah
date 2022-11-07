@@ -18,7 +18,7 @@ namespace RojakJelah
         {
             [Description("Slang (asc.)")]
             SlangASC,
-            [Description("Slang (desc.")]
+            [Description("Slang (desc.)")]
             SlangDESC,
             [Description("Meaning (asc.)")]
             TranslationASC,
@@ -48,8 +48,9 @@ namespace RojakJelah
             if (!IsPostBack)
             {
                 PrepopulateControls();
-                PopulateDictionary();
             }
+
+            PopulateDictionary();
         }
 
         protected void DdlSort_SelectedIndexChanged(object sender, EventArgs e)
@@ -271,9 +272,8 @@ namespace RojakJelah
                         btnDelete.CssClass = "button-secondary button-delete";
                         btnDelete.Text = "Delete";
                         btnDelete.Attributes.Add("data-entryid", dictionaryEntry.Id.ToString());
-                        btnDelete.Click += (sender, e) => { BtnDelete_Click(sender, e); };
+                        btnDelete.Click += new EventHandler(BtnDelete_Click);
                         btnDelete.OnClientClick = $"confirmDelete(event, '{btnDelete.ID}');";
-                        //btnDelete.OnClientClick = $@"return promptConfirmation(event, 'This is an irreversible action. Are you sure?', '{btnDelete.ID}');";
                         
                         dictionaryItemControls.Controls.Add(btnDelete);
 
