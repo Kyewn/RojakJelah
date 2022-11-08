@@ -38,10 +38,7 @@
 
                 <div class="translate-container">
                     <!-- Translation Input Field -->
-                    <div class="context">
-                        <textarea id="txtInput" runat="server" name="inputValue" rows="3" maxlength="5000" placeholder="Enter message here..."></textarea>
-                    </div>
-
+                    <textarea id="txtInput" class="context" runat="server" rows="3" maxlength="5000" placeholder="Enter message here..." spellcheck="true"></textarea>
                     <!-- Translate Buttons  -->
                     <div class="translate-button">
                         <asp:Button ID="btnTranslate" class="btnTranslate" runat="server" OnClick="BtnTranslate_Click" Text="Translate" />

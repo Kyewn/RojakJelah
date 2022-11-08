@@ -341,6 +341,7 @@
   flex-direction: column;
   margin: auto;
   width: 85%;
+  height: 90vh;
 }
 
 .banner .banner-container {
@@ -474,26 +475,23 @@
 }
 
 
+
 /* Translate Input  */
 .translate .translate-container .context {
-  flex: 0.82;
-  border-radius: 5px;
+    flex: 0.82;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 18px;
+    resize: vertical;
 }
 
-.translate .translate-container .context textarea {
-  width: 100%;
-  border: none;
-  border: 1px solid var(--primary-color);
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 18px;
-  resize: vertical;
-}
-
-.translate .translate-container .context textarea:focus {
-  outline: 0;
-  box-shadow: none;
-  border: 2px solid var(--primary-color);
+.translate .translate-container .context:focus {
+    outline: 0;
+    box-shadow: none;
+    border: 2px solid var(--primary-color);
 }
 
 
