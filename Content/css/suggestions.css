@@ -189,7 +189,7 @@
 
 .listItem-selected {
     box-shadow: inset 0 0 0 2px var(--primary-color);
-    background-color: var(--listItem-active);
+    background-color: var(--actionMenu-color);
 }
 
 .noData {

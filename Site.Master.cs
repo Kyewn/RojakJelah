@@ -3,9 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using RojakJelah.Database;
-
 
 namespace RojakJelah
 {
@@ -82,7 +80,7 @@ namespace RojakJelah
             // Add active class
             switch (path)
             {
-                case "/Translator":
+                case "/Translator": case "/Translator.aspx":
                     lnkTranslator.CssClass = "scroll-link active";
                     break;
                 case "/Dictionary":

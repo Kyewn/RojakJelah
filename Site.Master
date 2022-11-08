@@ -72,13 +72,13 @@
                             </li>
                             <li runat="server">
                                 <asp:LinkButton ID="lnkSuggestions" runat="server" class="scroll-link" href="Suggestions.aspx">
-                                    <i class="fa-solid fa-circle-info"></i>
+                                    <i class="fa-solid fa-spell-check"></i>
                                     Suggestions
                                 </asp:LinkButton>
                             </li>
                             <li runat="server">
                                 <asp:LinkButton ID="lnkReports" runat="server" class="scroll-link" href="Reports.aspx">
-                                    <i class="fa-solid fa-circle-info"></i>
+                                    <i class="fa-sharp fa-solid fa-flag"></i>
                                     Reports
                                 </asp:LinkButton>
                             </li>

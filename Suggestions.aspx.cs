@@ -608,16 +608,18 @@ namespace RojakJelah
             switch (filter)
             {
                 case 0:
-                    //  Slang
-                    filteredList.AddRange(suggestionList.Where((x) => x.Slang.ToLower().Contains(searchKeys)));
+                case 5: 
+                case 6:
+                    //  Slang, Approved, Rejected
+                    filteredList.AddRange(suggestionList.Where((x) => x.Slang.ToLower().Contains(searchKeys.ToLower())));
                     break;
                 case 1:
                     //  Translation
-                    filteredList.AddRange(suggestionList.Where((x) => x.Translation.ToLower().Contains(searchKeys)));
+                    filteredList.AddRange(suggestionList.Where((x) => x.Translation.ToLower().Contains(searchKeys.ToLower())));
                     break;
                 case 2:
                     //  Created by
-                    filteredList.AddRange(suggestionList.Where((x) => x.CreatedBy.Username.ToLower().Contains(searchKeys)));
+                    filteredList.AddRange(suggestionList.Where((x) => x.CreatedBy.Username.ToLower().Contains(searchKeys.ToLower())));
                     break;
                 case 3:
                     //  Date (asc.)
@@ -628,14 +630,6 @@ namespace RojakJelah
                     //  Date (dsc.)
                     orderedList.AddRange(suggestionList.OrderByDescending((x) => x.CreationDate));
                     filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));
-                    break;
-                case 5:
-                    //  Approved
-                    filteredList.AddRange(suggestionList.Where((x) => x.Slang.ToLower().Contains(searchKeys)));
-                    break;
-                case 6:
-                    //  Rejected
-                    filteredList.AddRange(suggestionList.Where((x) => x.Slang.ToLower().Contains(searchKeys)));
                     break;
             }
 
