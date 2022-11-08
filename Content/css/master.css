@@ -6,6 +6,8 @@
     --primary-color-hover: #E39090;
     --primary-color-active: #F2CCCC;
     --secondary-color-yellow: #FFF96D;
+    --notification-error: #d35555;
+    --notification-success: #5aad7f;
 }
 
 html {

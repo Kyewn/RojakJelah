@@ -60,6 +60,15 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl notification;
 
         /// <summary>
+        /// notificationIcon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl notificationIcon;
+
+        /// <summary>
         /// notificationTitle control.
         /// </summary>
         /// <remarks>
