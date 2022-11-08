@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Linq;
-using System.Diagnostics;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using RojakJelah.Database;
-using RojakJelah.Database.Entity;
 
 
 namespace RojakJelah
@@ -39,6 +35,13 @@ namespace RojakJelah
                 {
                     // Hide Login button and show Logout button
                     lnkAdminPanel.Visible = true;
+                }
+            } else
+            {
+                var path = HttpContext.Current.Request.Url.AbsolutePath;
+                if (path.Contains("/Suggestions") || path.Contains("/Reports"))
+                {
+                    Response.Redirect("Translator.aspx");
                 }
             }
         }

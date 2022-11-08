@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Diagnostics;
@@ -469,8 +468,8 @@ namespace RojakJelah
         
         private void AddListItem(Suggestion item)
         {
-            var listItemHTML = $@"
-                    <div class='listItem'>
+            Panel listItem = new Panel();
+            var topRowLiteralHTML = $@"
                         <div class='topRow'>
                             <div class='itemDetail'>
                                 <span>ID</span>
@@ -496,16 +495,23 @@ namespace RojakJelah
                                 <span>Created at</span>
                                 <span>{item.CreationDate.ToShortDateString()}</span>
                             </div>
-                        </div>
+                        </div>";
+            var bottomRowLiteralHTML = $@"
                         <div class='bottomRow'>
                             <div class='itemDetail'>
                                 <span>Example</span>
                                 <span>{item.Example}</span>
                             </div>
-                        </div>
-                    </div>";
+                        </div>";
+            var topRowLiteralControl= new LiteralControl(topRowLiteralHTML);
+            var bottomRowLiteralControl = new LiteralControl(bottomRowLiteralHTML);
 
-            var listItem = new LiteralControl(listItemHTML);
+            listItem.CssClass = "listItem";
+            listItem.ID = $"listItem{item.Id}";
+            listItem.ClientIDMode = ClientIDMode.Static;
+            listItem.Controls.Add(topRowLiteralControl);
+            listItem.Controls.Add(bottomRowLiteralControl);
+
             listItemContainer.Controls.Add(listItem);
         }
 
@@ -559,6 +565,19 @@ namespace RojakJelah
                     lblExample.InnerText = pageState._currentList[0].Example;
                     lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
                     lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();
+                }
+
+                // Apply selected css to selected list item
+                var listItems = listItemContainer.Controls.OfType<Panel>().ToList();
+                foreach(Panel item in listItems)
+                {
+                    if (item.ID == $"listItem{txtSelectedListItem.Text}")
+                    {
+                        item.CssClass += " listItem-selected";
+                    } else
+                    {
+                        item.CssClass = "listItem";
+                    }
                 }
 
                 //  Show menu controls
