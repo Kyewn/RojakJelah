@@ -15,8 +15,8 @@ namespace RojakJelah
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
-            //Toggle admin menu and normal menu based on current page
-            ToggleNavMenu();
+            //  Handle nav menu items and adding active class to them
+            HandleNavMenu();
 
             // Check if user is logged in
             if (Page.User.Identity.IsAuthenticated)
@@ -54,30 +54,49 @@ namespace RojakJelah
             Response.Redirect("Login.aspx");
         }
 
-        protected void ToggleNavMenu()
+        protected void HandleNavMenu()
         {
-            var links = this.FindControl("navLinks").Controls.OfType<HtmlGenericControl>().ToList();
-
+            // Toggle visibility
             string path = HttpContext.Current.Request.Url.AbsolutePath;
 
             if (path.Contains("/Suggestions") || path.Contains("/Reports"))
             {
-                links[0].Style.Add("display", "block");
-                links[4].Style.Add("display", "block");
-                links[5].Style.Add("display", "block");
-                links[1].Style.Add("display", "none");
-                links[2].Style.Add("display", "none");
-                links[3].Style.Add("display", "none");
-                links[6].Style.Add("display", "none");
+                lnkBack.Style.Add("display", "flex");
+                lnkSuggestions.Style.Add("display", "flex");
+                lnkReports.Style.Add("display", "flex");
+                lnkTranslator.Style.Add("display", "none");
+                lnkDictionary.Style.Add("display", "none");
+                lnkAbout.Style.Add("display", "none");
+                lnkAdminPanel.Style.Add("display", "none");
             } else
             {
-                links[0].Style.Add("display", "none");
-                links[4].Style.Add("display", "none");
-                links[5].Style.Add("display", "none");
-                links[1].Style.Add("display", "block");
-                links[2].Style.Add("display", "block");
-                links[3].Style.Add("display", "block");
-                links[6].Style.Add("display", "block");
+                lnkBack.Style.Add("display", "none");
+                lnkSuggestions.Style.Add("display", "none");
+                lnkReports.Style.Add("display", "none");
+                lnkTranslator.Style.Add("display", "flex");
+                lnkDictionary.Style.Add("display", "flex");
+                lnkAbout.Style.Add("display", "flex");
+                lnkAdminPanel.Style.Add("display", "flex");
+            }
+
+            // Add active class
+            switch (path)
+            {
+                case "/Translator":
+                    lnkTranslator.CssClass = "scroll-link active";
+                    break;
+                case "/Dictionary":
+                    lnkDictionary.CssClass += "scroll-link active";
+                    break;
+                case "/About":
+                    lnkAbout.CssClass += "scroll-link active";
+                    break;
+                case "/Suggestions":
+                    lnkSuggestions.CssClass += "scroll-link active";
+                    break;
+                case "/Reports":
+                    lnkReports.CssClass += "scroll-link active";
+                    break;
             }
         }
     }

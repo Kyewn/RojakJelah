@@ -47,40 +47,40 @@
                     <div class="links-container">
                         <ul ID="navLinks" ClientIDMode="Static" class="links" runat="server">
                             <li runat="server">
-                                <a class="scroll-link" href="Translator.aspx">
+                                <asp:LinkButton ID="lnkBack" runat="server" class="scroll-link" href="Translator.aspx">
                                     <i class="fa-solid fa-left-long"></i>
                                     Back
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li runat="server">
-                                <a class="scroll-link" href="Translator.aspx">
+                                <asp:LinkButton ID="lnkTranslator" runat="server" class="scroll-link" href="Translator.aspx">
                                     <i class="fa-sharp fa-solid fa-message"></i>
                                     Translator
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li runat="server">
-                                <a class="scroll-link" href="Dictionary.aspx">
+                                <asp:LinkButton ID="lnkDictionary" runat="server" class="scroll-link" href="Dictionary.aspx">
                                     <i class="fa-solid fa-file-contract"></i>
                                     Dictionary
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li runat="server">
-                                <a class="scroll-link" href="About.aspx">
+                                <asp:LinkButton ID="lnkAbout" runat="server" class="scroll-link" href="About.aspx">
                                     <i class="fa-solid fa-circle-info"></i>
                                     About
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li runat="server">
-                                <a class="scroll-link" href="Suggestions.aspx">
+                                <asp:LinkButton ID="lnkSuggestions" runat="server" class="scroll-link" href="Suggestions.aspx">
                                     <i class="fa-solid fa-circle-info"></i>
                                     Suggestions
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li runat="server">
-                                <a class="scroll-link" href="Reports.aspx">
+                                <asp:LinkButton ID="lnkReports" runat="server" class="scroll-link" href="Reports.aspx">
                                     <i class="fa-solid fa-circle-info"></i>
                                     Reports
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li runat="server">
                                 <asp:LinkButton ID="lnkAdminPanel" runat="server" class="scroll-link" href="Suggestions.aspx" Visible="false">

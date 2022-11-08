@@ -1,19 +1,7 @@
 //Master page processes
 window.addEventListener('load', () => {
-    const linkAnchors = document.querySelectorAll('.links li a');
     if (window.location.pathname == "/Translator" || window.location.pathname == "/") {
         document.querySelector(".nav-header").style.visibility = 'hidden';
-        linkAnchors[1].classList.add('active');
-    } else if (window.location.pathname == "/Dictionary") {
-        linkAnchors[2].classList.add('active');
-    } else if (window.location.pathname == "/About") {
-        linkAnchors[3].classList.add('active');
-    } else if (window.location.pathname == "/Suggestions" || window.location.pathname == "/Reports") {
-        if (window.location.pathname == "/Suggestions") {
-            linkAnchors[4].classList.add('active');
-        } else {
-            linkAnchors[5].classList.add('active');
-        }
     }
 });
 
