@@ -1,288 +1,679 @@
-﻿/* Header Search / Add Suggest  */
-/* Header Search / Add Suggest  */
-/* Header Search / Add Suggest  */
-.dictionary-header {
-    margin: 20px 0;
+﻿h1, h2, h3, h4, h5, h6 {
+    margin: 0 !important;
 }
 
-    .dictionary-header .header-title {
-        display: flex;
-        align-items: center;
-    }
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-        .dictionary-header .header-title h1 {
-            font-size: 22px;
-            color: #D35555;
-        }
+#mainForm {
+    flex: 1;
+}
 
-        .dictionary-header .header-title .report {
-            padding-left: 0.5rem;
-        }
+.body-content {
+    margin: 0 auto;
+    width: 80vw;
+}
 
-            .dictionary-header .header-title .report button {
-                border: none;
-                border: 2px solid #d35555;
-                padding: 5px 7px;
-                background: none;
-                border-radius: 5px;
-                transition: 0.4s;
-                border-radius: 5px;
-            }
+/* Button */
+.button-primary {
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color) !important;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff !important;
+    transition: 0.3s ease-out;
+}
 
-                .dictionary-header .header-title .report button:hover {
-                    border-color: #e29090;
-                }
+.button-primary h3 {
+    margin-left: 0.5rem !important;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+}
 
-                    .dictionary-header .header-title .report button:hover i {
-                        color: #e29090;
-                    }
+.button-primary:hover {
+    background-color: var(--primary-color-hover) !important;
+}
 
-                .dictionary-header .header-title .report button:focus {
-                    border-color: #f2cccc;
-                }
+.button-primary:active {
+    background-color: var(--primary-color-active) !important;
+}
 
-                    .dictionary-header .header-title .report button:focus i {
-                        color: #f2cccc;
-                    }
+.button-secondary {
+    padding: 0.4rem 0.9rem;
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--primary-color);
+    transition: 0.3s ease-out;
+}
 
-            .dictionary-header .header-title .report i {
-                font-size: 20px;
-                color: #D35555;
-            }
+.button-secondary:hover {
+    border: 2px solid var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
 
-    /* Search or Add Suggest */
-    /* Search or Add Suggest */
-    /* Search or Add Suggest */
-    .dictionary-header .header-search {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.button-secondary:active {
+    border: 2px solid var(--primary-color-active);
+    color: var(--primary-color-active);
+}
 
-        .dictionary-header .header-search .search-box {
-            width: 70%;
-        }
+.button-small {
+    padding: 0.5rem 0.7rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--primary-color);
+    transition: 0.3s ease-out;
+}
 
-            .dictionary-header .header-search .search-box input {
-                border: none;
-                padding: 10px;
-                color: #D35555;
-                font-size: 15px;
-                border: 1px solid #D35555;
-                width: 100%;
-            }
+.button-small:hover {
+    border: 2px solid var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
 
-                .dictionary-header .header-search .search-box input:focus {
-                    outline: 0;
-                    box-shadow: none;
-                    border: 2px solid #D35555;
-                }
-
-
-
-        /* Add Suggest Terms  */
-        /* Add Suggest Terms  */
-        .dictionary-header .header-search .add-suggest div#addSuggestItem {
-            top: 90px;
-        }
-
-        .dictionary-header .header-search .add-suggest .suggest-btn {
-            font-weight: 400;
-            border: none;
-            background: #d35555;
-            color: #ffff;
-            font-size: 20px;
-            padding: 5px 20px;
-            border-radius: 5px;
-            transition: 0.4s;
-        }
-
-            .dictionary-header .header-search .add-suggest .suggest-btn:hover {
-                background: #da4343;
-            }
-
-            .dictionary-header .header-search .add-suggest .suggest-btn :focus {
-                background: #e29090;
-            }
-
-
-        /* Add Suggest Modal Form  */
-        .dictionary-header .header-search .add-suggest .modal-header .suggest-title {
-            font-size: 25px;
-            color: #D35555;
-        }
+.button-small:active {
+    border: 2px solid var(--primary-color-active);
+    color: var(--primary-color-active);
+}
 
 
 
-        /* Add Suggest Form */
-        .dictionary-header .header-search .add-suggest .modal-body form .form-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-            .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field {
-                width: 48%;
-            }
-
-                .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field label {
-                    color: #D35555;
-                    font-size: 18px;
-                    padding: 0.5rem;
-                }
-
-                .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field input {
-                    width: 100%;
-                    border: none;
-                    color: #000;
-                    padding: 5px 10px;
-                    border: 1px solid #D35555;
-                    border-radius: 5px;
-                }
-
-                    .dictionary-header .header-search .add-suggest .modal-body form .form-item .form-field input:focus {
-                        outline: 0;
-                        box-shadow: none;
-                        border: 2px solid #D35555;
-                    }
+/* Tooltip */
+.tool-tip {
+    margin-top: 5rem;
+    padding: 0 0.5rem;
+    position: absolute;
+    visibility: hidden;
+    background-color: var(--primary-color-hover);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    z-index: 1;
+}
 
 
-        /* Select Language Dropdown  */
-        .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field {
-            width: 55%;
-            margin-top: 20px;
-        }
 
-            .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field label {
-                color: #D35555;
-                font-size: 18px;
-                padding: 0.2rem;
-            }
-
-            .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field select {
-                width: 100%;
-                border: none;
-                color: #000;
-                padding: 5px 10px;
-                border: 1px solid #D35555;
-                border-radius: 5px;
-            }
-
-                .dictionary-header .header-search .add-suggest .modal-body form .select-language .form-field select:focus {
-                    outline: 0;
-                    box-shadow: none;
-                    border: 2px solid #D35555;
-                }
-
-
-        /* Example  */
-        .dictionary-header .header-search .add-suggest .modal-body form .example .form-field {
-            width: 100%;
-        }
-
-            .dictionary-header .header-search .add-suggest .modal-body form .example .form-field label {
-                color: #D35555;
-                font-size: 18px;
-                padding: 0.5rem;
-            }
-
-            .dictionary-header .header-search .add-suggest .modal-body form .example .form-field textarea {
-                width: 100%;
-                border: none;
-                color: #000;
-                padding: 5px 10px;
-                border: 1px solid #D35555;
-                border-radius: 5px;
-            }
-
-                .dictionary-header .header-search .add-suggest .modal-body form .example .form-field textarea:focus {
-                    outline: 0;
-                    box-shadow: none;
-                    border: 2px solid #D35555;
-                }
-
-        .dictionary-header .header-search .add-suggest form .button {
-            display: flex;
-            justify-content: right;
-            align-items: center;
-        }
-
-            .dictionary-header .header-search .add-suggest form .button .cancel {
-                border: none;
-                border: 2px solid #d35555;
-                width: 100px;
-                padding: 5px 0;
-                background: none;
-                border-radius: 5px;
-                transition: 0.4s;
-            }
-
-                .dictionary-header .header-search .add-suggest form .button .cancel:hover {
-                    border-color: #e29090;
-                    color: #e29090;
-                }
-
-
-                .dictionary-header .header-search .add-suggest form .button .cancel:focus {
-                    outline: 0;
-                    box-shadow: none;
-                    border-color: #f2cccc;
-                    color: #f2cccc;
-                }
-
-            .dictionary-header .header-search .add-suggest form .button .submit {
-                border: none;
-                background: #d35555;
-                color: #ffff;
-                font-size: 20px;
-                padding: 5px 0;
-                width: 100px;
-                border-radius: 5px;
-                transition: 0.4s;
-            }
-
-                .dictionary-header .header-search .add-suggest form .button .submit:hover {
-                    background: #da4343;
-                }
-
-                .dictionary-header .header-search .add-suggest form .button .submit:focus {
-                    background: #e29090;
-                }
-
-/* Add Suggest Success message  */
-/* #submitForm {
-    display: block;
-} */
-.addSuggest-message {
+/* Notification restyling */
+.notification {
+    display: none;
     position: fixed;
-    top: 50%;
-    left: 0;
-    width: 100%;
+    top: 65%;
+    right: 3%;
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+    width: 300px;
+    background-color: var(--primary-color);
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.1s linear;
 }
 
-#successMessage {
-    background: #D35555;
-    padding: 1rem;
-    color: #fff;
+
+/* Dropdown */
+/* Custom Dropdowns */
+.dropdown {
     position: relative;
-    width: 30%;
-    margin: auto;
+    border: none;
+    font-family: 'Rubik', Arial, sans-serif;
+}
+
+.dropdown select {
+    display: none; /*hide original SELECT element */
+}
+
+/* Style the arrow inside the select element */
+.dropdown-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active) */
+.dropdown-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 7px;
+}
+
+/* Style selected item and same-as-selected option */
+.dropdown-selected {
+    padding: 8px 16px;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: 0.3s ease-out;
+}
+
+.same-as-selected {
+    color: #ffffff !important;
+    background-color: var(--primary-color-hover) !important;
+}
+
+/* Style items (options) */
+.dropdown-items {
+    position: absolute;
+    background-color: var(--primary-color);
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+.dropdown-items div {
+    padding: 8px 16px;
+    color: var(--primary-color);
+    background-color: #ffffff;
+    border-left: 2px solid var(--primary-color);
+    border-right: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    cursor: pointer;
+}
+
+.dropdown-items div:hover {
+    color: var(--primary-color-hover);
+}
+
+.dropdown-items div:active {
+    color: var(--primary-color-active);
+}
+
+/* Hide the items when the select box is closed */
+.dropdown-hide {
     display: none;
 }
 
-    #successMessage #cls-btn {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        color: #fff;
-        border: none;
-        background: none;
+
+
+/* Dictionary Header */
+.dictionary-header {
+    padding: 1.5rem 0 1rem 0;
+}
+
+.dictionary-header-text {
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--primary-color);
+    font-family: 'Mitr', Arial, sans-serif;
+    font-size: 40px;
+}
+
+.dictionary-header-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 2rem;
+}
+
+#entryCountText {
+    font-family: 'Rubik', Arial, sans-serif;
+}
+
+.dictionary-controls {
+    display: flex;
+    flex-direction: row;
+}
+
+.search-bar {
+    flex: 0.7;
+    display: flex;
+    flex-direction: row;
+}
+
+#ddlSort {
+    flex: 0.20;
+    margin-right: 1rem;
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: #323232;
+    outline: none;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+}
+
+#ddlSort:hover {
+    border: 2px solid var(--primary-color-hover);
+    box-shadow: 0 0 0 1px var(--primary-color-hover);
+}
+
+#ddlSort:hover {
+    border: 2px solid var(--primary-color-active);
+    box-shadow: 0 0 0 1px var(--primary-color-active);
+}
+
+#divFilterDdl {
+    flex: 0.20;
+}
+
+#txtSearch {
+    flex: 0.55;
+    margin-left: -1px;
+    padding: 0 1rem;
+    border: 1px solid var(--primary-color);
+}
+
+#txtSearch:focus {
+    box-shadow: inset 0 0 0 1px var(--primary-color);
+    outline: none;
+}
+
+#lnkSearch {
+    flex: 0.05;
+    margin-left: -2px;
+    background-color: var(--primary-color);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    color: #ffffff !important;
+}
+
+#lnkSearch:hover {
+    background-color: var(--primary-color-hover);
+}
+
+#lnkSearch:active {
+    background-color: var(--primary-color-active);
+}
+
+#btnReport {
+    position: relative;
+}
+
+.dictionary-buttons {
+    flex: 0.3;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    column-gap: 1rem;
+    color: var(--primary-color);
+}
+
+
+
+/* Dictionary Container */
+.dictionary-container {
+    margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    height: 65vh;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+.dictionary-empty {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 1rem;
+    width: 100%;
+    height: 100%;
+    background-color: #eaeaea;
+    color: #525252;
+}
+
+.dictionary-empty h4 {
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 30px;
+}
+
+.dictionary-container > .dictionary-item:first-child {
+    margin-top: 1rem;
+}
+
+.dictionary-item {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+    padding: 1rem 2rem;
+    width: 100%;
+    background-color: #eaeaea;
+}
+
+.dictionary-item-content {
+    flex: 0.95;
+}
+
+.dictionary-item-title {
+    padding-bottom: 0.2rem;
+    color: var(--primary-color);
+}
+
+.dictionary-item-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.content-title {
+    margin: 0;
+    padding: 0.2rem 0;
+    flex: 0.1;
+    color: #323232;
+    font-weight: 500;
+}
+
+.content-text {
+    margin: 0;
+    padding: 0.2rem 0;
+    flex: 0.9;
+    color: var(--primary-color);
+    font-weight: 400;
+    word-break: break-word;
+}
+
+.dictionary-item-controls {
+    flex: 0.05;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-delete {
+    margin-top: auto;
+    padding: 0.1rem 0.5rem;
+}
+
+/* Modals */
+.modal-window {
+    display: none;
+    position: fixed;
+    align-items: center;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
+    width: 50%;
+    padding: 2rem 5rem 1rem 5rem;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.4);
+    overflow-y: initial;
+    animation: slideIn .3s ease-out forwards;
+}
+
+.modal-content {
+    width: 100%;
+    height: 100%;
+}
+
+.modal-header {
+    display: flex;
+    padding-bottom: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    color: var(--primary-color);
+}
+
+.modal-icon {
+    flex: 0.07;
+    font-size: 24px;
+}
+
+.modal-title {
+    flex: 0.88;
+    text-align: left;
+}
+
+.modal-btn-close {
+    flex: 0.05;
+    background-color: white;
+    border: none;
+    color: #323232;
+    font-size: 28px;
+    transition: ease-out 0.1s;
+}
+
+.modal-btn-close:hover {
+    color: #828282;
+}
+
+.modal-btn-close:active {
+    color: #b2b2b2;
+}
+
+.modal-body {
+    height: 60vh;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+.modal-title {
+    color: var(--primary-color);
+    font-size: 26px;
+    font-family: 'Mitr', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.modal-empty {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #eaeaea;
+}
+
+.modal-empty i {
+    color: #525252;
+    font-size: 40px;
+}
+
+.modal-empty h1 {
+    margin: 0;
+    color: #525252;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 30px;
+}
+
+.modal-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #eaeaea;
+}
+
+.modal-item h2 {
+    color: var(--primary-color);
+    font-size: 18px;
+    word-break: break-word;
+}
+
+.modal-item h3 {
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.modal-item h4 {
+    padding-top: 0.4rem;
+    color: #323232;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.modal-item-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 2rem;
+}
+
+.modal-item-row small {
+    flex: 0.9;
+    color: #323232;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.modal-item-btn {
+    flex: 0.1;
+    display: flex;
+    align-self: flex-end;
+    padding: 0 0.4rem;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: none;
+    border-radius: 4px;
+    font-family: 'Rubik', Arial, sans-serif;
+    transition: all 0.2s ease-out;
+}
+
+.modal-item-btn:hover {
+    border-color: var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
+
+.modal-item-btn:active {
+    border-color: var(--primary-color-active);
+    color: var(--primary-color-active);
+}
+
+.modal-inputfield {
+    display: flex;
+    flex-direction: column;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.modal-dropdown {
+    padding: 0.5rem 1rem;
+    width: 50%;
+    border: 2px solid var(--primary-color);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.modal-dropdown:focus {
+    box-shadow: 0 0 0 1px var(--primary-color);
+    outline: none;
+}
+
+.modal-textinput {
+    padding: 0.5rem 1rem;
+    resize: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 3px;
+}
+
+.modal-textinput:focus {
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.modal-footer {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    padding: 1rem 0;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    word-spacing: 0.2rem;
+}
+
+/* Report Modal */
+#dlgReport {
+    width: 40%;
+    height: 70%;
+}
+
+#divReportModalBody {
+    padding: 1rem 0.1rem;
+    display: grid;
+    grid-template-rows: 0.3fr 0.7fr;
+}
+
+#ddlReportCategory {
+    width: 60%;
+}
+
+/* Suggestion Modal */
+#dlgSuggestion {
+    width: 50%;
+    height: 80%;
+}
+
+#divSuggestionModalBody {
+    padding: 1rem 0.1rem;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    grid-template-rows: 0.3fr 0.3fr 0.4fr;
+    grid-column-gap: 2rem;
+    grid-row-gap: 1rem;
+}
+
+#divDdlLanguage {
+    grid-column: auto / span 1;
+    width: 100%;
+}
+
+#ddlLanguage {
+    width: 100%;
+}
+
+#divTxtExample {
+    grid-column: auto / span 2;
+    width: 100%;
+}
+
+/* Confirmation Modal */
+#dlgConfirmation {
+    width: 30%;
+    height: 50%;
+}
+
+#dlgConfirmation .modal-header {
+    column-gap: 1rem;
+}
+
+.modal-dialog-message {
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+
+
+@keyframes slideIn {
+    from {
+        top: -300px;
+        opacity: 0;
     }
 
-        #successMessage #cls-btn i {
-            font-size: 20px;
-            color: #fff;
-        }
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
 
 @media screen and (max-width: 992px) {
     .dictionary-header .header-search {
@@ -308,64 +699,25 @@
         align-items: flex-start;
     }
 
-        .dictionary-header .header-search .search-box {
-            width: 100%;
-        }
-
-        .dictionary-header .header-search .add-suggest {
-            margin-top: 20px;
-        }
-}
-
-
-/* Dictionary Container  */
-/* Dictionary Container  */
-/* Dictionary Container  */
-
-.dictionary-container .dictionary-item {
-    background: #eaeaea;
-    padding: 1rem;
-    margin-top: 20px;
-}
-
-    .dictionary-container .dictionary-item .title h3 {
-        font-size: 20px;
-        color: #D35555;
+    .dictionary-header .header-search .search-box {
+        width: 100%;
     }
 
-    .dictionary-container .dictionary-item .item-content {
-        display: flex;
+    .dictionary-header .header-search .add-suggest {
+        margin-top: 20px;
     }
-
-        .dictionary-container .dictionary-item .item-content .left-item {
-            width: 20%;
-        }
-
-            .dictionary-container .dictionary-item .item-content .left-item p {
-                color: #000;
-                font-size: 18px;
-            }
-
-        .dictionary-container .dictionary-item .item-content .right-item {
-            width: 70%;
-        }
-
-            .dictionary-container .dictionary-item .item-content .right-item p {
-                color: #D35555;
-                font-size: 18px;
-            }
-
+}
 
 @media screen and (max-width: 492px) {
     .dictionary-container .dictionary-item .item-content {
         flex-direction: column;
     }
 
-        .dictionary-container .dictionary-item .item-content .left-item {
-            width: 100%;
-        }
+    .dictionary-container .dictionary-item .item-content .left-item {
+        width: 100%;
+    }
 
-        .dictionary-container .dictionary-item .item-content .right-item {
-            width: 100%;
-        }
+    .dictionary-container .dictionary-item .item-content .right-item {
+        width: 100%;
+    }
 }

@@ -1,202 +1,155 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Dictionary.aspx.cs" Inherits="RojakJelah.Dictionary" %>
+
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
-    <link href="<%= Page.ResolveUrl("~/Content/css/dictionary.css")%>" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="<%= Page.ResolveUrl("~/Content/css/dictionary.css")%>" />
 </asp:Content>
+
+<asp:Content ID="PageJavaScript" ContentPlaceHolderID="PageJavaScript" runat="server">
+    <script src="Content/js/dictionary.js"></script>
+</asp:Content>
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <!-- Header Search / Add Suggest  -->
-    <!-- Header Search / Add Suggest  -->
-    <!-- Header Search / Add Suggest  -->
+
+    <!-- Dictionary Header  -->
     <section class="dictionary-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3 col-md-12 col-sm-12">
-                    <div class="header-title">
-                        <div>
-                            <h1>Dictionary</h1>
-                        </div>
-                        <div class="report">
-                            <button>
-                                <i class="fa-solid fa-circle-exclamation"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9 col-md-12 col-sm-12">
-
-                    <!-- Search or Add Suggest   -->
-                    <div class="header-search">
-                        <div class="search-box">
-                            <input type="text" placeholder="Search...">
-                        </div>
-                        <div class="add-suggest">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="suggest-btn" data-bs-toggle="modal"
-                                data-bs-target="#addSuggestItem">
-                                <i class="fa-solid fa-plus"></i> Suggest terms
-                            </button>
-                            <!-- Modal -->
-                            <!-- Add Suggest Terms Form  -->
-                            <!-- Add Suggest Terms Form  -->
-                            <!-- Add Suggest Terms Form  -->
-                            <div class="modal fade" id="addSuggestItem" tabindex="-1" data-bs-backdrop="static"
-                                aria-labelledby="addSuggest" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="suggest-title" id="addSuggest">Add suggestion</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <!-- Add Suggest Form  -->
-                                            <!-- Add Suggest Form  -->
-                                            <!-- Add Suggest Form  -->
-                                            <div id="submitForm">
-                                                <!-- Suggest  -->
-                                                <div class="form-item">
-                                                    <div class="form-field">
-                                                        <label for="">Slang</label><br>
-                                                        <input type="text" required>
-                                                    </div>
-                                                    <div class="form-field">
-                                                        <label for="">Translation</label><br>
-                                                        <input type="text" required>
-                                                    </div>
-                                                </div>
-                                                <!-- Language  -->
-                                                <div class="select-language">
-
-                                                    <div class="form-field">
-                                                        <label for="">Language</label><br>
-                                                        <select name="language" id="language" required>
-                                                            <option value="">Language name</option>
-                                                            <option value="">Language 1</option>
-                                                            <option value="">Language 2</option>
-                                                            <option value="">language 3</option>
-                                                            <option value="">Language 4</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- Example  -->
-                                                <div class="example">
-                                                    <div class="form-field">
-                                                        <label for="">Example</label><br>
-                                                        <textarea name="" id="" cols="" rows="3"
-                                                            placeholder="Example Here ...." required></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="button">
-                                                    <div class="px-2">
-                                                        <button type="button" class="cancel" data-bs-dismiss="modal"
-                                                            aria-label="Close">Cancel</button>
-                                                    </div>
-                                                    <div>
-                                                        <button class="submit" onclick="addSuggest()">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
+        <div class="dictionary-header-text">
+            <div class="dictionary-header-title">
+                <i class="fa-solid fa-file-contract"></i>
+                <h1>Dictionary</h1>
             </div>
+            <h5 id="entryCountText" runat="server" ClientIDMode="static"></h5>
         </div>
-    </section>
-
-
-    <!-- Add Suggest Terms  -->
-    <!-- Add Suggest Terms  -->
-    <!-- Add Suggest Terms  -->
-
-
-
-
-    <!-- Dictionary Container  -->
-    <!-- Dictionary Container  -->
-    <!-- Dictionary Container  -->
-    <section class="dictionary-container">
-
-        <div class="dictionary-item">
-            <div class="title">
-                <h3>Slang</h3>
+        <div class="dictionary-controls">
+            <div class="search-bar">
+                <asp:DropDownList ID="ddlSort" runat="server" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="DdlSort_SelectedIndexChanged">
+                    <asp:ListItem value="" Text="Sort by:" Selected="True" disabled />
+                </asp:DropDownList>
+                <div id="divFilterDdl" class="dropdown">
+                    <select id="ddlSearchFilter" runat="server">
+                        <option value="" disabled selected>Search by:</option>
+                    </select>
+                </div>
+                <input type="text" id="txtSearch" ClientIDMode="Static" runat="server" placeholder="Search..." autocomplete="off"/>
+                <asp:LinkButton ID="lnkSearch" CssClass="button-small" runat="server" ClientIDMode="Static" OnClick="LnkSearch_Click">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </asp:LinkButton>
             </div>
-            <div class="item-content">
-                <div class="left-item">
-                    <p>Meaning:</p>
-                </div>
-                <div class="right-item">
-                    <p>(Translation)</p>
-                </div>
-            </div>
-            <div class="item-content">
-                <div class="left-item">
-                    <p>Example:</p>
-                </div>
-                <div class="right-item">
-                    <p>(Example)</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="dictionary-item">
-            <div class="title">
-                <h3>Aduhai</h3>
-            </div>
-            <div class="item-content">
-                <div class="left-item">
-                    <p>Meaning:</p>
-                </div>
-                <div class="right-item">
-                    <p>(Translation)</p>
-                </div>
-            </div>
-            <div class="item-content">
-                <div class="left-item">
-                    <p>Example:</p>
-                </div>
-                <div class="right-item">
-                    <p>(Example)</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="dictionary-item">
-            <div class="title">
-                <h3>Slang</h3>
-            </div>
-            <div class="item-content">
-                <div class="left-item">
-                    <p>Meaning:</p>
-                </div>
-                <div class="right-item">
-                    <p>(Translation)</p>
-                </div>
-            </div>
-            <div class="item-content">
-                <div class="left-item">
-                    <p>Example:</p>
-                </div>
-                <div class="right-item">
-                    <p>(Example)</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Successfully Message  -->
-        <div class="addSuggest-message">
-            <div id="successMessage">
-                <p>Successfully added suggestion</p>
-                <button onclick="clsBtn()" id="cls-btn">
-                    <i class="fa-solid fa-x"></i>
+            <div class="dictionary-buttons">
+                <button type="button" id="btnReport" class="button-small" onclick="showModal($('#mdlReport'))">
+                    <i class="fa-solid fa-circle-exclamation fa-lg"></i>
+                    <span id="tooltipReport" class="tool-tip">Report</span>
+                </button>
+                <button type="button" id="btnSuggest" class="button-primary" runat="server" onclick="showModal($('#mdlSuggestion'))">
+                    <i class="fa-solid fa-plus"></i>
+                    <h3>Suggest terms</h3>
                 </button>
             </div>
         </div>
     </section>
+
+    <!-- Dictionary Container  -->
+    <section id="sctDictionary" class="dictionary-container" runat="server">
+    </section>
+
+    <!-- Modals -->
+    <!-- Report Modal -->
+    <div id="mdlReport" class="modal-window" ClientIDMode="Static" runat="server">
+        <div id="dlgReport" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="modal-icon fa-solid fa-circle-exclamation"></i>
+                    <h2 class="modal-title">Report</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlReport'))">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div id="divReportModalBody" class="modal-body">
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Issue Category *</label>
+                        <select id="ddlReportCategory" class="modal-dropdown" runat="server" ClientIDMode="static">
+                        </select>
+                    </div>
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Description *</label>
+                        <textarea class="modal-textinput" rows="5" maxlength="500" placeholder="Describe your issue"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="button-primary">Submit</button>
+                    <button class="button-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suggestion Modal -->
+    <div id="mdlSuggestion" class="modal-window" ClientIDMode="Static" runat="server">
+        <div id="dlgSuggestion" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="modal-icon fa-solid fa-plus"></i>
+                    <h2 class="modal-title">Send suggestion</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlSuggestion'))">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div id="divSuggestionModalBody" class="modal-body">
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Slang *</label>
+                        <input type="text" id="txtSlang" class="modal-textinput" runat="server" placeholder="Rojak slang" autocomplete="off" />
+                    </div>
+                    <div class="modal-inputfield">
+                        <label class="modal-inputlabel">Translation *</label>
+                        <input type="text" id="txtTranslation" class="modal-textinput" runat="server" placeholder="English translation" autocomplete="off" />
+                    </div>
+                    <div id="divDdlLanguage" class="modal-inputfield">
+                        <label class="modal-inputlabel">Origin Language *</label>
+                        <select id="ddlLanguage" class="modal-dropdown" runat="server" ClientIDMode="static">
+                        </select>
+                    </div>
+                    <div id="divTxtExample" class="modal-inputfield">
+                        <label class="modal-inputlabel">Example</label>
+                        <textarea class="modal-textinput" rows="5" maxlength="100" placeholder="Describe an example usage of the slang"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="button-primary">Submit</button>
+                    <button class="button-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%--<!-- Confirmation Modal --> this shit just doesnt work
+    <div id="mdlConfirmation" class="modal-window" ClientIDMode="Static" runat="server">
+        <div id="dlgConfirmation" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="modal-icon fa-solid fa-triangle-exclamation"></i>
+                    <h2 class="modal-title">Confirmation</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlConfirmation'))">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="dialogMessage" class="modal-dialog-message"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnYes" class="button-primary">Yes</button>
+                    <button id="btnNo" class="button-secondary">No</button>
+                </div>
+            </div>
+        </div>
+    </div>--%>
+
+    <!-- Notification Popup -->
+    <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
+        <div class="notification-title">
+            <i id="notificationIcon" class="fa-solid fa-circle-exclamation" runat="server"></i>
+            <h4 id="notificationTitle" runat="server"></h4>
+        </div>
+        <p id="notificationMessage" class="notification-message" runat="server"></p>
+        <small class="notification-tip">CLICK TO CLOSE</small>
+    </div>
 
 </asp:Content>
