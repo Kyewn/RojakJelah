@@ -213,6 +213,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\about.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\reports.css" />
     <Content Include="Content\css\suggestions.css" />
     <Content Include="Content\css\dictionary.css" />
     <Content Include="Content\css\login.css" />
@@ -234,6 +235,7 @@
     <Content Include="Content\js\login.js" />
     <Content Include="Content\js\master.js" />
     <Content Include="Content\js\register.js" />
+    <Content Include="Content\js\reports.js" />
     <Content Include="Content\js\suggestions.js" />
     <Content Include="Content\js\translator.js" />
     <Content Include="Content\Site.css" />
@@ -344,7 +346,6 @@
     </Compile>
     <Compile Include="Reports.aspx.cs">
       <DependentUpon>Reports.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Reports.aspx.designer.cs">
       <DependentUpon>Reports.aspx</DependentUpon>
