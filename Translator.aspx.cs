@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using edu.stanford.nlp.ling;
+using edu.stanford.nlp.neural.rnn;
+using edu.stanford.nlp.pipeline;
+using java.util;
 using RojakJelah.Database;
 using RojakJelah.Database.Entity;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -58,8 +60,132 @@ namespace RojakJelah
                 ManageSession(rojakHashtable);
             }
 
+            SetupCoreNlpPipeline();
+
             PopulateSavedTranslations();
             PopulateTranslationHistory();
+        }
+
+        protected void SetupCoreNlpPipeline()
+        {
+            // Root directory & models directory
+            //var jarRoot = "C:/Users/wztho/Downloads"; /// only need to change this line
+            //var modelsDirectory = jarRoot + "/stanford-corenlp-4.5.0-models/edu/stanford/nlp";
+
+            // Model file paths
+            //var postaggerModel = modelsDirectory + "/models/pos-tagger/english-left3words-distsim.tagger";
+
+            var jarRoot = @"x:\..\..\..\stanford-corenlp-4.5.0-models"; /// only need to change this line
+            var modelsDirectory = jarRoot + @"\stanford-corenlp-4.5.0-models\edu\stanford\nlp\models";
+
+            // Set up pipeline properties
+            Properties props = new Properties();
+            // Set the list of annotators to run
+            props.setProperty("annotators", "tokenize, pos, parse, lemma, ner, sentiment");
+            // Customize the annotator options
+            props.setProperty("tokenize.options", "splitHyphenated=false,americanize=false");
+            //props.setProperty("pos.model", postaggerModel);
+            props.setProperty("ner.useSUTime", "0");
+
+            // Build pipeline
+            var curDir = Environment.CurrentDirectory;
+            Directory.SetCurrentDirectory(jarRoot);
+            var pipeline = new StanfordCoreNLP(props);
+            Directory.SetCurrentDirectory(curDir);
+
+            // Change this string to test different inputs
+            string text = $@"I've a pen, I've a pineapple, you're an apple.
+                            Stanford.NLP.NET is built on top of IKVM.NET (Java VM that runs on top of .NET VM).
+                             It supports full .NET framework and .NET Core.
+                             You should always start from the main CoreNLP package, which provides the full range of features. Other, related packages exist only for historical / compatibility reasons.
+                             Use the official CoreNLP site for the latest docs, samples and demos. This site is maintained by the library's authors.
+                             Use StackOverflow to ask all ""how to"" NLP - related questions.";
+            Debug.WriteLine($"\nOriginal text: {text}\n");
+
+            // Create a document object
+            CoreDocument doc = pipeline.processToCoreDocument(text);
+            // Annotate document object
+            pipeline.annotate(doc);
+
+            // Get sentences
+            var sentenceList = doc.sentences();
+            for (int i = 0; i < sentenceList.size(); i++)
+            {
+                CoreSentence sentence = sentenceList.get(i) as CoreSentence;
+                Debug.WriteLine($@"Sentence {i + 1}: {sentence.text()}");
+
+                // For every sentence, get its tokens
+                var tokenList = sentence.tokens();
+                // Print every token
+                Debug.Write("Tokens: ");
+                for (int j = 0; j < tokenList.size(); j++)
+                {
+                    CoreLabel token = tokenList.get(j) as CoreLabel;
+
+                    Debug.Write($"[{token}] ");
+                }
+                // Print every token's word
+                Debug.Write("\nWords: ");
+                for (int j = 0; j < tokenList.size(); j++)
+                {
+                    CoreLabel token = tokenList.get(j) as CoreLabel;
+
+                    Debug.Write($"[{token.word()}] ");
+                }
+                // POS Tagging
+                Debug.Write("\nWords+POS: ");
+                for (int j = 0; j < tokenList.size(); j++)
+                {
+                    CoreLabel token = tokenList.get(j) as CoreLabel;
+
+                    Debug.Write($@"[{token.word()}\{token.tag()}] ");
+                }
+
+                // For every sentence, get the Named Entities
+                var namedEntities = sentence.entityMentions();
+                Debug.Write("\nNamed Entities: ");
+                for (int j = 0; j < namedEntities.size(); j++)
+                {
+                    CoreEntityMention entity = namedEntities.get(j) as CoreEntityMention;
+
+                    Debug.Write($@"[{entity.text()}: {entity.entityType()}] ");
+                }
+
+                // Sentiment Analysis
+                var sentenceTree = sentence.sentimentTree();
+                var sentiment = RNNCoreAnnotations.getPredictedClass(sentenceTree);
+                var predictions = RNNCoreAnnotations.getPredictions(sentenceTree);
+
+                Debug.WriteLine($"\nSentiment: {sentiment} - {GetSentimentMeaning(sentiment)}");
+                Debug.WriteLine($@"Predictions: {predictions}");
+
+                for (int j = 0; j <= 4; j++)
+                {
+                    var probability = predictions.get(j);
+                    Debug.WriteLine($@"Probability: {probability}");
+                }
+
+                Debug.WriteLine("\n");
+            }
+        }
+
+        protected string GetSentimentMeaning(int sentimentValue)
+        {
+            switch (sentimentValue)
+            {
+                case 0:
+                    return "Negative";
+                case 1:
+                    return "Somewhat negative";
+                case 2:
+                    return "Neutral";
+                case 3:
+                    return "Somewhat positve";
+                case 4:
+                    return "Positive";
+                default:
+                    return "Unknown";
+            }
         }
 
         /// <summary>
@@ -145,7 +271,7 @@ namespace RojakJelah
             if (inputWords != null && inputWords.Count() > 0)
             {
                 var rojakHashtable = Session[StrRojakHashtable] as Dictionary<string, List<string>>[];
-                Random randomizer = new Random();
+                System.Random randomizer = new System.Random();
 
                 foreach (string word in inputWords)
                 {
