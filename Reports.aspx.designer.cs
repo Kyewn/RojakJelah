@@ -186,6 +186,24 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblDate;
 
         /// <summary>
+        /// lblModifyBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblModifyBy;
+
+        /// <summary>
+        /// lblModifyDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblModifyDate;
+
+        /// <summary>
         /// notification control.
         /// </summary>
         /// <remarks>

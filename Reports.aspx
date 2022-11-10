@@ -74,7 +74,17 @@
                                     <h6>Created at</h6>
                                     <span id="lblDate" ClientIDMode="Static" runat="server"></span>
                                 </div>
-                            </div>                            
+                            </div>             
+                            <div class="inlineDetail">
+                                <div class="itemDetail">
+                                    <h6>Modified by</h6>
+                                    <span id="lblModifyBy" ClientIDMode="Static" runat="server"></span>
+                                </div>
+                                <div class="itemDetail">
+                                    <h6>Modified at</h6>
+                                    <span id="lblModifyDate" ClientIDMode="Static" runat="server"></span>
+                                </div>
+                            </div> 
                     </div>
                 </div>
             </div>
