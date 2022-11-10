@@ -51,7 +51,7 @@ namespace RojakJelah
 
             // Check for existing user
             User existingUser = dataContext.Users.SingleOrDefault(x => x.Username == username) ?? null;
-
+            
             // Error message
             bool hasError = false;
             string errorTitle = "";

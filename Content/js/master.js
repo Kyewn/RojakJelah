@@ -1,9 +1,21 @@
 //Master page processes
 window.addEventListener('load', () => {
+    // ********** set date ************
+    const date = document.getElementById('date');
+    date.innerHTML = new Date().getFullYear();
+
     const navLinks = document.querySelectorAll('.links li a');
     if (window.location.pathname == "/Translator" || window.location.pathname == "/") {
         document.querySelector(".nav-header").style.visibility = 'hidden';
         navLinks[0].classList.add('active');
+
+        const scrollHeight = window.pageYOffset;
+        const navHeight = navbar.getBoundingClientRect().height;
+        if (scrollHeight > navHeight) {
+            document.querySelector(".nav-header").style.visibility = 'visible';
+        } else {
+            document.querySelector(".nav-header").style.visibility = 'hidden';
+        }
     } else if (window.location.pathname == "/Dictionary") {
         navLinks[1].classList.add('active');
     } else if (window.location.pathname == "/About") {

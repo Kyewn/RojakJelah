@@ -46,7 +46,7 @@
         </div>
     </section>
 
-     <!-- Status Notification Popup -->
+    <!-- Status Notification Popup -->
     <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
         <div class="notification-title">
             <i class="fa-solid fa-circle-exclamation"></i>
