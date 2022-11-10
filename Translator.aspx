@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Translator.aspx.cs" Inherits="RojakJelah.Translator" %>
+﻿<%@ Page Title="RojakJelah | Translator" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Translator.aspx.cs" Inherits="RojakJelah.Translator" %>
 
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
     <link rel="stylesheet" type="text/css" href="<%= Page.ResolveUrl("~/Content/css/translator.css")%>" />
@@ -85,8 +85,10 @@
                         <span id="tooltipSave" class="tool-tip">Save translation</span>
                     </asp:LinkButton>
                 </div>
-                <div class="output">
-                    <p id="txtOutput" runat="server"></p>
+                <div class="output-container">
+                    <div class="output-text">
+                        <p id="txtOutput" runat="server"></p>
+                    </div>
                     <img id="startQuote" src="Content/image/translatorOutput_startQuote.svg" />
                     <img id="endQuote" src="Content/image/translatorOutput_endQuote.svg" />
                 </div>
@@ -165,10 +167,15 @@
                 <div id="divTranslationHistoryModalBody" class="modal-body" CientIDMode="Static" runat="server">
                 </div>
                 <div id="divTranslationHistoryModalFooter" class="modal-footer">
-                    <asp:LinkButton ID="lnkDownloadTranslationHistory" class="button-primary" runat="server" ClientIDMode="Static" OnClick="LnkDownloadTranslationHistory_Click">
-                        <i class="fa-solid fa-download"></i>
-                        Download
-                    </asp:LinkButton>
+                    <div class="modal-footer-controls">
+                        <asp:LinkButton ID="lnkDownloadTranslationHistory" class="button-primary" runat="server" ClientIDMode="Static" OnClick="LnkDownloadTranslationHistory_Click">
+                            <i class="fa-solid fa-download"></i>
+                            Download
+                        </asp:LinkButton>
+                        <asp:LinkButton ID="lnkClearTranslationHistory" class="button-secondary" runat="server" ClientIDMode="Static" OnClick="LnkClearTranslationHistory_Click">
+                            Clear History
+                        </asp:LinkButton>
+                    </div>
                     <p id="translationHistoryFooterText" runat="server"></p>
                 </div>
             </div>

@@ -245,15 +245,23 @@ namespace RojakJelah
                         /* Check for these tags to be corrected
                          * - POS (possessive, e.g. Joe's mama)
                          * - VBZ (short form verb, e.g. Joe's going to school)
-                         * - VBP (short form verb, e.g. 've / 're / 'm / 's)
+                         * - VBP (short form verb present, e.g. 've / 're / 'm / 's)
+                         * - RB (short form adverb, e.g. n't)
+                         * - PRP (personal pronoun, e.g. 's)
+                         * - MD (modal, e.g. 'll)
+                         * - VBD (short form verb past, e.g. 'd)
                          */
-                        if (token.Tag == "POS" || ((token.Tag == "VBZ") && (token.Word[0] == '\'')) || ((token.Tag == "VBP") && (token.Word[0] == '\'')))
+                        if ((token.Tag == "POS") || (token.Tag == "VBZ" && token.Word[0] == '\'') || (token.Tag == "VBP" && token.Word[0] == '\'') ||
+                            (token.Tag == "RB" && (token.Word == "n't" || token.Word == "nt")) || (token.Tag == "PRP" && token.Word == "'s") ||
+                            (token.Tag == "MD" && token.Word == "'ll") || (token.Tag == "VBD" && token.Word == "'d"))
                         {
-                            correctedWord = (i > 0) ? tokenizedSentence.ElementAt(i - 1).Word + token.Word : token.Word;
-                            correctedTag = tokenizedSentence.ElementAt(i - 1).Tag;
-                            correctedShape = tokenizedSentence.ElementAt(i - 1).Shape;
+                            Token previousToken = (i > 0) ? tokenizedSentence.ElementAt(i - 1) : tokenizedSentence.ElementAt(i);
 
-                            correctedSentence.RemoveAt(i - 1);
+                            correctedWord = (i > 0) ? previousToken.Word + token.Word : token.Word;
+                            correctedTag = previousToken.Tag;
+                            correctedShape = previousToken.Shape;
+
+                            correctedSentence.RemoveAt(correctedSentence.Count - 1);
                         }
                         else
                         {
@@ -280,39 +288,85 @@ namespace RojakJelah
             #region Morphological Analyzing & Translation
             List<List<string>> translatedSentenceList = new List<List<string>>();
 
-            // Perform translation
             if ((correctedSentenceList != null) && (correctedSentenceList.Count() > 0))
             {
+                // Retrieve rojakHashtable, initialize Random object for random slang output
                 var rojakHashtable = Session[StrRojakHashtable] as Dictionary<string, List<string>>[];
                 System.Random randomizer = new System.Random();
 
+                // Determine ngram (number of words of the longest phrase in the database)
+                HashSet<string> translationList = new HashSet<string>();
+                var dictionaryEntryList = dataContext.DictionaryEntries.ToList();
+                dictionaryEntryList.ForEach(x => translationList.Add(x.Translation.WordValue));
+
+                int ngram = 0;
+                foreach (string translation in translationList)
+                {
+                    int wordCount = translation.Split(' ').Count();
+                    ngram = (ngram < wordCount) ? wordCount : ngram;
+                }
+
+                // Translate each sentence
                 foreach (List<Token> correctedSentence in correctedSentenceList)
                 {
                     var translatedSentence = new List<string>();
+                    int resultedIncrement = 0;
 
-                    foreach (Token token in correctedSentence)
+                    // Iterate through the tokens in each sentence
+                    for (int i = 0; i < correctedSentence.Count; i += resultedIncrement)
                     {
-                        string word = token.Word;
-                        string shape = token.Shape;
+                        int lowerBound = i;
+                        int upperBound = (correctedSentence.Count < i + ngram) ? correctedSentence.Count : (i + ngram);
+                        bool isTranslated = false;
 
-                        // Get hash index
-                        int index = Char.ToLower(word[0]) % HashDivisor;
-
-                        // If rojakHashtable contains the input word, add its corresponding slang to output words
-                        if ((index < rojakHashtable.Length) && (rojakHashtable[index].ContainsKey(word.ToLower())))
+                        /* From the current lowerBound, iterate until the upperBound searching for a matching slang word/phrase.
+                         * upperBound is decremented each iteration, such that the length of word/phrase to search is decreased, until a translation is made.
+                         * The result of this loop will only be 1 word or phrase.
+                         */
+                        while (!isTranslated)
                         {
-                            var matchedSlangList = rojakHashtable[index][word.ToLower()];
+                            string word = "";
+                            int increment = 0;
 
-                            string matchedSlang = matchedSlangList.ElementAt(randomizer.Next(0, matchedSlangList.Count));
+                            for (int j = lowerBound; j < upperBound; j++)
+                            {
+                                word += correctedSentence.ElementAt(j).Word;
+                                word += (j < upperBound - 1) ? " " : "";
 
-                            translatedSentence.Add(shape == TokenShape.AllCaps.ToString() ? matchedSlang.ToUpper() :
-                                shape == TokenShape.Proper.ToString() ? Char.ToUpper(matchedSlang[0]) + matchedSlang.Substring(1) :
-                                matchedSlang);
-                        }
-                        // Else, add the original input word back into output words
-                        else
-                        {
-                            translatedSentence.Add(word);
+                                increment++;
+                            }
+
+                            // Get hash index
+                            int hashIndex = Char.ToLower(word[0]) % HashDivisor;
+
+                            // If rojakHashtable contains the input word, add its corresponding slang into current output sentence
+                            if ((hashIndex < rojakHashtable.Length) && (rojakHashtable[hashIndex].ContainsKey(word.ToLower())))
+                            {
+                                var matchedSlangList = rojakHashtable[hashIndex][word.ToLower()];
+
+                                string matchedSlang = matchedSlangList.ElementAt(randomizer.Next(0, matchedSlangList.Count));
+                                string shape = correctedSentence.ElementAt(i).Shape;
+
+                                translatedSentence.Add(shape == TokenShape.AllCaps.ToString() ? matchedSlang.ToUpper() :
+                                    shape == TokenShape.Proper.ToString() ? Char.ToUpper(matchedSlang[0]) + matchedSlang.Substring(1) :
+                                    matchedSlang);
+
+                                isTranslated = true;
+                                resultedIncrement = increment;
+                            }
+                            else
+                            {
+                                // If the single word is reached with still no matched slang, add the word into current output sentence
+                                if (increment == 1)
+                                {
+                                    translatedSentence.Add(word);
+
+                                    isTranslated = true;
+                                    resultedIncrement = increment;
+                                }
+                            }
+
+                            upperBound--;
                         }
                     }
 
@@ -484,9 +538,6 @@ namespace RojakJelah
                         dataContext.SavedTranslations.Remove(dataContext.SavedTranslations.SingleOrDefault(x => x.Id == translationId));
                         dataContext.SaveChanges();
 
-                        if (dataContext.SavedTranslations.ToList().Count == 0)
-                            lnkDownloadSavedTranslations.Style.Add("display", "none");
-
                         LnkViewSavedTranslations_Click(sender, e);
 
                         ShowNotification(IconCheck, "Delete succcess", "The translation has been deleted successfully.", false);
@@ -501,9 +552,6 @@ namespace RojakJelah
                     // Translation history
                     var translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
                     translationHistory.Remove(translationHistory.SingleOrDefault(x => x.Id == translationId));
-
-                    if (translationHistory.Count == 0)
-                        lnkDownloadTranslationHistory.Style.Add("display", "none");
 
                     LnkViewTranslationHistory_Click(sender, e);
 
@@ -605,6 +653,15 @@ namespace RojakJelah
             Response.End();
         }
 
+        protected void LnkClearTranslationHistory_Click(object sender, EventArgs e)
+        {
+            Session[StrTranslationHistory] = new List<SavedTranslation>();
+            Session[StrTranslationHistoryCount] = 0;
+
+            PopulateTranslationHistory();
+            ShowModal(mdlTranslationHistory);
+        }
+
         /// <summary>
         /// Prepopulates page controls with options.
         /// </summary>
@@ -632,6 +689,7 @@ namespace RojakJelah
             if (savedTranslationList.Count == 0)
             {
                 FillEmptyModal(divSavedTranslationsModalBody);
+                lnkDownloadSavedTranslations.Style.Add("display", "none");
                 savedTranslationFooterText.InnerText = "";
             }
             else
@@ -658,6 +716,8 @@ namespace RojakJelah
             if ((translationHistory != null ) && (translationHistory.Count == 0))
             {
                 FillEmptyModal(divTranslationHistoryModalBody);
+                lnkDownloadTranslationHistory.Style.Add("display", "none");
+                lnkClearTranslationHistory.Style.Add("display", "none");
                 translationHistoryFooterText.InnerText = "";
             }
             else
@@ -671,6 +731,7 @@ namespace RojakJelah
                 }
 
                 lnkDownloadTranslationHistory.Style.Add("display", "block");
+                lnkClearTranslationHistory.Style.Add("display", "block");
                 translationHistoryFooterText.InnerText = translationHistory.Count + " translation" + (translationHistory.Count > 1 ? "s " : " ") + "found";
             }
         }
