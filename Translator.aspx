@@ -38,7 +38,10 @@
 
                 <div class="translate-container">
                     <!-- Translation Input Field -->
-                    <textarea id="txtInput" class="context" runat="server" rows="3" maxlength="5000" placeholder="Enter message here..." spellcheck="true"></textarea>
+                    <grammarly-editor-plugin class="translate-textinput">
+                        <textarea id="txtInput" runat="server" rows="3" maxlength="5000" placeholder="Enter message here..." spellcheck="true"></textarea>
+                    </grammarly-editor-plugin>
+
                     <!-- Translate Buttons  -->
                     <div class="translate-button">
                         <asp:Button ID="btnTranslate" class="btnTranslate" runat="server" OnClick="BtnTranslate_Click" Text="Translate" />
@@ -137,7 +140,11 @@
                 </div>
                 <div id="divSavedTranslationsModalBody" class="modal-body" CientIDMode="Static" runat="server">
                 </div>
-                <div class="modal-footer">
+                <div id="divSavedTranslationsModalFooter" class="modal-footer">
+                    <asp:LinkButton ID="lnkDownloadSavedTranslations" class="button-primary" runat="server" ClientIDMode="Static" OnClick="LnkDownloadSavedTranslations_Click">
+                        <i class="fa-solid fa-download"></i>
+                        Download
+                    </asp:LinkButton>
                     <p id="savedTranslationFooterText" runat="server"></p>
                 </div>
             </div>
@@ -157,7 +164,11 @@
                 </div>
                 <div id="divTranslationHistoryModalBody" class="modal-body" CientIDMode="Static" runat="server">
                 </div>
-                <div class="modal-footer">
+                <div id="divTranslationHistoryModalFooter" class="modal-footer">
+                    <asp:LinkButton ID="lnkDownloadTranslationHistory" class="button-primary" runat="server" ClientIDMode="Static" OnClick="LnkDownloadTranslationHistory_Click">
+                        <i class="fa-solid fa-download"></i>
+                        Download
+                    </asp:LinkButton>
                     <p id="translationHistoryFooterText" runat="server"></p>
                 </div>
             </div>

@@ -1,12 +1,10 @@
 ﻿using edu.stanford.nlp.ling;
-using edu.stanford.nlp.neural.rnn;
 using edu.stanford.nlp.pipeline;
 using java.util;
 using RojakJelah.Database;
 using RojakJelah.Database.Entity;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web.UI;
@@ -24,6 +22,7 @@ namespace RojakJelah
         private const string StrRojakHashtable = "RojakHashtable";
         private const string StrTranslationHistory = "TranslationHistory";
         private const string StrMostRecentTranslation = "MostRecentTranslation";
+        private const string StrCoreNlpPipeline = "CoreNlpPipeline";
 
         /// Control attributes
         private const string AttrTranslationId = "data-translationid";
@@ -36,6 +35,20 @@ namespace RojakJelah
         private const string IconCheck = "fa-regular fa-circle-check";
         private const string IconSolidBookmark = "fa-solid fa-bookmark";
         private const string IconRegularBookmark = "fa-regular fa-bookmark";
+
+        private class Token
+        {
+            public string Word;
+            public string Tag;
+            public string Shape;
+        }
+
+        private enum TokenShape
+        {
+            AllCaps,
+            Proper,
+            Normal
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -53,139 +66,38 @@ namespace RojakJelah
 
             if (!IsPostBack)
             {
-                var rojakHashtable = InitializeRojakHashtable();
+                Dictionary<string, List<string>>[] rojakHashtable = InitializeRojakHashtable();
+                StanfordCoreNLP coreNlpPipeline = SetupCoreNlpPipeline();
 
                 PrepopulateControls();
-
-                ManageSession(rojakHashtable);
+                ManageSession(rojakHashtable, coreNlpPipeline);
             }
-
-            SetupCoreNlpPipeline();
 
             PopulateSavedTranslations();
             PopulateTranslationHistory();
         }
 
-        protected void SetupCoreNlpPipeline()
+        protected StanfordCoreNLP SetupCoreNlpPipeline()
         {
             // Root directory & models directory
-            //var jarRoot = "C:/Users/wztho/Downloads"; /// only need to change this line
-            //var modelsDirectory = jarRoot + "/stanford-corenlp-4.5.0-models/edu/stanford/nlp";
+            var jarRoot = @"C:\Users\wztho\Downloads"; /// only need to change this line
+            var modelsDirectory = jarRoot + @"\stanford-corenlp-4.5.0-models/edu/stanford\nlp";
 
             // Model file paths
-            //var postaggerModel = modelsDirectory + "/models/pos-tagger/english-left3words-distsim.tagger";
-
-            var jarRoot = @"x:\..\..\..\stanford-corenlp-4.5.0-models"; /// only need to change this line
-            var modelsDirectory = jarRoot + @"\stanford-corenlp-4.5.0-models\edu\stanford\nlp\models";
+            var postaggerModel = modelsDirectory + @"\models\pos-tagger\english-left3words-distsim.tagger";
 
             // Set up pipeline properties
-            Properties props = new Properties();
+            Properties properties = new Properties();
             // Set the list of annotators to run
-            props.setProperty("annotators", "tokenize, pos, parse, lemma, ner, sentiment");
+            properties.setProperty("annotators", "tokenize, pos");
             // Customize the annotator options
-            props.setProperty("tokenize.options", "splitHyphenated=false,americanize=false");
-            //props.setProperty("pos.model", postaggerModel);
-            props.setProperty("ner.useSUTime", "0");
+            properties.setProperty("tokenize.options", "splitHyphenated=false,americanize=false");
+            properties.setProperty("pos.model", postaggerModel);
 
             // Build pipeline
-            var curDir = Environment.CurrentDirectory;
-            Directory.SetCurrentDirectory(jarRoot);
-            var pipeline = new StanfordCoreNLP(props);
-            Directory.SetCurrentDirectory(curDir);
+            StanfordCoreNLP pipeline = new StanfordCoreNLP(properties);
 
-            // Change this string to test different inputs
-            string text = $@"I've a pen, I've a pineapple, you're an apple.
-                            Stanford.NLP.NET is built on top of IKVM.NET (Java VM that runs on top of .NET VM).
-                             It supports full .NET framework and .NET Core.
-                             You should always start from the main CoreNLP package, which provides the full range of features. Other, related packages exist only for historical / compatibility reasons.
-                             Use the official CoreNLP site for the latest docs, samples and demos. This site is maintained by the library's authors.
-                             Use StackOverflow to ask all ""how to"" NLP - related questions.";
-            Debug.WriteLine($"\nOriginal text: {text}\n");
-
-            // Create a document object
-            CoreDocument doc = pipeline.processToCoreDocument(text);
-            // Annotate document object
-            pipeline.annotate(doc);
-
-            // Get sentences
-            var sentenceList = doc.sentences();
-            for (int i = 0; i < sentenceList.size(); i++)
-            {
-                CoreSentence sentence = sentenceList.get(i) as CoreSentence;
-                Debug.WriteLine($@"Sentence {i + 1}: {sentence.text()}");
-
-                // For every sentence, get its tokens
-                var tokenList = sentence.tokens();
-                // Print every token
-                Debug.Write("Tokens: ");
-                for (int j = 0; j < tokenList.size(); j++)
-                {
-                    CoreLabel token = tokenList.get(j) as CoreLabel;
-
-                    Debug.Write($"[{token}] ");
-                }
-                // Print every token's word
-                Debug.Write("\nWords: ");
-                for (int j = 0; j < tokenList.size(); j++)
-                {
-                    CoreLabel token = tokenList.get(j) as CoreLabel;
-
-                    Debug.Write($"[{token.word()}] ");
-                }
-                // POS Tagging
-                Debug.Write("\nWords+POS: ");
-                for (int j = 0; j < tokenList.size(); j++)
-                {
-                    CoreLabel token = tokenList.get(j) as CoreLabel;
-
-                    Debug.Write($@"[{token.word()}\{token.tag()}] ");
-                }
-
-                // For every sentence, get the Named Entities
-                var namedEntities = sentence.entityMentions();
-                Debug.Write("\nNamed Entities: ");
-                for (int j = 0; j < namedEntities.size(); j++)
-                {
-                    CoreEntityMention entity = namedEntities.get(j) as CoreEntityMention;
-
-                    Debug.Write($@"[{entity.text()}: {entity.entityType()}] ");
-                }
-
-                // Sentiment Analysis
-                var sentenceTree = sentence.sentimentTree();
-                var sentiment = RNNCoreAnnotations.getPredictedClass(sentenceTree);
-                var predictions = RNNCoreAnnotations.getPredictions(sentenceTree);
-
-                Debug.WriteLine($"\nSentiment: {sentiment} - {GetSentimentMeaning(sentiment)}");
-                Debug.WriteLine($@"Predictions: {predictions}");
-
-                for (int j = 0; j <= 4; j++)
-                {
-                    var probability = predictions.get(j);
-                    Debug.WriteLine($@"Probability: {probability}");
-                }
-
-                Debug.WriteLine("\n");
-            }
-        }
-
-        protected string GetSentimentMeaning(int sentimentValue)
-        {
-            switch (sentimentValue)
-            {
-                case 0:
-                    return "Negative";
-                case 1:
-                    return "Somewhat negative";
-                case 2:
-                    return "Neutral";
-                case 3:
-                    return "Somewhat positve";
-                case 4:
-                    return "Positive";
-                default:
-                    return "Unknown";
-            }
+            return pipeline;
         }
 
         /// <summary>
@@ -236,10 +148,13 @@ namespace RojakJelah
         /// Manages session variables.
         /// </summary>
         /// <param name="rojakHashtable">Hash table storing Rojak dictionary entries.</param>
-        protected void ManageSession(Dictionary<string, List<string>>[] rojakHashtable)
+        protected void ManageSession(Dictionary<string, List<string>>[] rojakHashtable, StanfordCoreNLP pipeline)
         {
             // Store rojakHashtable in session
             Session[StrRojakHashtable] = rojakHashtable;
+
+            // Store Stanford CoreNLP pipeline in session
+            Session[StrCoreNlpPipeline] = pipeline;
 
             // Retrieve translation history from session
             var translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
@@ -253,76 +168,201 @@ namespace RojakJelah
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
-            // Update save icon
+            // Reset save icon
             iconSave.Attributes.Add("class", IconRegularBookmark);
-
             // Clear output
             txtOutput.InnerText = "";
 
+            #region Input Sanitization
             // Get trimmed input text
             string inputText = txtInput.Value.Trim();
-            // Split input text into individual words
-            var inputWords = !String.IsNullOrWhiteSpace(inputText) ? inputText.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries) : null;
+            #endregion
 
-            // List to store output words
-            List<string> outputWords = new List<string>();
+            #region Tokenization & POS Tagging
+            // Create CoreDocument and use the pipeline to annotate it
+            StanfordCoreNLP pipeline = Session[StrCoreNlpPipeline] as StanfordCoreNLP;
+            CoreDocument coreDoc = pipeline.processToCoreDocument(inputText);
+            pipeline.annotate(coreDoc);
+            
+            // Split input into sentences
+            var inputSentenceList = coreDoc.sentences().toArray();
+            var tokenizedSentenceList = new List<List<Token>>();
+
+            if ((inputSentenceList != null) && (inputSentenceList.Length > 0))
+            {
+                // Tokenize and POS tag each sentence
+                foreach (CoreSentence sentence in inputSentenceList)
+                {
+                    var tokenizedSentence = new List<Token>();
+                    var tokenList = sentence.tokens().toArray();
+
+                    foreach (CoreLabel token in tokenList)
+                    {
+                        string word = token.word();
+                        string tag = token.tag();
+
+                        tokenizedSentence.Add(new Token()
+                        {
+                            Word = word,
+                            Tag = tag,
+                            /* Rules for dealing with letter casing:
+                             * - If first letter of input word is UPPERCASE, convert first letter of output word to UPPERCASE
+                             * - If input word is full UPPERCASE, convert output word to full UPPERCASE
+                             * - If input word is full LOWERCASE, simply add the output word in its original form (LOWERCASE)
+                             */
+                            Shape = word.All(c => Char.IsUpper(c)) ? TokenShape.AllCaps.ToString() :
+                                        Char.IsUpper(word[0]) ? TokenShape.Proper.ToString() :
+                                        TokenShape.Normal.ToString()
+                        });
+                    }
+
+                    tokenizedSentenceList.Add(tokenizedSentence);
+                }
+            }
+            #endregion
+
+            #region Tokenization Corrector
+            var correctedSentenceList = new List<List<Token>>();
+
+            if ((tokenizedSentenceList != null) && (tokenizedSentenceList.Count > 0))
+            {
+                // Correct the tokens in each sentence
+                foreach (List<Token> tokenizedSentence in tokenizedSentenceList)
+                {
+                    int i = 0;
+                    var correctedSentence = new List<Token>();
+
+                    foreach (Token token in tokenizedSentence)
+                    {
+                        string correctedWord, correctedTag, correctedShape;
+
+                        /* Check for these tags to be corrected
+                         * - POS (possessive, e.g. Joe's mama)
+                         * - VBZ (short form verb, e.g. Joe's going to school)
+                         * - VBP (short form verb, e.g. 've / 're / 'm / 's)
+                         */
+                        if (token.Tag == "POS" || ((token.Tag == "VBZ") && (token.Word[0] == '\'')) || ((token.Tag == "VBP") && (token.Word[0] == '\'')))
+                        {
+                            correctedWord = (i > 0) ? tokenizedSentence.ElementAt(i - 1).Word + token.Word : token.Word;
+                            correctedTag = tokenizedSentence.ElementAt(i - 1).Tag;
+                            correctedShape = tokenizedSentence.ElementAt(i - 1).Shape;
+
+                            correctedSentence.RemoveAt(i - 1);
+                        }
+                        else
+                        {
+                            correctedWord = token.Word;
+                            correctedTag = token.Tag;
+                            correctedShape = token.Shape;
+                        }
+
+                        correctedSentence.Add(new Token()
+                        {
+                            Word = correctedWord,
+                            Tag = correctedTag,
+                            Shape = correctedShape
+                        });
+
+                        i++;
+                    }
+
+                    correctedSentenceList.Add(correctedSentence);
+                }
+            }
+            #endregion
+
+            #region Morphological Analyzing & Translation
+            List<List<string>> translatedSentenceList = new List<List<string>>();
 
             // Perform translation
-            if (inputWords != null && inputWords.Count() > 0)
+            if ((correctedSentenceList != null) && (correctedSentenceList.Count() > 0))
             {
                 var rojakHashtable = Session[StrRojakHashtable] as Dictionary<string, List<string>>[];
                 System.Random randomizer = new System.Random();
 
-                foreach (string word in inputWords)
+                foreach (List<Token> correctedSentence in correctedSentenceList)
                 {
-                    // Get hash index
-                    int index = Char.ToLower(word[0]) % HashDivisor;
+                    var translatedSentence = new List<string>();
 
-                    // If rojakHashtable contains the input word, add its corresponding slang to output words
-                    if (index < rojakHashtable.Length && rojakHashtable[index].ContainsKey(word.ToLower()))
+                    foreach (Token token in correctedSentence)
                     {
-                        var matchedSlangList = rojakHashtable[index][word.ToLower()];
+                        string word = token.Word;
+                        string shape = token.Shape;
 
-                        string matchedSlang = matchedSlangList.ElementAt(randomizer.Next(0, matchedSlangList.Count));
+                        // Get hash index
+                        int index = Char.ToLower(word[0]) % HashDivisor;
 
-                        /* Rules for dealing with letter casing:
-                         * 1. If first letter of input word is UPPERCASE, convert first letter of output word to UPPERCASE
-                         * 2. If input word is full UPPERCASE, convert output word to full UPPERCASE
-                         * 3. If input word is full LOWERCASE, simply add the output word in its original form (LOWERCASE)
-                         */
-                        outputWords.Add(word.All(c => Char.IsUpper(c)) ? matchedSlang.ToUpper() :
-                                        Char.IsUpper(word[0]) ? Char.ToUpper(matchedSlang[0]) + matchedSlang.Substring(1) : matchedSlang);
+                        // If rojakHashtable contains the input word, add its corresponding slang to output words
+                        if ((index < rojakHashtable.Length) && (rojakHashtable[index].ContainsKey(word.ToLower())))
+                        {
+                            var matchedSlangList = rojakHashtable[index][word.ToLower()];
+
+                            string matchedSlang = matchedSlangList.ElementAt(randomizer.Next(0, matchedSlangList.Count));
+
+                            translatedSentence.Add(shape == TokenShape.AllCaps.ToString() ? matchedSlang.ToUpper() :
+                                shape == TokenShape.Proper.ToString() ? Char.ToUpper(matchedSlang[0]) + matchedSlang.Substring(1) :
+                                matchedSlang);
+                        }
+                        // Else, add the original input word back into output words
+                        else
+                        {
+                            translatedSentence.Add(word);
+                        }
                     }
-                    // Else, add the original input word back into output words
-                    else
-                    {
-                        outputWords.Add(word);
-                    }
+
+                    translatedSentenceList.Add(translatedSentence);
                 }
-
-                // Compose sentence
-                for (int i = 0; i < outputWords.Count; i++)
-                {
-                    txtOutput.InnerText += outputWords.ElementAt(i);
-                    txtOutput.InnerText += (i + 1) < outputWords.Count ? " " : "";
-                }
-
-                // Save translation into session (most recent translation & translation history)
-                List<SavedTranslation> translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
-                int translationId = translationHistory.Count + 1;
-
-                SavedTranslation mostRecentTranslation = new SavedTranslation()
-                {
-                    Id = translationId,
-                    Input = inputText,
-                    Output = txtOutput.InnerText,
-                    CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name) ?? null,
-                    CreationDate = DateTime.Now
-                };
-
-                Session[StrMostRecentTranslation] = mostRecentTranslation;
-                translationHistory.Add(mostRecentTranslation);
             }
+            #endregion
+
+            #region Sentence Composer
+            string outputText = "";
+
+            if ((translatedSentenceList != null) && (translatedSentenceList.Count > 0))
+            {
+                int i = 0;
+
+                foreach (List<string> translatedSentence in translatedSentenceList)
+                {
+                    int j = 0;
+
+                    foreach (string word in translatedSentence)
+                    {
+                        outputText += word;
+
+                        if (j < translatedSentence.Count - 2)
+                        {
+                            outputText += translatedSentence.ElementAt(j + 1).Any(Char.IsPunctuation) ? "" : " ";
+                        }
+
+                        j++;
+                    }
+
+                    outputText += (i < translatedSentenceList.Count) ? " " : "";
+
+                    i++;
+                }
+            }
+
+            // Display output
+            txtOutput.InnerText = outputText;
+            #endregion
+
+            // Save translation into session (most recent translation & translation history)
+            List<SavedTranslation> translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
+            int translationId = translationHistory.Count + 1;
+
+            SavedTranslation mostRecentTranslation = new SavedTranslation()
+            {
+                Id = translationId,
+                Input = inputText,
+                Output = outputText,
+                CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name) ?? null,
+                CreationDate = DateTime.Now
+            };
+
+            Session[StrMostRecentTranslation] = mostRecentTranslation;
+            translationHistory.Add(mostRecentTranslation);
         }
 
         protected void LnkSaveTranslation_Click(object sender, EventArgs e)
@@ -413,6 +453,9 @@ namespace RojakJelah
             ShowModal(mdlReport);
         }
 
+        /// <summary>
+        /// Deletes a specified SavedTranslation in either "Saved Translations" or "Translation History"
+        /// </summary>
         protected void BtnDeleteTranslation_Click(object sender, EventArgs e)
         {
             try
@@ -431,6 +474,9 @@ namespace RojakJelah
                         dataContext.SavedTranslations.Remove(dataContext.SavedTranslations.SingleOrDefault(x => x.Id == translationId));
                         dataContext.SaveChanges();
 
+                        if (dataContext.SavedTranslations.ToList().Count == 0)
+                            lnkDownloadSavedTranslations.Style.Add("display", "none");
+
                         LnkViewSavedTranslations_Click(sender, e);
 
                         ShowNotification(IconCheck, "Delete succcess", "The translation has been deleted successfully.", false);
@@ -446,6 +492,9 @@ namespace RojakJelah
                     var translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
                     translationHistory.Remove(translationHistory.SingleOrDefault(x => x.Id == translationId));
 
+                    if (translationHistory.Count == 0)
+                        lnkDownloadTranslationHistory.Style.Add("display", "none");
+
                     LnkViewTranslationHistory_Click(sender, e);
 
                     ShowNotification(IconCheck, "Delete succcess", "The translation has been deleted successfully.", false);
@@ -455,6 +504,97 @@ namespace RojakJelah
             {
                 ShowNotification();
             }
+        }
+
+        /// <summary>
+        /// Generates and lets user download text file of the user's saved translations
+        /// </summary>
+        protected void LnkDownloadSavedTranslations_Click(object sender, EventArgs e)
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+            // Retrieve the user's saved translations
+            string username = User.Identity.Name;
+            User currentUser = dataContext.Users.SingleOrDefault(x => x.Username == username);
+            var savedTranslationList = dataContext.SavedTranslations.ToList().FindAll(x => x.CreatedBy.Id == currentUser.Id);
+
+            // File header and details
+            string fileHeader = "RojakJelah Saved Translations\n\n";
+            string fileDetails = $"User: {username}\nDownload date: {DateTime.Now}\n\n";
+
+            // File contents
+            int count = 1;
+            string fileContents = "";
+
+            foreach (var savedTranslation in savedTranslationList)
+            {
+                fileContents += $"[{count}.]\n" +
+                    $"Input: {savedTranslation.Input}\n" +
+                    $"Output: {savedTranslation.Output}\n" +
+                    $"Date: {savedTranslation.CreationDate}\n\n";
+
+                count++;
+            }
+
+            // Compile overall file text
+            string fileText = fileHeader + fileDetails + fileContents;
+
+            // Create text file and output for user to download
+            Response.Clear();
+            Response.AddHeader("content-disposition", $"attachment; filename=rojakjelah-{username}-savedtranslations.txt");
+            Response.AddHeader("content-type", "text/plain");
+
+            using (StreamWriter writer = new StreamWriter(Response.OutputStream))
+            {
+                writer.WriteLine(fileText);
+            }
+
+            Response.End();
+        }
+
+        /// <summary>
+        /// Generates and lets user download text file of the user's translation history
+        /// </summary>
+        protected void LnkDownloadTranslationHistory_Click(object sender, EventArgs e)
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+            // Retrieve the user's translation history
+            string username = User.Identity.IsAuthenticated ? User.Identity.Name : "Unknown";
+            var translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
+
+            // File header and details
+            string fileHeader = "RojakJelah Translation History\n\n";
+            string fileDetails = $"User: {username}\nDownload date: {DateTime.Now}\n\n";
+
+            // File contents
+            int count = 1;
+            string fileContents = "";
+
+            foreach (var savedTranslation in translationHistory)
+            {
+                fileContents += $"[{count}.]\n" +
+                    $"Input: {savedTranslation.Input}\n" +
+                    $"Output: {savedTranslation.Output}\n" +
+                    $"Date: {savedTranslation.CreationDate}\n\n";
+
+                count++;
+            }
+
+            // Compile overall file text
+            string fileText = fileHeader + fileDetails + fileContents;
+
+            // Create text file and output for user to download
+            Response.Clear();
+            Response.AddHeader("content-disposition", $"attachment; filename=rojakjelah-{username}-translationhistory.txt");
+            Response.AddHeader("content-type", "text/plain");
+
+            using (StreamWriter writer = new StreamWriter(Response.OutputStream))
+            {
+                writer.WriteLine(fileText);
+            }
+
+            Response.End();
         }
 
         /// <summary>
@@ -496,6 +636,7 @@ namespace RojakJelah
                     AddModalItem(divSavedTranslationsModalBody, savedTranslation, false);
                 }
 
+                lnkDownloadSavedTranslations.Style.Add("display", "block");
                 savedTranslationFooterText.InnerText = savedTranslationList.Count + " translation" + (savedTranslationList.Count > 1 ? "s " : " ") + "found";
             }
         }
@@ -521,6 +662,7 @@ namespace RojakJelah
                     AddModalItem(divTranslationHistoryModalBody, savedTranslation, true);
                 }
 
+                lnkDownloadTranslationHistory.Style.Add("display", "block");
                 translationHistoryFooterText.InnerText = translationHistory.Count + " translation" + (translationHistory.Count > 1 ? "s " : " ") + "found";
             }
         }

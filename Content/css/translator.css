@@ -336,6 +336,19 @@
     word-spacing: 0.2rem;
 }
 
+/* Saved Translations / Translation History */
+#divSavedTranslationsModalFooter, #divTranslationHistoryModalFooter {
+    justify-content: space-between;
+}
+
+#lnkDownloadSavedTranslations, #lnkDownloadTranslationHistory {
+    display: none;
+}
+
+#lnkDownloadSavedTranslations i, #lnkDownloadTranslationHistory i {
+    padding-right: 0.5rem;
+}
+
 /* Report Modal */
 #dlgReport {
     width: 40%;
@@ -497,8 +510,12 @@
 
 
 /* Translate Input  */
-.translate .translate-container .context {
+.translate-textinput {
     flex: 0.82;
+    padding-top: 8px;
+}
+
+.translate-textinput textarea {
     border-radius: 5px;
     width: 100%;
     border: 1px solid var(--primary-color);
@@ -508,10 +525,9 @@
     resize: vertical;
 }
 
-.translate .translate-container .context:focus {
+.translate-textinput textarea:focus {
     outline: 0;
-    box-shadow: none;
-    border: 2px solid var(--primary-color);
+    box-shadow: inset 0 0 0 1px var(--primary-color);
 }
 
 
@@ -577,7 +593,7 @@
     font-weight: 600;
     color: #323232;
     text-align: justify;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 /* Translate Button  */

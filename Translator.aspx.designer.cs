@@ -105,6 +105,15 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divSavedTranslationsModalBody;
 
         /// <summary>
+        /// lnkDownloadSavedTranslations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkDownloadSavedTranslations;
+
+        /// <summary>
         /// savedTranslationFooterText control.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,15 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divTranslationHistoryModalBody;
+
+        /// <summary>
+        /// lnkDownloadTranslationHistory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkDownloadTranslationHistory;
 
         /// <summary>
         /// translationHistoryFooterText control.
