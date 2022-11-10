@@ -1,10 +1,367 @@
-﻿/* Banner Section */
+﻿/* Buttons */
+.button-primary {
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color) !important;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff !important;
+    transition: 0.3s ease-out;
+}
+
+.button-primary h3 {
+    margin-left: 0.5rem !important;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.button-primary:hover {
+    background-color: var(--primary-color-hover) !important;
+}
+
+.button-primary:active {
+    background-color: var(--primary-color-active) !important;
+}
+
+.button-secondary {
+    padding: 0.4rem 0.9rem;
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--primary-color);
+    transition: 0.3s ease-out;
+}
+
+.button-secondary:hover {
+    border: 2px solid var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
+
+.button-secondary:active {
+    border: 2px solid var(--primary-color-active);
+    color: var(--primary-color-active);
+}
+
+.button-small {
+    padding: 0.6rem 0.6rem !important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--primary-color);
+    transition: 0.3s ease-out;
+}
+
+.button-small:hover {
+    border: 2px solid var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
+
+.button-small:active {
+    border: 2px solid var(--primary-color-active);
+    color: var(--primary-color-active);
+}
+
+
+
+/* Tooltip */
+.tool-tip {
+    padding: 0 0.5rem;
+    position: absolute;
+    visibility: hidden;
+    background-color: var(--primary-color-hover);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    z-index: 1;
+}
+
+#tooltipSavedTranslations, #tooltipTranslationHistory, #tooltipReport {
+    margin-top: 5rem;
+}
+
+#tooltipSave {
+    margin-left: 1rem;
+    white-space: nowrap;
+}
+
+/* Notification restyling */
+.notification {
+    top: 65%;
+    right: 3%;
+    z-index: 101;
+}
+
+
+
+/* Modals */
+.modal-window {
+    display: none;
+    position: fixed;
+    align-items: center;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
+    width: 50%;
+    padding: 2rem 5rem 1rem 5rem;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.4);
+    overflow-y: initial;
+    animation: slideIn .3s ease-out forwards;
+}
+
+.modal-content {
+    width: 100%;
+    height: 100%;
+}
+
+.modal-header {
+    display: flex;
+    padding-bottom: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    color: var(--primary-color);
+}
+
+.modal-icon {
+    flex: 0.07;
+    font-size: 24px;
+}
+
+.modal-title {
+    flex: 0.88;
+    text-align: left;
+}
+
+.modal-btn-close {
+    flex: 0.05;
+    background-color: white;
+    border: none;
+    color: #323232;
+    font-size: 28px;
+    transition: ease-out 0.1s;
+}
+
+.modal-btn-close:hover {
+    color: #828282;
+}
+
+.modal-btn-close:active {
+    color: #b2b2b2;
+}
+
+.modal-body {
+    height: 60vh;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+}
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color-hover);
+}
+.modal-body::-webkit-scrollbar-thumb:active {
+    background-color: var(--primary-color-active);
+}
+
+.modal-body::-webkit-scrollbar-button {
+    display: none;
+}
+
+.modal-title {
+    color: var(--primary-color);
+    font-size: 26px;
+    font-family: 'Mitr', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.modal-empty {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #eaeaea;
+}
+
+.modal-empty i {
+    color: #525252;
+    font-size: 40px;
+}
+
+.modal-empty h1 {
+    margin: 0;
+    color: #525252;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 30px;
+}
+
+.modal-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #eaeaea;
+}
+
+.modal-item-content {
+    flex: 0.9;
+    word-break: break-word;
+}
+
+.modal-item-title {
+    color: var(--primary-color);
+    font-size: 18px;
+    font-family: 'Mitr', Arial, sans-serif;
+}
+
+.text-title {
+    margin-bottom: 0.2rem !important;
+    color: #626262;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 14px;
+}
+
+.text-content {
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 14px;
+}
+
+.modal-item-content small {
+    color: #626262;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.modal-item-controls {
+    flex: 0.1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 2rem;
+}
+
+.modal-item-btn {
+    flex: 0.1;
+    display: flex;
+    align-self: flex-end;
+    padding: 0 0.4rem;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: none;
+    border-radius: 4px;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease-out;
+}
+
+.modal-item-btn:hover {
+    border-color: var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
+
+.modal-item-btn:active {
+    border-color: var(--primary-color-active);
+    color: var(--primary-color-active);
+}
+
+.modal-inputfield {
+    display: flex;
+    flex-direction: column;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.modal-dropdown {
+    padding: 0.5rem 1rem;
+    width: 50%;
+    border: 2px solid var(--primary-color);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.modal-dropdown:focus {
+    box-shadow: 0 0 0 1px var(--primary-color);
+    outline: none;
+}
+
+.modal-textinput {
+    padding: 0.5rem 1rem;
+    resize: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 3px;
+}
+
+.modal-textinput:focus {
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.modal-footer {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    padding: 1rem 0;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    word-spacing: 0.2rem;
+}
+
+/* Report Modal */
+#dlgReport {
+    width: 40%;
+    height: 70%;
+}
+
+#divReportModalBody {
+    padding: 1rem 0.1rem;
+    display: grid;
+    grid-template-rows: 0.3fr 0.7fr;
+}
+
+#ddlReportCategory {
+    width: 60%;
+}
+
+
+
+/* Banner Section */
 .translate-content {
   display: flex;
   justify-content: center;
   flex-direction: column;
   margin: auto;
   width: 85%;
+  height: 90vh;
 }
 
 .banner .banner-container {
@@ -50,6 +407,8 @@
     line-break: 10px !important;
     margin: 0;
 }
+
+
 
 /* Responsive Section  */
 @media screen and (max-width: 837px) {
@@ -136,26 +495,23 @@
 }
 
 
+
 /* Translate Input  */
 .translate .translate-container .context {
-  flex: 0.82;
-  border-radius: 5px;
+    flex: 0.82;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 18px;
+    resize: vertical;
 }
 
-.translate .translate-container .context textarea {
-  width: 100%;
-  border: none;
-  border: 1px solid var(--primary-color);
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 18px;
-  resize: vertical;
-}
-
-.translate .translate-container .context textarea:focus {
-  outline: 0;
-  box-shadow: none;
-  border: 2px solid var(--primary-color);
+.translate .translate-container .context:focus {
+    outline: 0;
+    box-shadow: none;
+    border: 2px solid var(--primary-color);
 }
 
 
@@ -166,8 +522,30 @@
     margin-top: 1em;
 }
 
-.translate-output h5 {
+.translate-output-title {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    align-items: center;
+}
+
+.translate-output-title h5 {
+    margin: 0;
     color: var(--primary-color);
+}
+
+.translate-btn-save {
+    position: relative;
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+.translate-btn-save:hover {
+    color: var(--primary-color-hover);
+}
+
+.translate-btn-save:active {
+    color: var(--primary-color-active);
 }
 
 .translate .translate-output .output {
@@ -195,10 +573,11 @@
     right: 0;
 }
 
-#outputString {
+.output p {
     font-weight: 600;
     color: #323232;
     text-align: justify;
+    word-break: break-all;
 }
 
 /* Translate Button  */
@@ -242,12 +621,13 @@
 
 .translate .translate-container .translate-button .translate-user {
     display: flex;
-    margin-top: 10px;
+    margin-top: 8px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .translate .translate-container .translate-button .translate-user div.button {
-  margin: auto;
+  margin: 0;
 }
 
 .translate .translate-container .translate-button .translate-user button i {
@@ -255,29 +635,39 @@
     transition: all 0.3s ease-out;
 }
 
-.translate .translate-container .translate-button .translate-user button {
+.translate .translate-container .translate-button .translate-user a {
   border: none;
   border: 2px solid var(--primary-color);
-  padding: 5px 7px;
+  color: var(--primary-color);
+  padding: 0.4rem 0.6rem;
   background: none;
   border-radius: 5px;
   transition: all 0.3s ease-out;
 }
 
-.translate .translate-container .translate-button .translate-user button:hover {
+.translate .translate-container .translate-button .translate-user button {
+    border: none;
+    border: 2px solid var(--primary-color);
+    padding: 0.4rem 0.6rem;
+    background: none;
+    border-radius: 5px;
+    transition: all 0.3s ease-out;
+}
+
+.translate .translate-container .translate-button .translate-user a:hover {
     border-color: var(--primary-color-hover);
 }
 
-.translate .translate-container .translate-button .translate-user button:active {
+.translate .translate-container .translate-button .translate-user a:active {
     border-color: var(--primary-color-active);
 }
 
-.translate .translate-container .translate-button .translate-user button:hover i {
-  color: var(--primary-color-hover);
+.translate .translate-container .translate-button .translate-user a:hover i {
+    color: var(--primary-color-hover);
 }
 
-.translate .translate-container .translate-button .translate-user button:active i {
-  color: var(--primary-color-active);
+.translate .translate-container .translate-button .translate-user a:active i {
+    color: var(--primary-color-active);
 }
 
 /* Saved Translate  */
@@ -292,54 +682,54 @@
   font-weight: 600;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top {
+.translate-button .translate-user .saved .modal-body .modal-item {
   background-color: #eaeaea;
   padding: 1rem;
   position: relative;
 }
 
-.translate-user .saved .modal-body .body-top .ext-btn {
+.translate-user .saved .modal-body .modal-item .ext-btn {
   position: absolute;
   right: 5px;
   top: 5px;
 }
 
-.translate-user .saved .modal-body .body-top .ext-btn button {
+.translate-user .saved .modal-body .modal-item .ext-btn button {
   border: none;
   color: #323232 !important;
 }
 
-.translate-user .saved .modal-body .body-top .ext-btn button:focus {
+.translate-user .saved .modal-body .modal-item .ext-btn button:focus {
   outline: 0;
   box-shadow: none;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top h2 {
+.translate-button .translate-user .saved .modal-body .modal-item h2 {
   color: var(--primary-color);
   font-size: 20px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top h4 {
+.translate-button .translate-user .saved .modal-body .modal-item h4 {
   color: #000;
   font-size: 18px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top {
+.translate-button .translate-user .saved .modal-body .modal-item {
   margin-top: 20px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn h3 {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-controls h3 {
   color: var(--primary-color);
   font-size: 15px;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn button {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-controls button {
   font-weight: 600;
   border: none;
   background: var(--primary-color) !important;
@@ -350,16 +740,15 @@
   transition: 0.4s;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn button:hover {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-controls button:hover {
   background: #da4343 !important;
 }
 
-.translate-button .translate-user .saved .modal-body .body-top .click-btn button:focus {
+.translate-button .translate-user .saved .modal-body .modal-item .modal-item-controls button:focus {
   outline: 0;
   box-shadow: none;
   background: #e29090 !important;
 }
-
 
 .translate-button .translate-user .saved .modal-body .modal-footer {
   background: #eaeaea;
@@ -367,11 +756,11 @@
   margin-top: 20px;
 }
 
-.translate .translate-container .translate-button .translate-user .saved .btn-close {
+.translate .translate-container .translate-button .translate-user .saved .modal-btn-close {
   border: none;
 }
 
-.translate .translate-container .translate-button .translate-user .saved .btn-close:focus {
+.translate .translate-container .translate-button .translate-user .saved .modal-btn-close:focus {
   border: 1px solid var(--primary-color);
 }
 
@@ -388,37 +777,37 @@
   font-weight: 600;
 }
 
-.translate-button .translate-user .history .modal-body .body-top {
+.translate-button .translate-user .history .modal-body .modal-item {
   background-color: #eaeaea;
   padding: 1rem;
 }
 
-.translate-button .translate-user .history .modal-body .body-top h2 {
+.translate-button .translate-user .history .modal-body .modal-item h2 {
   color: var(--primary-color);
   font-size: 20px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top h4 {
+.translate-button .translate-user .history .modal-body .modal-item h4 {
   color: #000;
   font-size: 18px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top {
+.translate-button .translate-user .history .modal-body .modal-item {
   margin-top: 20px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn h3 {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-controls h3 {
   color: var(--primary-color);
   font-size: 15px;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn button {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-controls button {
   font-weight: 600;
   border: none;
   background: var(--primary-color) !important;
@@ -429,11 +818,11 @@
   transition: 0.4s;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn button:hover {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-controls button:hover {
   background: #da4343 !important;
 }
 
-.translate-button .translate-user .history .modal-body .body-top .click-btn button:focus {
+.translate-button .translate-user .history .modal-body .modal-item .modal-item-controls button:focus {
   outline: 0;
   box-shadow: none;
   background: #e29090 !important;
@@ -446,11 +835,11 @@
   margin-top: 20px;
 }
 
-.translate-button .translate-user .history .btn-close {
+.translate-button .translate-user .history .modal-btn-close {
   border: none !important;
 }
 
-.translate-button .translate-user .history .btn-close:focus {
+.translate-button .translate-user .history .modal-btn-close:focus {
   outline: 0;
   box-shadow: none;
 }
@@ -467,36 +856,36 @@
   font-weight: 600;
 }
 
-.translate-button .translate-user .report .btn-close {
+.translate-button .translate-user .report .modal-btn-close {
   border: none !important;
   color: red !important;
 }
 
-.translate-button .translate-user .report .btn-close:focus {
+.translate-button .translate-user .report .modal-btn-close:focus {
   outline: 0;
   box-shadow: none;
 }
 
-.translate-button .translate-user .report .modal-body .body-top h4 {
+.translate-button .translate-user .report .modal-body .modal-item h4 {
   color: var(--primary-color);
   font-size: 20px;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form select {
+.translate-button .translate-user .report .modal-body .modal-item form select {
   padding: 7px 20px;
   font-size: 20px;
   border: none;
   border: 1px solid var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form select:focus {
+.translate-button .translate-user .report .modal-body .modal-item form select:focus {
   outline: 0;
   box-shadow: none;
   border: none;
   border: 2px solid var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form textarea {
+.translate-button .translate-user .report .modal-body .modal-item form textarea {
   padding: 10px;
   width: 100%;
   font-size: 18px;
@@ -504,7 +893,7 @@
   border: 1px solid var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form textarea:focus {
+.translate-button .translate-user .report .modal-body .modal-item form textarea:focus {
   outline: 0;
   box-shadow: none;
   border: none;
@@ -512,13 +901,13 @@
 }
 
 
-.translate-button .translate-user .report .modal-body .body-top form .button {
+.translate-button .translate-user .report .modal-body .modal-item form .button {
   display: flex;
   justify-content: right;
   align-items: center;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.cancel {
+.translate-button .translate-user .report .modal-body .modal-item form button.cancel {
   font-weight: 600;
   border: none;
   border: 2px solid var(--primary-color);
@@ -529,15 +918,15 @@
   color: var(--primary-color);
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.cancel:hover {
+.translate-button .translate-user .report .modal-body .modal-item form button.cancel:hover {
   border-color: #e29090;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.cancel:focus {
+.translate-button .translate-user .report .modal-body .modal-item form button.cancel:focus {
   border-color: #f2cccc;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.submit {
+.translate-button .translate-user .report .modal-body .modal-item form button.submit {
   font-weight: 600;
   width: 100px;
   border: none;
@@ -549,11 +938,11 @@
   transition: 0.4s;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.submit:hover {
+.translate-button .translate-user .report .modal-body .modal-item form button.submit:hover {
   background: #da4343;
 }
 
-.translate-button .translate-user .report .modal-body .body-top form button.submit:focus {
+.translate-button .translate-user .report .modal-body .modal-item form button.submit:focus {
   background: #e29090;
 }
 
@@ -601,15 +990,15 @@
     font-size: 20px;
   }
 
-  .modal-body .body-top h2 {
+  .modal-body .modal-item h2 {
     font-size: 18px;
   }
 
-  .modal-body .body-top h4 {
+  .modal-body .modal-item h4 {
     font-size: 14px;
   }
 
-  .modal-body .body-top .click-btn h3 {
+  .modal-body .modal-item .modal-item-controls h3 {
     font-size: 14px;
   }
 
@@ -622,15 +1011,15 @@
     font-size: 20px;
   }
 
-  .translate-button .translate-user .history .modal-body .body-top h2 {
+  .translate-button .translate-user .history .modal-body .modal-item h2 {
     font-size: 18px;
   }
 
-  .translate-button .translate-user .history .modal-body .body-top h4 {
+  .translate-button .translate-user .history .modal-body .modal-item h4 {
     font-size: 14px;
   }
 
-  .translate-button .translate-user .history .modal-body .body-top .click-btn h3 {
+  .translate-button .translate-user .history .modal-body .modal-item .modal-item-controls h3 {
     font-size: 14px;
   }
 
@@ -642,7 +1031,7 @@
 @media screen and (max-width: 318px) {
 
   /* Translate Save  */
-  .modal-body .body-top .click-btn {
+  .modal-body .modal-item .modal-item-controls {
     flex-direction: column;
     justify-content: flex-start !important;
     justify-content: left !important;
@@ -650,7 +1039,7 @@
   }
 
   /* Translate History  */
-  .translate-button .translate-user .history .modal-body .body-top .click-btn {
+  .translate-button .translate-user .history .modal-body .modal-item .modal-item-controls {
     flex-direction: column;
     justify-content: flex-start !important;
     justify-content: left !important;
@@ -681,7 +1070,7 @@
 .user-generate .generate-container .generate-items {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
+  grid-gap: 3rem;
 }
 
 .user-generate .generate-container .generate-items .item h4 {
@@ -798,4 +1187,19 @@
 
 .learn-more a:active {
   background: var(--primary-color-active);
+}
+
+
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0;
+        opacity: 1;
+    }
 }
