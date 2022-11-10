@@ -5,6 +5,8 @@ using System.Web;
 
 namespace RojakJelah.Database.Entity
 {
+
+    [Serializable]
     public class SuggestionStatus
     {
         public int Id { get; set; }
