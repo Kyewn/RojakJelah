@@ -20,9 +20,10 @@ namespace RojakJelah
 
         /// Session variables
         private const string StrRojakHashtable = "RojakHashtable";
+        private const string StrCoreNlpPipeline = "CoreNlpPipeline";
         private const string StrTranslationHistory = "TranslationHistory";
         private const string StrMostRecentTranslation = "MostRecentTranslation";
-        private const string StrCoreNlpPipeline = "CoreNlpPipeline";
+        private const string StrTranslationHistoryCount = "TranslationHistoryCount";
 
         /// Control attributes
         private const string AttrTranslationId = "data-translationid";
@@ -77,29 +78,6 @@ namespace RojakJelah
             PopulateTranslationHistory();
         }
 
-        protected StanfordCoreNLP SetupCoreNlpPipeline()
-        {
-            // Root directory & models directory
-            var jarRoot = @"C:\Users\wztho\Downloads"; /// only need to change this line
-            var modelsDirectory = jarRoot + @"\stanford-corenlp-4.5.0-models/edu/stanford\nlp";
-
-            // Model file paths
-            var postaggerModel = modelsDirectory + @"\models\pos-tagger\english-left3words-distsim.tagger";
-
-            // Set up pipeline properties
-            Properties properties = new Properties();
-            // Set the list of annotators to run
-            properties.setProperty("annotators", "tokenize, pos");
-            // Customize the annotator options
-            properties.setProperty("tokenize.options", "splitHyphenated=false,americanize=false");
-            properties.setProperty("pos.model", postaggerModel);
-
-            // Build pipeline
-            StanfordCoreNLP pipeline = new StanfordCoreNLP(properties);
-
-            return pipeline;
-        }
-
         /// <summary>
         /// Initializes a hash table to store Rojak dictionary entries.
         /// </summary>
@@ -145,6 +123,33 @@ namespace RojakJelah
         }
 
         /// <summary>
+        /// Sets up StanfordCoreNLP pipeline with required model directories, annotators, and options.
+        /// </summary>
+        /// <returns></returns>
+        protected StanfordCoreNLP SetupCoreNlpPipeline()
+        {
+            // Root directory & models directory
+            var jarRoot = @"C:\Users\wztho\Downloads"; /// only need to change this line
+            var modelsDirectory = jarRoot + @"\stanford-corenlp-4.5.0-models/edu/stanford\nlp";
+
+            // Model file paths
+            var postaggerModel = modelsDirectory + @"\models\pos-tagger\english-left3words-distsim.tagger";
+
+            // Set up pipeline properties
+            Properties properties = new Properties();
+            // Set the list of annotators to run
+            properties.setProperty("annotators", "tokenize, pos");
+            // Customize the annotator options
+            properties.setProperty("tokenize.options", "splitHyphenated=false,americanize=false");
+            properties.setProperty("pos.model", postaggerModel);
+
+            // Build pipeline
+            StanfordCoreNLP pipeline = new StanfordCoreNLP(properties);
+
+            return pipeline;
+        }
+
+        /// <summary>
         /// Manages session variables.
         /// </summary>
         /// <param name="rojakHashtable">Hash table storing Rojak dictionary entries.</param>
@@ -161,6 +166,7 @@ namespace RojakJelah
             if (translationHistory == null)
             {
                 Session[StrTranslationHistory] = new List<SavedTranslation>();
+                Session[StrTranslationHistoryCount] = 0;
             }
         }
 
@@ -330,9 +336,11 @@ namespace RojakJelah
                     {
                         outputText += word;
 
-                        if (j < translatedSentence.Count - 2)
+                        if ((j + 1) < translatedSentence.Count)
                         {
-                            outputText += translatedSentence.ElementAt(j + 1).Any(Char.IsPunctuation) ? "" : " ";
+                            string nextWord = translatedSentence.ElementAt(j + 1);
+
+                            outputText += (nextWord.Length == 1 && Char.IsPunctuation(nextWord[0])) ? "" : " ";
                         }
 
                         j++;
@@ -350,7 +358,9 @@ namespace RojakJelah
 
             // Save translation into session (most recent translation & translation history)
             List<SavedTranslation> translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
-            int translationId = translationHistory.Count + 1;
+            int translationId = (int) Session[StrTranslationHistoryCount];
+            translationId++;
+            Session[StrTranslationHistoryCount] = translationId;
 
             SavedTranslation mostRecentTranslation = new SavedTranslation()
             {
@@ -557,8 +567,6 @@ namespace RojakJelah
         /// </summary>
         protected void LnkDownloadTranslationHistory_Click(object sender, EventArgs e)
         {
-            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
-
             // Retrieve the user's translation history
             string username = User.Identity.IsAuthenticated ? User.Identity.Name : "Unknown";
             var translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
@@ -647,7 +655,7 @@ namespace RojakJelah
 
             divTranslationHistoryModalBody.Controls.Clear();
 
-            if (translationHistory.Count == 0)
+            if ((translationHistory != null ) && (translationHistory.Count == 0))
             {
                 FillEmptyModal(divTranslationHistoryModalBody);
                 translationHistoryFooterText.InnerText = "";
