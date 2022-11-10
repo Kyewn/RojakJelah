@@ -1,5 +1,10 @@
 //Master page processes
 window.addEventListener('load', () => {
+    // ********** set date ************
+    const date = document.getElementById('date');
+    date.innerHTML = new Date().getFullYear();
+
+    const navLinks = document.querySelectorAll('.links li a');
     if (window.location.pathname == "/Translator" || window.location.pathname == "/") {
         document.querySelector(".nav-header").style.visibility = 'hidden';
     }

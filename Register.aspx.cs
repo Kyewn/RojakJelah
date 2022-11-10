@@ -15,6 +15,10 @@ namespace RojakJelah
 {
     public partial class Register : System.Web.UI.Page
     {
+        /// FontAwesome icon class strings
+        private const string IconExclamation = "fa-solid fa-circle-exclamation";
+        private const string IconCheck = "fa-regular fa-circle-check";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // Hide header and footer
@@ -47,7 +51,7 @@ namespace RojakJelah
 
             // Check for existing user
             User existingUser = dataContext.Users.SingleOrDefault(x => x.Username == username) ?? null;
-
+            
             // Error message
             bool hasError = false;
             string errorTitle = "";
@@ -105,7 +109,7 @@ namespace RojakJelah
             if (hasError)
             {
                 // Display error notification
-                ShowErrorNotification(errorTitle, errorMessage);
+                ShowNotification(IconExclamation, errorTitle, errorMessage, true);
             }
             else
             {
@@ -127,26 +131,22 @@ namespace RojakJelah
                     dataContext.Users.Add(newUser);
                     dataContext.SaveChanges();
 
+                    ShowNotification(IconCheck, "Registration success", "Your account has been registered successfully, you will be redirected to the Login page in 5 seconds.", false);
+
                     // Redirect user to Login page
-                    Response.Redirect("Login.aspx", true);
+                    Response.AddHeader("REFRESH", "5;URL=Login.aspx");
                 }
                 catch (DbEntityValidationException dbEx)
                 {
                     // Display error notification
-                    errorTitle = "Unknown error";
-                    errorMessage = "An unexpected error has occured, please contact support.";
-
-                    ShowErrorNotification(errorTitle, errorMessage);
+                    ShowNotification();
 
                     PrintDbEntityValidationErrors(dbEx);
                 }
                 catch (Exception ex)
                 {
                     // Display error notification
-                    errorTitle = "Unknown error";
-                    errorMessage = "An unexpected error has occured, please contact support.";
-
-                    ShowErrorNotification(errorTitle, errorMessage);
+                    ShowNotification();
 
                     Debug.WriteLine(ex.ToString());
                 }
@@ -171,12 +171,30 @@ namespace RojakJelah
         }
 
         /// <summary>
-        /// Displays error notification popup.
+        /// Displays status notification popup.
         /// </summary>
-        /// <param name="title">Title of error.</param>
-        /// <param name="message">Error message.</param>
-        protected void ShowErrorNotification(string title, string message)
+        /// <param name="icon">Icon of notification.</param>
+        /// <param name="title">Title of status.</param>
+        /// <param name="message">Status message.</param>
+        /// <param name="isError">Is error notification or not.</param>
+        protected void ShowNotification(string icon = IconExclamation, string title = "", string message = "", bool isError = true)
         {
+            if (isError)
+            {
+                notification.Style.Add("background-color", "var(--notification-error)");
+            }
+            else
+            {
+                notification.Style.Add("background-color", "var(--notification-success)");
+            }
+
+            if (String.IsNullOrWhiteSpace(title) && String.IsNullOrWhiteSpace(message))
+            {
+                title = "Unknown error";
+                message = "An unexpected error has occurred, please contact support.";
+            }
+
+            notificationIcon.Attributes.Add("class", icon);
             notificationTitle.InnerText = title;
             notificationMessage.InnerHtml = message;
             notification.Style.Add("display", "block");

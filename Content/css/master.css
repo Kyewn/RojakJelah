@@ -202,6 +202,7 @@ nav {
     width: 300px;
     background-color: var(--primary-color);
     border-radius: 6px;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4) !important;
     transition: opacity 0.1s linear;
 }
 
@@ -288,7 +289,6 @@ ul.notification-message {
 .red-animated-link-text:hover::after {
     width: 100%;
 }
-
 
 /* Responsive Section  */
 @media screen and (min-width: 800px) {
