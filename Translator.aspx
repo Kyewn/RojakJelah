@@ -178,7 +178,7 @@
                 <div id="divReportModalBody" class="modal-body">
                     <div class="modal-inputfield">
                         <label class="modal-inputlabel">Issue Category *</label>
-                        <asp:DropDownList ID="ddlReportCategory" ClientIDMode="static" runat="server" class="modal-dropdown" AutoPostback="true" OnSelectedIndexChanged="ddlReportCategory_SelectedIndexChanged"></asp:DropDownList>
+                        <asp:DropDownList ID="ddlReportCategory" ClientIDMode="static" runat="server" class="modal-dropdown" AutoPostback="true" OnSelectedIndexChanged="DdlReportCategory_SelectedIndexChanged"></asp:DropDownList>
                     </div>
                     <div id="divEntryInput" class="mdlReport-topInputRow" runat="server">
                         <div class="modal-inputfield">
@@ -196,8 +196,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:Button ID="btnSubmitReport" runat="server" class="button-primary" Text="Submit" OnClick="btnSubmitReport_Click" />
-                    <asp:Button ID="btnCancelReport" runat="server" class="button-secondary" Text="Cancel" OnClick="btnCancelReport_Click" />
+                    <asp:Button ID="btnSubmitReport" runat="server" class="button-primary" Text="Submit" OnClick="BtnSubmitReport_Click" />
+                    <asp:Button ID="btnCancelReport" runat="server" class="button-secondary" Text="Cancel" OnClick="BtnCancelReport_Click" />
                 </div>
             </div>
         </div>

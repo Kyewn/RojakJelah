@@ -328,7 +328,7 @@ namespace RojakJelah
             }
         }
 
-        protected void ddlReportCategory_SelectedIndexChanged(object sender, EventArgs e)
+        protected void DdlReportCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
             var reportCategoryList = dataContext.ReportCategories.OrderBy(x => x.Id).ToList();
@@ -378,7 +378,7 @@ namespace RojakJelah
             dlgReport.Style.Remove("animation");
         }
 
-        protected void btnSubmitReport_Click(object sender, EventArgs e)
+        protected void BtnSubmitReport_Click(object sender, EventArgs e)
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
             String notificationTitle, notificationMessage;
@@ -504,7 +504,7 @@ namespace RojakJelah
             }
         }
 
-        protected void btnCancelReport_Click(object sender, EventArgs e)
+        protected void BtnCancelReport_Click(object sender, EventArgs e)
         {
             // Reset control values
             ResetReportModal(sender, e);
@@ -658,7 +658,7 @@ namespace RojakJelah
             ddlReportTranslation.Items.Clear();
             ddlReportTranslation.Enabled = false;
             txtReportDescription.InnerText = String.Empty;
-            ddlReportCategory_SelectedIndexChanged(sender, e);
+            DdlReportCategory_SelectedIndexChanged(sender, e);
 
             //  Prevent keeping modal visible
             HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
