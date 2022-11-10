@@ -7,19 +7,6 @@ window.addEventListener('load', () => {
     const navLinks = document.querySelectorAll('.links li a');
     if (window.location.pathname == "/Translator" || window.location.pathname == "/") {
         document.querySelector(".nav-header").style.visibility = 'hidden';
-        navLinks[0].classList.add('active');
-
-        const scrollHeight = window.pageYOffset;
-        const navHeight = navbar.getBoundingClientRect().height;
-        if (scrollHeight > navHeight) {
-            document.querySelector(".nav-header").style.visibility = 'visible';
-        } else {
-            document.querySelector(".nav-header").style.visibility = 'hidden';
-        }
-    } else if (window.location.pathname == "/Dictionary") {
-        navLinks[1].classList.add('active');
-    } else if (window.location.pathname == "/About") {
-        navLinks[2].classList.add('active');
     }
 });
 

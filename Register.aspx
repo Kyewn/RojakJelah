@@ -53,7 +53,7 @@
     <!-- Status Notification Popup -->
     <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">
         <div class="notification-title">
-            <i class="fa-solid fa-circle-exclamation"></i>
+            <i id="notificationIcon" class="fa-solid fa-circle-exclamation" runat="server"></i>
             <h4 id="notificationTitle" runat="server"></h4>
         </div>
         <p id="notificationMessage" class="notification-message" runat="server"></p>
