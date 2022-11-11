@@ -10,8 +10,14 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="contentWrapper">
         <div class="header">
-            <i class="fa-sharp fa-solid fa-flag"></i>
-            <h3>User reports</h3>
+            <div class="divInline">
+                <i class="fa-sharp fa-solid fa-flag"></i>
+                <h3>User reports</h3>
+            </div>
+            <div class="divInline">
+                <h6>Limit rows</h6>
+                <asp:DropDownList ID="ddlLimitRows" runat="server" AutoPostBack="true" CssClass="cboFilter" OnSelectedIndexChanged="CboFilter_SelectedIndexChanged"></asp:DropDownList>
+            </div>
         </div> 
         <div class="contentContainer">
             <div class="leftContainer">

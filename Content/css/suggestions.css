@@ -25,6 +25,7 @@
 .contentWrapper .header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     color: var(--primary-color);
 }
 
@@ -55,6 +56,20 @@
 /* Left container css */
 /* Left container css */
 /* Left container css */
+
+.divInline {
+    display: flex;
+    align-items: center;
+}
+
+.divInline > * {
+    display: inline-block;
+}
+
+.header .divInline:last-child h6 {
+    margin: 0;
+    margin-right: 1em;
+}
 
 /* Search Container */
 /* Search Container */

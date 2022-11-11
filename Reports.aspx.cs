@@ -22,6 +22,10 @@ namespace RojakJelah
         private string[] filterEntries = new string[] {
             "All issues", "Duplicate entries", "Incorrect entries", "Inappropriate entries", "Other issues", "Author", "Date (asc.)", "Date (dsc.)", "Resolved", "Closed"
         };
+        private int[] limitRowEntries = new int[]
+        {
+            10,50,100
+        };
 
         //  FontAwesome icons
         private String IconExclamation = "fa-solid fa-circle-exclamation";
@@ -44,8 +48,15 @@ namespace RojakJelah
                     cboFilter.Items.Add(entry);
                 }
 
+                ddlLimitRows.Items.Clear();
+                foreach (int entry in limitRowEntries)
+                {
+                    ddlLimitRows.Items.Add(entry.ToString());
+                }
+
                 //  listItemContainer
-                List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).ToList();
+                var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+                List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
                 pageState._currentList.AddRange(reportList);
             }
         }
@@ -61,9 +72,10 @@ namespace RojakJelah
         protected void CboFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedIndex = cboFilter.SelectedIndex;
-            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).ToList();
-            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).ToList();
-            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).ToList();
+            var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
+            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).Take(limitRowCount).ToList();
+            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).Take(limitRowCount).ToList();
             List<Report> chosenList = new List<Report>();
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2)
@@ -128,10 +140,11 @@ namespace RojakJelah
         {
             txtSelectedListItem.Text = ""; // Reset selected list item
             var searchKeys = txtSearch.Text.ToLower().Trim();
-            var filter = cboFilter.SelectedIndex;
-            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).ToList();
-            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).ToList();
-            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).ToList();
+            var filter = cboFilter.SelectedIndex; 
+            var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
+            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).Take(limitRowCount).ToList();
+            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).Take(limitRowCount).ToList();
             List<Report> filteredList = new List<Report>();
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2)
@@ -191,11 +204,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                Report resolvedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                resolvedUIRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 2);
-                resolvedUIRecord.ModifiedBy = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
-                resolvedUIRecord.ModificationDate = DateTime.Now;
-                pageState._currentList.Remove(resolvedUIRecord);
+                TxtSearch_TextChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -229,11 +238,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                Report closedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                closedUIRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 3);
-                closedUIRecord.ModifiedBy = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
-                closedUIRecord.ModificationDate = DateTime.Now;
-                pageState._currentList.Remove(closedUIRecord);
+                TxtSearch_TextChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -265,9 +270,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                Report targetUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                targetUIRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 3);
-                pageState._currentList.Remove(targetUIRecord);
+                TxtSearch_TextChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message

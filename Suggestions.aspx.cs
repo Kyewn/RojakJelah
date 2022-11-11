@@ -24,6 +24,10 @@ namespace RojakJelah
         private string[] filterEntries = new string[] { 
             "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)", "Approved", "Rejected"
         };
+        private int[] limitRowEntries = new int[]
+        {
+            10,50,100
+        };
 
         //  FontAwesome icons
         private String IconExclamation = "fa-solid fa-circle-exclamation";
@@ -54,8 +58,15 @@ namespace RojakJelah
                     cboEditLanguage.Items.Add(entry.Name);
                 }
 
+                ddlLimitRows.Items.Clear();
+                foreach (int entry in limitRowEntries)
+                {
+                    ddlLimitRows.Items.Add(entry.ToString());
+                }
+
                 //  listItemContainer
-                List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
+                var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+                List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
                 pageState._currentList.AddRange(suggestionList);
             }
         }
@@ -71,9 +82,10 @@ namespace RojakJelah
         protected void CboFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedIndex = cboFilter.SelectedIndex;
-            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
-            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).ToList();
-            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).ToList();
+            var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
+            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).Take(limitRowCount).ToList();
+            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).Take(limitRowCount).ToList();
             List<Suggestion> chosenList = new List<Suggestion>();
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2)
@@ -122,9 +134,10 @@ namespace RojakJelah
             txtSelectedListItem.Text = ""; // Reset selected list item
             var searchKeys = txtSearch.Text.ToLower().Trim();
             var filter = cboFilter.SelectedIndex;
-            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
-            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).ToList();
-            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).ToList();
+            var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
+            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).Take(limitRowCount).ToList();
+            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).Take(limitRowCount).ToList();
             List<Suggestion> filteredList = new List<Suggestion>();
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2) {
@@ -299,9 +312,7 @@ namespace RojakJelah
                 }
                 
                 //  Update UI
-                Suggestion approvedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                approvedUIRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 2);
-                pageState._currentList.Remove(approvedUIRecord);
+                TxtSearch_TextChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -332,9 +343,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                Suggestion rejectedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                rejectedUIRecord.SuggestionStatus = dataContext.SuggestionStatuses.SingleOrDefault(x => x.Id == 3);
-                pageState._currentList.Remove(rejectedUIRecord);
+                TxtSearch_TextChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
