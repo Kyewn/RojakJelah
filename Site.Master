@@ -45,24 +45,48 @@
                     </div>
                     <!-- Nav Links -->
                     <div class="links-container">
-                        <ul class="links">
-                            <li>
-                                <a class="scroll-link" href="Translator.aspx">
+                        <ul ID="navLinks" ClientIDMode="Static" class="links" runat="server">
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkBack" runat="server" class="scroll-link" href="Translator.aspx">
+                                    <i class="fa-solid fa-left-long"></i>
+                                    Back
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkTranslator" runat="server" class="scroll-link" href="Translator.aspx">
                                     <i class="fa-sharp fa-solid fa-message"></i>
                                     Translator
-                                </a>
+                                </asp:LinkButton>
                             </li>
-                            <li>
-                                <a class="scroll-link" href="Dictionary.aspx">
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkDictionary" runat="server" class="scroll-link" href="Dictionary.aspx">
                                     <i class="fa-solid fa-file-contract"></i>
                                     Dictionary
-                                </a>
+                                </asp:LinkButton>
                             </li>
-                            <li>
-                                <a class="scroll-link" href="About.aspx">
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkAbout" runat="server" class="scroll-link" href="About.aspx">
                                     <i class="fa-solid fa-circle-info"></i>
                                     About
-                                </a>
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkSuggestions" runat="server" class="scroll-link" href="Suggestions.aspx">
+                                    <i class="fa-solid fa-spell-check"></i>
+                                    Suggestions
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkReports" runat="server" class="scroll-link" href="Reports.aspx">
+                                    <i class="fa-sharp fa-solid fa-flag"></i>
+                                    Reports
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkAdminPanel" runat="server" class="scroll-link" href="Suggestions.aspx" Visible="false">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                    Admin panel
+                                </asp:LinkButton>
                             </li>
                             <li>
                                 <a id="lnkLogin" runat="server" class="scroll-link" href="Login.aspx">
