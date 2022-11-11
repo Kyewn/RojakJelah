@@ -65,7 +65,7 @@ namespace RojakJelah
             mdlTranslationHistory.Style.Add("display", "none");
             mdlReport.Style.Add("display", "none");
 
-            if (!IsPostBack)
+            if (!IsPostBack || Session[StrRojakHashtable] == null)
             {
                 Dictionary<string, List<string>>[] rojakHashtable = InitializeRojakHashtable();
                 StanfordCoreNLP coreNlpPipeline = SetupCoreNlpPipeline();
@@ -253,7 +253,7 @@ namespace RojakJelah
                          */
                         if ((token.Tag == "POS") || (token.Tag == "VBZ" && token.Word[0] == '\'') || (token.Tag == "VBP" && token.Word[0] == '\'') ||
                             (token.Tag == "RB" && (token.Word == "n't" || token.Word == "nt")) || (token.Tag == "PRP" && token.Word == "'s") ||
-                            (token.Tag == "MD" && token.Word == "'ll") || (token.Tag == "VBD" && token.Word == "'d"))
+                            (token.Tag == "MD" && token.Word[0] == '\'') || (token.Tag == "VBD" && token.Word == "'d"))
                         {
                             Token previousToken = (i > 0) ? tokenizedSentence.ElementAt(i - 1) : tokenizedSentence.ElementAt(i);
 
