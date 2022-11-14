@@ -77,17 +77,18 @@
                                 <p class="content-text"><%# Eval("Slang.Language.Name") %></p>
                             </div>
                         </div>
-                        <div class="dictionary-item-controls">
+                        
                             <%  if (ViewState["UserRole"] != null)
                                 {
                                     if (ViewState["UserRole"].ToString() == "System" || ViewState["UserRole"].ToString() == "Admin")
                                     {
                                %>
-                                    <asp:Button ID="btnEdit" CssClass="button-secondary button-edit" runat="server" CommandName="Modify" Text="Edit" />
-                                    <asp:Button ID="btnDelete" CssClass="button-secondary button-delete" runat="server" CommandName="Remove" OnClientClick="confirmDelete(event, this.id)" Text="Delete" />
+                                    <div class="dictionary-item-controls">
+                                        <asp:Button ID="btnEdit" CssClass="button-secondary button-edit" runat="server" CommandName="Modify" Text="Edit" />
+                                        <asp:Button ID="btnDelete" CssClass="button-secondary button-delete" runat="server" CommandName="Remove" OnClientClick="confirmDelete(event, this.id)" Text="Delete" />
+                                    </div>
                             <%      }
                                 } %>
-                        </div>
                     </div>
                 </ItemTemplate>
                 <EmptyDataTemplate>
