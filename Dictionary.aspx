@@ -48,7 +48,70 @@
     </section>
 
     <!-- Dictionary Container  -->
-    <section id="sctDictionary" class="dictionary-container" runat="server">
+    <section id="sctDictionary">
+        <div id="divDictionary" class="dictionary-container" runat="server" ClientIDMode="Static">
+            <asp:HiddenField ID="hfScrollPosition" runat="server" ClientIDMode="Static" />
+
+            <asp:ListView ID="lvDictionary" runat="server" ClientIDMode="Static" DataKeyNames="Id" OnItemCommand="LvDictionary_ItemCommand"
+                GroupPlaceholderID="groupPlaceHolder1" ItemPlaceholderID="itemPlaceHolder1" OnPagePropertiesChanging="OnPagePropertiesChanging">
+                <LayoutTemplate>
+                    <asp:PlaceHolder runat="server" ID="groupPlaceHolder1"></asp:PlaceHolder>
+                </LayoutTemplate>
+                <GroupTemplate>
+                    <asp:PlaceHolder runat="server" ID="itemPlaceHolder1"></asp:PlaceHolder>
+                </GroupTemplate>
+                <ItemTemplate>
+                    <div class="dictionary-item">
+                        <div class="dictionary-item-content">
+                            <h4 class="dictionary-item-title"><%# Eval("Slang.WordValue") %></h4>
+                            <div class="dictionary-item-text">
+                                <p class="content-title">Meaning</p>
+                                <p class="content-text"><%# Eval("Translation.WordValue") %></p>
+                            </div>
+                            <div class="dictionary-item-text">
+                                <p class="content-title">Example</p>
+                                <p class="content-text"><%# (Eval("Example").ToString() == "") ? "-" : Eval("Example") %></p>
+                            </div>
+                            <div class="dictionary-item-text">
+                                <p class="content-title">Language</p>
+                                <p class="content-text"><%# Eval("Slang.Language.Name") %></p>
+                            </div>
+                        </div>
+                        <div class="dictionary-item-controls">
+                            <%  if (ViewState["UserRole"] != null)
+                                {
+                                    if (ViewState["UserRole"].ToString() == "System" || ViewState["UserRole"].ToString() == "Admin")
+                                    {
+                               %>
+                                    <asp:Button ID="btnEdit" CssClass="button-secondary button-edit" runat="server" CommandName="Modify" Text="Edit" />
+                                    <asp:Button ID="btnDelete" CssClass="button-secondary button-delete" runat="server" CommandName="Remove" OnClientClick="confirmDelete(event, this.id)" Text="Delete" />
+                            <%      }
+                                } %>
+                        </div>
+                    </div>
+                </ItemTemplate>
+                <EmptyDataTemplate>
+                    <div class='dictionary-empty'>
+                        <i class='fa-regular fa-circle-xmark fa-2xl'></i>
+                        <h4>No entries found</h4>
+                    </div>
+                </EmptyDataTemplate>
+            </asp:ListView>
+        </div>
+        <div class="dictionary-pager">
+            <div class="dictionary-data-pager">
+                <asp:DataPager ID="dictionaryDataPager" runat="server" PagedControlID="lvDictionary" PageSize="20">
+                    <Fields>
+                        <asp:NextPreviousPagerField ButtonType="Link" ButtonCssClass="pager-previous-next" ShowFirstPageButton="false" ShowPreviousPageButton="true" ShowNextPageButton="false" />
+                        <asp:NumericPagerField ButtonType="Link" NumericButtonCssClass="pager-button" CurrentPageLabelCssClass="pager-button-current" />
+                        <asp:NextPreviousPagerField ButtonType="Link" ButtonCssClass="pager-previous-next" ShowNextPageButton="true" ShowLastPageButton="false" ShowPreviousPageButton = "false" />
+                    </Fields>
+                </asp:DataPager>
+            </div>
+            <div class="dictionary-pager-info">
+                <p id="dictionaryDataPagerInfo" runat="server" ClientIDMode="Static"></p>
+            </div>
+        </div>
     </section>
 
     <!-- Modals -->
@@ -120,27 +183,49 @@
         </div>
     </div>
 
-    <%--<!-- Confirmation Modal --> this shit just doesnt work
-    <div id="mdlConfirmation" class="modal-window" ClientIDMode="Static" runat="server">
-        <div id="dlgConfirmation" class="modal-dialog">
+    <!-- Edit Dictionary Entry Modal -->
+    <div id="mdlEditDictionaryEntry" class="modal-window" ClientIDMode="Static" runat="server">
+        <div id="dlgEditDictionaryEntry" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <i class="modal-icon fa-solid fa-triangle-exclamation"></i>
-                    <h2 class="modal-title">Confirmation</h2>
-                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlConfirmation'))">
+                    <i class="modal-icon fa-solid fa-pen-to-square"></i>
+                    <h2 class="modal-title">Edit dictionary entry</h2>
+                    <button type="button" class="modal-btn-close" onclick="closeModal($('#mdlEditDictionaryEntry'))">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <h4 id="dialogMessage" class="modal-dialog-message"></h4>
+                <div id="divEditModalBody" class="modal-body">
+                    <div id="divEditReadOnlyFields">
+                        <div id="divDictionaryEntryId" class="modal-inputfield">
+                            <label class="modal-inputlabel">ID</label>
+                            <p id="txtDictionaryEntryId" class="modal-fieldvalue" runat="server" ClientIDMode="Static"></p>
+                        </div>
+                        <div id="divEditSlang" class="modal-inputfield">
+                            <label class="modal-inputlabel">Slang</label>
+                            <p id="txtEditSlang" class="modal-fieldvalue" runat="server" ClientIDMode="Static"></p>
+                        </div>
+                        <div id="divEditTranslation" class="modal-inputfield">
+                            <label class="modal-inputlabel">Translation</label>
+                            <p id="txtEditTranslation" class="modal-fieldvalue" runat="server" ClientIDMode="Static"></p>
+                        </div>
+                    </div>
+                    <div id="divEditLanguage" class="modal-inputfield">
+                        <label class="modal-inputlabel">Origin Language *</label>
+                        <select id="ddlEditLanguage" class="modal-dropdown" runat="server" ClientIDMode="Static">
+                        </select>
+                    </div>
+                    <div id="divEditExample" class="modal-inputfield">
+                        <label class="modal-inputlabel">Example</label>
+                        <textarea id="txtEditExample" class="modal-textinput" runat="server" rows="5" maxlength="100" placeholder="Describe an example usage of the slang"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnYes" class="button-primary">Yes</button>
-                    <button id="btnNo" class="button-secondary">No</button>
+                    <asp:Button ID="btnConfirmEdit" class="button-primary" runat="server" OnClick="BtnConfirmEdit_Click" Text="Confirm" />
+                    <asp:Button ID="btnCancelEdit" class="button-secondary" runat="server" OnClick="BtnCancelEdit_Click" Text="Cancel" />
                 </div>
             </div>
         </div>
-    </div>--%>
+    </div>
 
     <!-- Notification Popup -->
     <div id="notification" class="notification" runat="server" onclick="closeNotification($(this));">

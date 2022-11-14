@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+
     // ********** Tooltip **********
     var timeoutId;
     $("#btnReport").mouseenter(function () {
@@ -17,6 +18,12 @@
             $("#lnkSearch")[0].click();
             return false;
         }
+    });
+
+    // ********** Maintain scroll position **********
+    var dictionaryContainer = $("#divDictionary");
+    $(dictionaryContainer).scroll(function () {
+        $("#hfScrollPosition").val($(dictionaryContainer)[0].scrollTop);
     });
 });
 
@@ -159,7 +166,7 @@ function closeModal(selectedModal) {
 }
 
 function confirmDelete(event, controlID) {
-    if (confirm("This is an irreversible action. Are you sure?")) {
+    if (confirm("This not only removes the entry from the dictionary, but also from the translator's dataset. This action cannot be undone. Are you sure?")) {
         __doPostBack(controlID, "");
     } else {
         event.preventDefault();

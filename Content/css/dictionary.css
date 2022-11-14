@@ -111,7 +111,7 @@ body {
 .notification {
     display: none;
     position: fixed;
-    top: 65%;
+    top: 70%;
     right: 3%;
     padding: 1rem 1.5rem 0.5rem 1.5rem;
     width: 300px;
@@ -204,11 +204,11 @@ body {
 
 /* Dictionary Header */
 .dictionary-header {
-    padding: 1.5rem 0 1rem 0;
+    padding: 1.2rem 0 1rem 0;
 }
 
 .dictionary-header-text {
-    padding-bottom: 1rem;
+    padding-bottom: 0.8rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -226,7 +226,9 @@ body {
 }
 
 #entryCountText {
+    color: var(--primary-color);
     font-family: 'Rubik', Arial, sans-serif;
+    text-align: right;
 }
 
 .dictionary-controls {
@@ -310,11 +312,17 @@ body {
 
 
 /* Dictionary Container */
-.dictionary-container {
-    margin-bottom: 4rem;
+#sctDictionary {
+    padding-bottom: 4rem;
     display: flex;
     flex-direction: column;
-    height: 65vh;
+    row-gap: 1.5rem;
+}
+
+.dictionary-container {
+    display: flex;
+    flex-direction: column;
+    height: 62vh;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     overflow-y: auto;
@@ -366,7 +374,7 @@ body {
     display: flex;
     flex-direction: row;
     margin-bottom: 1rem;
-    padding: 1rem 2rem;
+    padding: 0.8rem 2rem;
     width: 100%;
     background-color: #eaeaea;
 }
@@ -388,7 +396,7 @@ body {
 
 .content-title {
     margin: 0;
-    padding: 0.2rem 0;
+    padding: 0.1rem 0;
     flex: 0.1;
     color: #323232;
     font-weight: 500;
@@ -396,7 +404,7 @@ body {
 
 .content-text {
     margin: 0;
-    padding: 0.2rem 0;
+    padding: 0.1rem 0;
     flex: 0.9;
     color: var(--primary-color);
     font-weight: 400;
@@ -407,12 +415,108 @@ body {
     flex: 0.05;
     display: flex;
     flex-direction: column;
+    row-gap: 0.5rem;
 }
 
-.button-delete {
+.button-edit {
     margin-top: auto;
     padding: 0.1rem 0.5rem;
 }
+
+.button-delete {
+    padding: 0.1rem 0.5rem;
+}
+
+
+
+/* Dictionary Pagination */
+.dictionary-pager {
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dictionary-data-pager {
+    flex: 0.85;
+    display: flex;
+    flex-direction: row;
+}
+
+.dictionary-pager-info {
+    flex: 0.15;
+}
+
+#dictionaryDataPagerInfo {
+    margin: 0;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: right;
+    opacity: 0.8;
+}
+
+.pager-previous-next {
+    padding: 0.5rem;
+    margin: 0 0.1rem;
+    background-color: #ffffff;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-weight: 500;
+    transition: 0.3s ease-out;
+}
+
+.pager-previous-next:hover {
+    color: var(--primary-color-hover);
+}
+
+.pager-previous-next:active {
+    color: var(--primary-color-active);
+}
+
+.aspNetDisabled {
+    color: var(--primary-color-hover);
+    opacity: 0.7;
+}
+
+.aspNetDisabled:active {
+    color: var(--primary-color-hover);
+    opacity: 0.7;
+}
+
+.pager-button {
+    padding: 0.5rem;
+    background-color: #ffffff;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    color: var(--primary-color);
+    font-family: 'Rubik', Arial, sans-serif;
+    font-weight: 500;
+    transition: 0.3s ease-out;
+}
+
+.pager-button:hover {
+    border: 1px solid var(--primary-color-hover);
+    color: var(--primary-color-hover);
+}
+
+.pager-button:active {
+    border: 1px solid var(--primary-color-active);
+    color: var(--primary-color-active);
+}
+
+.pager-button-current {
+    padding: 0.5rem;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    color: #ffffff;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-weight: 500;
+    transition: 0.3s ease-out;
+}
+
+
 
 /* Modals */
 .modal-window {
@@ -587,6 +691,11 @@ body {
     font-weight: 500;
 }
 
+.modal-fieldvalue {
+    margin: 0;
+    color: #323232;
+}
+
 .modal-dropdown {
     padding: 0.5rem 1rem;
     width: 50%;
@@ -666,20 +775,62 @@ body {
     width: 100%;
 }
 
-/* Confirmation Modal */
-#dlgConfirmation {
-    width: 30%;
-    height: 50%;
+/* Edit Dictionary Entry Modal */
+#dlgEditDictionaryEntry {
+    width: 45%;
+    height: 75%;
 }
 
-#dlgConfirmation .modal-header {
+#divEditModalBody {
+    padding: 1rem 1rem 0.5rem 0.2rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+}
+
+#divEditModalBody::-webkit-scrollbar {
+    padding-left: 1rem;
+    width: 3px;
+    background-color: #f2f2f2;
+}
+
+#divEditModalBody::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+}
+
+#divEditModalBody::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color-hover);
+}
+
+#divEditModalBody::-webkit-scrollbar-thumb:active {
+    background-color: var(--primary-color-active);
+}
+
+#divEditModalBody::-webkit-scrollbar-button {
+    display: none;
+}
+
+#divEditReadOnlyFields {
+    display: flex;
+    flex-direction: row;
     column-gap: 1rem;
+    word-break: break-word;
 }
 
-.modal-dialog-message {
-    font-family: 'Rubik', Arial, sans-serif;
-    font-size: 20px;
-    font-weight: 400;
+#divDictionaryEntryId {
+    flex: 0.1;
+}
+
+#divEditSlang {
+    flex: 0.4;
+}
+
+#divEditTranslation {
+    flex: 0.5;
+}
+
+#txtDictionaryEntryId, #txtEditSlang, #txtEditTranslation {
+    line-height: 1em;
 }
 
 
