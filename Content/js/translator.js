@@ -54,6 +54,20 @@ function closeNotification(notification) {
     notification.css("display", "none");
 }
 
+function confirmSave(event, controlID) {
+    let isDuplicate = $("#hfDuplicateTranslation").val() == "true" ? true : false;
+
+    // If it is a duplicate translation, prompt user to confirm whether they want to save again
+    // Else, just save it
+    if (isDuplicate) {
+        if (confirm("This translation has already been saved previously. Do you want to save a duplicate?")) {
+            __doPostBack('ctl00$MainContent$lnkSaveTranslation', "");
+        } else {
+            event.preventDefault();
+        }
+    }
+}
+
 function confirmDelete(event, controlID) {
     if (confirm("This is an irreversible action. Are you sure?")) {
         __doPostBack(controlID, "");

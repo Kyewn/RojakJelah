@@ -39,7 +39,7 @@
                 <div class="translate-container">
                     <!-- Translation Input Field -->
                     <grammarly-editor-plugin class="translate-textinput">
-                        <textarea id="txtInput" runat="server" rows="3" maxlength="5000" placeholder="Enter message here..." spellcheck="true"></textarea>
+                        <textarea id="txtInput" runat="server" rows="3" maxlength="5000" placeholder="Enter message here" spellcheck="true"></textarea>
                     </grammarly-editor-plugin>
 
                     <!-- Translate Buttons  -->
@@ -78,13 +78,16 @@
 
             <!-- Translate Output  -->
             <div class="translate-output">
+                <asp:HiddenField ID="hfDuplicateTranslation" runat="server" ClientIDMode="Static"/>
+
                 <div class="translate-output-title">
                     <h5>Translation</h5>
-                    <asp:LinkButton ID="lnkSaveTranslation" CssClass="translate-btn-save" runat="server" ClientIDMode="Static" OnClick="LnkSaveTranslation_Click">
+                    <asp:LinkButton ID="lnkSaveTranslation" CssClass="translate-btn-save" runat="server" OnClick="LnkSaveTranslation_Click" OnClientClick="confirmSave(event, this.id);" ClientIDMode="Static">
                         <i id="iconSave" class="fa-regular fa-bookmark" runat="server"></i>
                         <span id="tooltipSave" class="tool-tip">Save translation</span>
                     </asp:LinkButton>
                 </div>
+
                 <div class="output-container">
                     <div class="output-text">
                         <p id="txtOutput" runat="server"></p>

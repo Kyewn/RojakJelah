@@ -457,6 +457,14 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\deterministic-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\fastneural-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\neural-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\statistical-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\dcoref\coref.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\models\pos-tagger\english-left3words-distsim.tagger" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\models\pos-tagger\english-left3words-distsim.tagger.props" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\pipeline\StanfordCoreNLP.properties" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

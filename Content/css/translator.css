@@ -511,7 +511,6 @@
 .translate .translate-container {
   display: flex;
   align-items: center;
-  margin-top: 5px;
 }
 
 
@@ -519,7 +518,6 @@
 /* Translate Input  */
 .translate-textinput {
     flex: 0.82;
-    padding-top: 8px;
 }
 
 .translate-textinput textarea {
@@ -633,6 +631,7 @@
     flex: 0.15;
     display: flex;
     margin-left: auto;
+    margin-bottom: auto;
     flex-direction: column;
 }
 

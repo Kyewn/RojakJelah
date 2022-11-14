@@ -1,5 +1,6 @@
 ﻿using edu.stanford.nlp.ling;
 using edu.stanford.nlp.pipeline;
+using edu.stanford.nlp.util;
 using java.util;
 using RojakJelah.Database;
 using RojakJelah.Database.Entity;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -129,8 +131,8 @@ namespace RojakJelah
         protected StanfordCoreNLP SetupCoreNlpPipeline()
         {
             // Root directory & models directory
-            var jarRoot = @"C:\Users\wztho\Downloads"; /// only need to change this line
-            var modelsDirectory = jarRoot + @"\stanford-corenlp-4.5.0-models/edu/stanford\nlp";
+            var jarRoot = AppDomain.CurrentDomain.BaseDirectory + @"\StanfordCoreNLP";
+            var modelsDirectory = jarRoot + @"\stanford-corenlp-4.5.0-models\edu\stanford\nlp";
 
             // Model file paths
             var postaggerModel = modelsDirectory + @"\models\pos-tagger\english-left3words-distsim.tagger";
@@ -178,7 +180,7 @@ namespace RojakJelah
             iconSave.Attributes.Add("class", IconRegularBookmark);
             // Clear output
             txtOutput.InnerText = "";
-
+            
             #region Input Sanitization
             // Get trimmed input text
             string inputText = txtInput.Value.Trim();
@@ -189,7 +191,7 @@ namespace RojakJelah
             StanfordCoreNLP pipeline = Session[StrCoreNlpPipeline] as StanfordCoreNLP;
             CoreDocument coreDoc = pipeline.processToCoreDocument(inputText);
             pipeline.annotate(coreDoc);
-            
+
             // Split input into sentences
             var inputSentenceList = coreDoc.sentences().toArray();
             var tokenizedSentenceList = new List<List<Token>>();
@@ -377,37 +379,68 @@ namespace RojakJelah
 
             #region Sentence Composer
             string outputText = "";
+            string outputToSave = "";
 
             if ((translatedSentenceList != null) && (translatedSentenceList.Count > 0))
             {
                 int i = 0;
 
+                // Reconstruct each sentence
                 foreach (List<string> translatedSentence in translatedSentenceList)
                 {
+                    int currSentenceOffsetStart = Int32.Parse(((CoreSentence)inputSentenceList.ElementAt(i)).charOffsets().first().ToString());
+                    int currSentenceOffsetEnd = Int32.Parse(((CoreSentence)inputSentenceList.ElementAt(i)).charOffsets().second().ToString());
                     int j = 0;
 
+                    // Check for nextlines
+                    if (currSentenceOffsetStart > 1)
+                    {
+                        int prevSentenceOffsetStart = Int32.Parse(((CoreSentence)inputSentenceList.ElementAt(i - 1)).charOffsets().first().ToString());
+                        int prevSentenceOffsetEnd = Int32.Parse(((CoreSentence)inputSentenceList.ElementAt(i - 1)).charOffsets().second().ToString());
+                        int separatorTextLength = inputText.Length - prevSentenceOffsetEnd - inputText.Substring(currSentenceOffsetStart).Length;
+                        string separatorText = inputText.Substring(prevSentenceOffsetEnd, separatorTextLength);
+
+                        if (separatorText.Contains(Environment.NewLine))
+                        {
+                            // Add new line before new sentence
+                            int newLineCount = Regex.Matches(separatorText, "\r\n").Count;
+
+                            for (int k = 0; k < newLineCount; k++)
+                            {
+                                outputText += "<br>";
+                                outputToSave += Environment.NewLine;
+                            }
+                        }
+                        else
+                        {
+                            // Add space before new sentence
+                            outputText += (i < translatedSentenceList.Count) ? " " : "";
+                        }
+                    }
+
+                    // Add words into the sentence
                     foreach (string word in translatedSentence)
                     {
                         outputText += word;
+                        outputToSave += word;
 
                         if ((j + 1) < translatedSentence.Count)
                         {
                             string nextWord = translatedSentence.ElementAt(j + 1);
 
                             outputText += (nextWord.Length == 1 && Char.IsPunctuation(nextWord[0])) ? "" : " ";
+                            outputToSave += (nextWord.Length == 1 && Char.IsPunctuation(nextWord[0])) ? "" : " ";
                         }
 
                         j++;
                     }
-
-                    outputText += (i < translatedSentenceList.Count) ? " " : "";
-
+                    
                     i++;
                 }
             }
 
             // Display output
-            txtOutput.InnerText = outputText;
+            txtOutput.InnerHtml = outputText;
             #endregion
 
             // Save translation into session (most recent translation & translation history)
@@ -420,13 +453,24 @@ namespace RojakJelah
             {
                 Id = translationId,
                 Input = inputText,
-                Output = outputText,
+                Output = outputToSave,
                 CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name) ?? null,
                 CreationDate = DateTime.Now
             };
 
             Session[StrMostRecentTranslation] = mostRecentTranslation;
             translationHistory.Add(mostRecentTranslation);
+
+            // Update "Save Translation" button icon
+            if (User.Identity.IsAuthenticated)
+            {
+                List<SavedTranslation> savedTranslations = dataContext.SavedTranslations.ToList();
+
+                bool isDuplicate = savedTranslations.Any(x => (x.Input == mostRecentTranslation.Input) && (x.Output == mostRecentTranslation.Output));
+
+                iconSave.Attributes.Add("class", isDuplicate ? IconSolidBookmark : IconRegularBookmark);
+                hfDuplicateTranslation.Value = isDuplicate ? "true" : "false";
+            }
         }
 
         protected void LnkSaveTranslation_Click(object sender, EventArgs e)
@@ -475,8 +519,9 @@ namespace RojakJelah
                     dataContext.SavedTranslations.Add(newSavedTranslation);
                     dataContext.SaveChanges();
 
-                    // Update save icon
+                    // Update save icon and HiddenField value
                     iconSave.Attributes.Add("class", IconSolidBookmark);
+                    hfDuplicateTranslation.Value = "true";
 
                     // Show success notification
                     ShowNotification(IconFloppyDisk, "Save success", notificationMessage, false);
@@ -535,10 +580,20 @@ namespace RojakJelah
                     if (User.Identity.IsAuthenticated)
                     {
                         DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
-                        dataContext.SavedTranslations.Remove(dataContext.SavedTranslations.SingleOrDefault(x => x.Id == translationId));
+                        SavedTranslation savedTranslation = dataContext.SavedTranslations.SingleOrDefault(x => x.Id == translationId);
+
+                        string inputToDelete = savedTranslation.Input;
+                        string outputToDelete = savedTranslation.Output;
+
+                        dataContext.SavedTranslations.Remove(savedTranslation);
                         dataContext.SaveChanges();
 
                         LnkViewSavedTranslations_Click(sender, e);
+
+                        // Update save icon and HiddenField value
+                        bool isDuplicate = dataContext.SavedTranslations.Any(x => x.Input == inputToDelete && x.Output == outputToDelete);
+                        iconSave.Attributes.Add("class", isDuplicate ? IconSolidBookmark : IconRegularBookmark);
+                        hfDuplicateTranslation.Value = isDuplicate ? "true" : "false";
 
                         ShowNotification(IconCheck, "Delete succcess", "The translation has been deleted successfully.", false);
                     }
@@ -682,7 +737,9 @@ namespace RojakJelah
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
-            var savedTranslationList = dataContext.SavedTranslations.Where(x => x.CreatedBy.Username == User.Identity.Name).ToList();
+            var savedTranslationList = dataContext.SavedTranslations.Where(x => x.CreatedBy.Username == User.Identity.Name)
+                                                                .OrderByDescending(x => x.CreationDate)
+                                                                .ToList();
 
             divSavedTranslationsModalBody.Controls.Clear();
 
@@ -710,6 +767,7 @@ namespace RojakJelah
         protected void PopulateTranslationHistory()
         {
             var translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
+            translationHistory = translationHistory.OrderByDescending(x => x.CreationDate).ToList();
 
             divTranslationHistoryModalBody.Controls.Clear();
 
@@ -768,15 +826,15 @@ namespace RojakJelah
             // Modal item content
             LiteralControl modalItemContent = new LiteralControl($@"
                 <div class='modal-item-content'>
-                    <h2 class='modal-item-title'>{savedTranslation.Input}</h2>
+                    <h2 class='modal-item-title'>{savedTranslation.Input.Replace("\r\n", "<br>")}</h2>
                     <div class='modal-item-text'>
                         <h3 class='text-title'>Translation</h3>
-                        <h3 class='text-content'>{savedTranslation.Output}</h3>
+                        <h3 class='text-content'>{savedTranslation.Output.Replace("\r\n", "<br>")}</h3>
                     </div>
                     <small>Date: {savedTranslation.CreationDate}</small>
                 </div>
             ");
-
+            
             // Modal item controls
             Panel modalItemControls = new Panel();
             modalItemControls.CssClass = "modal-item-controls";
