@@ -10,15 +10,27 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="contentWrapper">
         <div class="header">
-            <i class="fa-sharp fa-solid fa-flag"></i>
-            <h3>User reports</h3>
+            <div class="divInline">
+                <i class="fa-sharp fa-solid fa-flag"></i>
+                <h3>User reports</h3>
+            </div>
+            <div class="divInline">
+                <h6>Limit rows</h6>
+                <asp:DropDownList ID="ddlLimitRows" runat="server" AutoPostBack="true" CssClass="cboFilter" OnSelectedIndexChanged="CboSortAndFilter_SelectedIndexChanged"></asp:DropDownList>
+            </div>
         </div> 
         <div class="contentContainer">
             <div class="leftContainer">
                 <div class="searchContainer">
                     <div class="filterContainer">
-                        <h6>Sorts & Filters</h6>
-                        <asp:DropDownList ID="cboFilter" class="cboFilter" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CboFilter_SelectedIndexChanged"></asp:DropDownList>
+                        <div>
+                            <h6>Sorts</h6>
+                            <asp:DropDownList ID="cboSorts" class="cboFilter" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CboSortAndFilter_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
+                        <div>
+                            <h6>Filters</h6>
+                            <asp:DropDownList ID="cboFilter" class="cboFilter" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CboSortAndFilter_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
                     </div>
                     <div class="searchGroup">
                         <div class="searchBarContainer">
@@ -38,8 +50,8 @@
                     <h6>Actions</h6>
                     <div ID="menuContainer" class="menuContainer" runat="server">
                         <div ID="buttonContainer" runat="server" class="buttonContainer">
-                            <asp:Button ID="btnResolve" ClientIDMode="Static" runat="server" Text="Accept" OnClick="BtnResolve_Click"></asp:Button>
-                            <asp:Button ID="btnClose" ClientIDMode="Static" runat="server" Text="Reject" OnClick="BtnClose_Click"></asp:Button>
+                            <asp:Button ID="btnResolve" ClientIDMode="Static" runat="server" Text="Resolve" OnClick="BtnResolve_Click"></asp:Button>
+                            <asp:Button ID="btnClose" ClientIDMode="Static" runat="server" Text="Close" OnClick="BtnClose_Click"></asp:Button>
                             <asp:Button ID="btnRestore" ClientIDMode="Static" runat="server" Text="Restore" OnClick="BtnRestore_Click" />
                         </div>
                         <div ID="detailContainer" runat="server" class="detailContainer">
