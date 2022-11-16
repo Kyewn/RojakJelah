@@ -50,8 +50,8 @@
                     <h6>Actions</h6>
                     <div ID="menuContainer" class="menuContainer" runat="server">
                         <div ID="buttonContainer" runat="server" class="buttonContainer">
-                            <asp:Button ID="btnResolve" ClientIDMode="Static" runat="server" Text="Accept" OnClick="BtnResolve_Click"></asp:Button>
-                            <asp:Button ID="btnClose" ClientIDMode="Static" runat="server" Text="Reject" OnClick="BtnClose_Click"></asp:Button>
+                            <asp:Button ID="btnResolve" ClientIDMode="Static" runat="server" Text="Resolve" OnClick="BtnResolve_Click"></asp:Button>
+                            <asp:Button ID="btnClose" ClientIDMode="Static" runat="server" Text="Close" OnClick="BtnClose_Click"></asp:Button>
                             <asp:Button ID="btnRestore" ClientIDMode="Static" runat="server" Text="Restore" OnClick="BtnRestore_Click" />
                         </div>
                         <div ID="detailContainer" runat="server" class="detailContainer">
