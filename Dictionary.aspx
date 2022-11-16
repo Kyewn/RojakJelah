@@ -113,17 +113,17 @@
                     </div>
                     <div id="divDdlLanguage" class="modal-inputfield">
                         <label class="modal-inputlabel">Origin Language *</label>
-                        <select id="ddlLanguage" class="modal-dropdown" runat="server" ClientIDMode="static">
+                        <asp:DropDownList ID="ddlLanguage" ClientIDMode="static" class="modal-dropdown" runat="server"></asp:DropDownList>
                         </select>
                     </div>
                     <div id="divTxtExample" class="modal-inputfield">
                         <label class="modal-inputlabel">Example</label>
-                        <textarea class="modal-textinput" rows="5" maxlength="100" placeholder="Describe an example usage of the slang"></textarea>
+                        <textarea id="txtExample" runat="server" class="modal-textinput" rows="5" maxlength="100" placeholder="Describe an example usage of the slang"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="button-primary">Submit</button>
-                    <button class="button-secondary">Cancel</button>
+                    <asp:Button ID="btnSubmitSuggestion" runat="server" class="button-primary" Text="Submit" OnClick="BtnSubmitSuggestion_Click"/>
+                    <asp:Button ID="btnCancelSuggestion" runat="server" class="button-secondary" Text="Cancel" OnClick="BtnCancelSuggestion_Click"/>
                 </div>
             </div>
         </div>

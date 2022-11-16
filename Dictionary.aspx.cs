@@ -305,6 +305,110 @@ namespace RojakJelah
             mdlReport.Style.Add("display", "none");
         }
 
+        protected void BtnSubmitSuggestion_Click(object sender, EventArgs e)
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+            string notificationTitle, notificationMessage;
+
+            //  Check if dictionary pair already exist
+            DictionaryEntry existingSlangTranslationPair;
+
+            try
+            {
+                //  Catch error thrown when system doesnt recognize new words that doesn't exist in DB
+                //  Force the system to accept new words
+                existingSlangTranslationPair = dataContext.DictionaryEntries
+                    .Where(x => x.Slang.WordValue.ToLower() == txtSlang.Value.ToLower())
+                    .Where(x => x.Translation.WordValue.ToLower() == txtTranslation.Value.ToLower()).First();
+            }
+            catch
+            {
+                existingSlangTranslationPair = null;
+            }
+
+            try
+            {
+                //  Error catching
+                //  Required inputs empty
+                if (String.IsNullOrWhiteSpace(txtSlang.Value) || String.IsNullOrEmpty(txtSlang.Value) ||
+                    String.IsNullOrWhiteSpace(txtTranslation.Value) || String.IsNullOrEmpty(txtTranslation.Value))
+                {
+                    // Display error notification
+                    notificationTitle = "Required fields are empty";
+                    notificationMessage = "Slang and Translation fields must be filled.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    ShowModal(mdlSuggestion);
+                    return;
+                }
+
+                //  Same slang-translation input
+                if (txtSlang.Value.ToLower() == txtTranslation.Value.ToLower())
+                {
+                    // Display error notification
+                    notificationTitle = "Identical words";
+                    notificationMessage = "Slangs and translations must be different words.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    ShowModal(mdlSuggestion);
+                    return;
+                }
+
+                //  Existing pair in dictionary
+                if (existingSlangTranslationPair != null)
+                {
+                    // Display error notification
+                    notificationTitle = "Word pair already exist";
+                    notificationMessage = "The slang-translation pair already exist in the dictionary.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    ShowModal(mdlSuggestion);
+                    return;
+                }
+
+                //  Submit suggestion
+                Suggestion newSuggestion = new Suggestion()
+                {
+                    Slang = txtSlang.Value.Trim(),
+                    Translation = txtTranslation.Value.Trim(),
+                    Language = dataContext.Languages.Find(int.Parse(ddlLanguage.SelectedValue)),
+                    Example = String.IsNullOrEmpty(txtExample.Value.Trim()) || String.IsNullOrEmpty(txtExample.Value.Trim()) ?
+                              null : txtExample.Value.Trim(),
+                    CreatedBy = dataContext.Users.ToList().Find((x) => x.Username == Page.User.Identity.Name),
+                    CreationDate = DateTime.Now,
+                    ModifiedBy = dataContext.Users.ToList().Find((x) => x.Username == Page.User.Identity.Name),
+                    ModificationDate = DateTime.Now,
+                    SuggestionStatus = dataContext.SuggestionStatuses.Find(1),
+                };
+                dataContext.Suggestions.Add(newSuggestion);
+                dataContext.SaveChanges();
+
+                ResetSuggestionModal();
+                mdlSuggestion.Style.Add("display", "none");
+
+                //  Send success message
+                notificationTitle = "Suggestion submitted";
+                notificationMessage = "The suggestion has been submitted for reviewing, thank you for your contribution!";
+                ShowNotification(IconCheck, notificationTitle, notificationMessage, false);
+            }
+            catch (Exception ex)
+            {
+                // Display error notification
+                notificationTitle = "Unknown error";
+                notificationMessage = "An unexpected error has occured, please contact support.";
+
+                ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        protected void BtnCancelSuggestion_Click(object sender, EventArgs e)
+        {
+            ResetSuggestionModal();
+            mdlSuggestion.Style.Add("display", "none");
+        }
+ 
         /// <summary>
         /// Shows the specified modal.
         /// </summary>
@@ -314,6 +418,15 @@ namespace RojakJelah
             HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
             body.Style.Add("overflow-y", "hidden");
             modal.Style.Add("display", "flex");
+        }
+
+        protected void ResetSuggestionModal()
+        {
+            // Reset control values
+            ddlLanguage.SelectedIndex = 0;
+            txtSlang.Value = String.Empty;
+            txtTranslation.Value = String.Empty;
+            txtExample.Value = String.Empty;
         }
 
         protected void ResetReportModal()
@@ -604,6 +717,5 @@ namespace RojakJelah
             body.Style.Add("overflow-y", "auto");
             mdlReport.Style.Add("display", "hidden");
         }
-
     }
 }
