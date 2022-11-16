@@ -169,7 +169,7 @@ namespace RojakJelah
             txtEditId.InnerText = lblId.InnerText;
             txtEditSlang.Text = lblSlang.InnerText;
             txtEditTranslation.Text = lblTranslation.InnerText;
-            txtEditExample.InnerText = lblExample.InnerText ?? "None";
+            txtEditExample.InnerText = lblExample.InnerText ?? "-";
             cboEditLanguage.SelectedIndex = selectedItemLanguageIndex;
 
             ShowModal(editModalWindow);
@@ -500,7 +500,7 @@ namespace RojakJelah
                         <div class='bottomRow'>
                             <div class='itemDetail'>
                                 <span>Example</span>
-                                <span>{item.Example ?? "None"}</span>
+                                <span>{item.Example ?? "-"}</span>
                             </div>
                         </div>";
             var topRowLiteralControl= new LiteralControl(topRowLiteralHTML);
@@ -548,7 +548,7 @@ namespace RojakJelah
                     lblLanguage.InnerText = selectedItem.Language.Name;
                     lblAuthor.InnerText = selectedItem.CreatedBy.Username;
                     lblDate.InnerText = selectedItem.CreationDate.ToShortDateString();
-                    lblExample.InnerText = selectedItem.Example ?? "None";
+                    lblExample.InnerText = selectedItem.Example ?? "-";
                     lblModifyAuthor.InnerText = selectedItem.ModifiedBy.Username;
                     lblModifyDate.InnerText = selectedItem.ModificationDate.ToShortDateString();
                 }
@@ -562,7 +562,7 @@ namespace RojakJelah
                     lblLanguage.InnerText = pageState._currentList[0].Language.Name;
                     lblAuthor.InnerText = pageState._currentList[0].CreatedBy.Username;
                     lblDate.InnerText = pageState._currentList[0].CreationDate.ToShortDateString();
-                    lblExample.InnerText = pageState._currentList[0].Example ?? "None";
+                    lblExample.InnerText = pageState._currentList[0].Example ?? "-";
                     lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
                     lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();
                 }
