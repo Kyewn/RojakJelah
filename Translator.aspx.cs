@@ -387,9 +387,19 @@ namespace RojakJelah
             var reportDescription = String.IsNullOrEmpty(txtReportDescription.InnerText) || String.IsNullOrWhiteSpace(txtReportDescription.InnerText) ?
                         null : txtReportDescription.InnerText;
             var reportStatus = dataContext.ReportStatuses.Where((x) => x.Id == 1).First();
-            var reportAuthor = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+            User reportAuthor;
             var reportCategory = reportCategoryList.Where((x) => x.Id == ddlReportCategory.SelectedIndex + 1).First();
             var otherCategory = reportCategoryList.Last();
+
+            // Assign report author
+            try
+            {
+                reportAuthor = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+            }
+            catch
+            {
+                reportAuthor = null;
+            }
 
             if (ddlReportCategory.SelectedIndex + 1 == otherCategory.Id)
             {
