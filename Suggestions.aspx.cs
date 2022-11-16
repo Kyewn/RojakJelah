@@ -489,7 +489,7 @@ namespace RojakJelah
                             </div>
                             <div class='itemDetail'>
                                 <span>Created by</span>
-                                <span>{item.CreatedBy.Username}</span>
+                                <span>{item.CreatedBy?.Username ?? "-"}</span>
                             </div>
                             <div class='itemDetail'>
                                 <span>Created at</span>
@@ -546,10 +546,10 @@ namespace RojakJelah
                     lblSlang.InnerText = selectedItem.Slang;
                     lblTranslation.InnerText = selectedItem.Translation;
                     lblLanguage.InnerText = selectedItem.Language.Name;
-                    lblAuthor.InnerText = selectedItem.CreatedBy.Username;
+                    lblAuthor.InnerText = selectedItem.CreatedBy?.Username ?? "-";
                     lblDate.InnerText = selectedItem.CreationDate.ToShortDateString();
                     lblExample.InnerText = selectedItem.Example ?? "-";
-                    lblModifyAuthor.InnerText = selectedItem.ModifiedBy.Username;
+                    lblModifyAuthor.InnerText = selectedItem.ModifiedBy?.Username ?? "-";
                     lblModifyDate.InnerText = selectedItem.ModificationDate.ToShortDateString();
                 }
                 else
@@ -560,10 +560,10 @@ namespace RojakJelah
                     lblSlang.InnerText = pageState._currentList[0].Slang;
                     lblTranslation.InnerText = pageState._currentList[0].Translation;
                     lblLanguage.InnerText = pageState._currentList[0].Language.Name;
-                    lblAuthor.InnerText = pageState._currentList[0].CreatedBy.Username;
+                    lblAuthor.InnerText = pageState._currentList[0].CreatedBy?.Username ?? "-";
                     lblDate.InnerText = pageState._currentList[0].CreationDate.ToShortDateString();
                     lblExample.InnerText = pageState._currentList[0].Example ?? "-";
-                    lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy.Username;
+                    lblModifyAuthor.InnerText = pageState._currentList[0].ModifiedBy?.Username ?? "-";
                     lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();
                 }
 

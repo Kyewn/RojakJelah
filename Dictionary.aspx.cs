@@ -180,9 +180,18 @@ namespace RojakJelah
             var reportDescription = String.IsNullOrEmpty(txtReportDescription.InnerText) || String.IsNullOrWhiteSpace(txtReportDescription.InnerText) ?
                         null : txtReportDescription.InnerText;
             var reportStatus = dataContext.ReportStatuses.Where((x) => x.Id == 1).First();
-            var reportAuthor = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+            User reportAuthor;
             var reportCategory = reportCategoryList.Where((x) => x.Id == ddlReportCategory.SelectedIndex + 1).First();
             var otherCategory = reportCategoryList.Last();
+
+            // Assign report author
+            try
+            {
+                reportAuthor = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+            } catch
+            {
+                reportAuthor = null;
+            }
 
             if (ddlReportCategory.SelectedIndex + 1 == otherCategory.Id)
             {
@@ -308,7 +317,18 @@ namespace RojakJelah
         protected void BtnSubmitSuggestion_Click(object sender, EventArgs e)
         {
             DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+            User suggestionAuthor;
             string notificationTitle, notificationMessage;
+
+            // Assign suggestion author
+            try
+            {
+                suggestionAuthor = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+            }
+            catch
+            {
+                suggestionAuthor = null;
+            }
 
             //  Check if dictionary pair already exist
             DictionaryEntry existingSlangTranslationPair;
@@ -374,9 +394,9 @@ namespace RojakJelah
                     Language = dataContext.Languages.Find(int.Parse(ddlLanguage.SelectedValue)),
                     Example = String.IsNullOrEmpty(txtExample.Value.Trim()) || String.IsNullOrEmpty(txtExample.Value.Trim()) ?
                               null : txtExample.Value.Trim(),
-                    CreatedBy = dataContext.Users.ToList().Find((x) => x.Username == Page.User.Identity.Name),
+                    CreatedBy = suggestionAuthor,
                     CreationDate = DateTime.Now,
-                    ModifiedBy = dataContext.Users.ToList().Find((x) => x.Username == Page.User.Identity.Name),
+                    ModifiedBy = suggestionAuthor,
                     ModificationDate = DateTime.Now,
                     SuggestionStatus = dataContext.SuggestionStatuses.Find(1),
                 };
