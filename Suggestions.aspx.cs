@@ -21,8 +21,11 @@ namespace RojakJelah
     {
         DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
         private SuggestionsPageState pageState;
-        private string[] filterEntries = new string[] { 
-            "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)", "Approved", "Rejected"
+        private string[] filterEntries = new string[] {
+            "All suggestions", "Approved", "Rejected"
+        };
+        private string[] sortEntries = new string[] { 
+            "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)" 
         };
         private int[] limitRowEntries = new int[]
         {
@@ -44,6 +47,13 @@ namespace RojakJelah
             // If page first loads, otherwise ignores POST requests
             if (!Page.IsPostBack)
             {    
+                //  cboSort
+                cboSorts.Items.Clear();
+                foreach (string entry in sortEntries)
+                {
+                    cboSorts.Items.Add(entry);
+                }
+                
                 //  cboFilter
                 cboFilter.Items.Clear();
                 foreach (string entry in filterEntries)
@@ -79,25 +89,29 @@ namespace RojakJelah
             ViewState["pageState"] = pageState;
         }
 
-        protected void CboFilter_SelectedIndexChanged(object sender, EventArgs e)
+        protected void CboSortAndFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedIndex = cboFilter.SelectedIndex;
+            var sortIndex = cboSorts.SelectedIndex;
             var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
             List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
             List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).Take(limitRowCount).ToList();
             List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).Take(limitRowCount).ToList();
             List<Suggestion> chosenList = new List<Suggestion>();
 
-            if (cboFilter.SelectedIndex == filterEntries.Length - 2)
+            if (selectedIndex == filterEntries.Length - 2)
             {
+                //  Approved
                 chosenList.AddRange(approvedSuggestionList);
             }
-            else if (cboFilter.SelectedIndex == filterEntries.Length - 1)
+            else if (selectedIndex == filterEntries.Length - 1)
             {
+                //  Rejected
                 chosenList.AddRange(rejectedSuggestionList);
             }
             else
             {
+                //  Open
                 chosenList.AddRange(suggestionList);
             }
 
@@ -106,27 +120,36 @@ namespace RojakJelah
 
             txtSelectedListItem.Text = ""; // Reset selected list item
             pageState._currentList.Clear();
-            if (selectedIndex == filterEntries.Length - 4 || selectedIndex == filterEntries.Length - 3)
+
+            List<Suggestion> orderedList = new List<Suggestion>();
+
+            if (sortIndex == 0)
             {
-                List<Suggestion> orderedList = new List<Suggestion>();
-
-                if (selectedIndex == filterEntries.Length - 4)
-                {
-                    //  Date (asc.)
-                    orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
-                }
-                else
-                {
-                    //  Date (dsc.)
-                    orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
-                }
-
-                pageState._currentList.AddRange(orderedList);
-            } 
+                //  Slang
+                orderedList.AddRange(finalList.OrderBy((x) => x.Slang));
+            }
+            else if (sortIndex == 1)
+            {
+                //  Translation
+                orderedList.AddRange(finalList.OrderBy((x) => x.Translation));
+            }
+            else if (sortIndex == 2)
+            {
+                //  Author
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy.Username));
+            }
+            else if (sortIndex == 3)
+            {
+                //  Date (asc.)
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
+            }
             else
             {
-                pageState._currentList.AddRange(finalList);
+                //  Date (dsc.)
+                orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
             }
+
+            pageState._currentList.AddRange(orderedList);
         }
 
         protected void TxtSearch_TextChanged(object sender, EventArgs e)
@@ -173,7 +196,8 @@ namespace RojakJelah
             txtSelectedListItem.Text = String.Empty;
             txtSearch.Text = String.Empty;
             cboFilter.SelectedIndex = 0;
-            CboFilter_SelectedIndexChanged(sender, e);
+            cboSorts.SelectedIndex = 0;
+            CboSortAndFilter_SelectedIndexChanged(sender, e);
         }
 
         protected void BtnEdit_Click(object sender, EventArgs e)
@@ -312,7 +336,7 @@ namespace RojakJelah
                 }
                 
                 //  Update UI
-                TxtSearch_TextChanged(sender, e);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -343,7 +367,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                TxtSearch_TextChanged(sender, e);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message

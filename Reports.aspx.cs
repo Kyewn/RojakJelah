@@ -19,8 +19,11 @@ namespace RojakJelah
     {
         DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
         private ReportsPageState pageState;
+        private string[] sortEntries = new string[] {
+            "Author", "Date (asc.)", "Date (dsc.)"
+        };
         private string[] filterEntries = new string[] {
-            "All issues", "Duplicate entries", "Incorrect entries", "Inappropriate entries", "Other issues", "Author", "Date (asc.)", "Date (dsc.)", "Resolved", "Closed"
+            "All issues", "Duplicate entries", "Incorrect entries", "Inappropriate entries", "Other issues", "Resolved", "Closed"
         };
         private int[] limitRowEntries = new int[]
         {
@@ -41,6 +44,13 @@ namespace RojakJelah
             // If page first loads, otherwise ignores POST requests
             if (!Page.IsPostBack)
             {
+                //  cboSorts
+                cboSorts.Items.Clear();
+                foreach (string entry in sortEntries)
+                {
+                    cboSorts.Items.Add(entry);
+                }
+                
                 //  cboFilter
                 cboFilter.Items.Clear();
                 foreach (string entry in filterEntries)
@@ -69,42 +79,50 @@ namespace RojakJelah
             ViewState["pageState"] = pageState;
         }
 
-        protected void CboFilter_SelectedIndexChanged(object sender, EventArgs e)
+        protected void CboSortAndFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedIndex = cboFilter.SelectedIndex;
+            var sortIndex = cboSorts.SelectedIndex;
             var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
             List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
             List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).Take(limitRowCount).ToList();
             List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).Take(limitRowCount).ToList();
             List<Report> chosenList = new List<Report>();
 
-            if (cboFilter.SelectedIndex == filterEntries.Length - 2)
+            if (selectedIndex == filterEntries.Length - 2)
             {
+                //  Resolved
                 chosenList.AddRange(resolvedReportList);
             }
-            else if (cboFilter.SelectedIndex == filterEntries.Length - 1)
+            else if (selectedIndex == filterEntries.Length - 1)
             {
+                //  Closed
                 chosenList.AddRange(closedReportList);
             }
             else
             {
+                //  Open
                 chosenList.AddRange(reportList);
             }
 
-            if (cboFilter.SelectedIndex == 1)
+            if (selectedIndex == 1)
             {
+                //  Duplicate entries
                 chosenList = chosenList.Where((x) => x.ReportCategory.Id == 1).ToList();
             }
-            else if (cboFilter.SelectedIndex == 2)
+            else if (selectedIndex == 2)
             {
+                //  Incorrect entries
                 chosenList = chosenList.Where((x) => x.ReportCategory.Id == 2).ToList();
             }
-            else if (cboFilter.SelectedIndex == 3)
+            else if (selectedIndex == 3)
             {
+                //  Inappropriate entries
                 chosenList = chosenList.Where((x) => x.ReportCategory.Id == 3).ToList();
             } 
-            else if (cboFilter.SelectedIndex == 4)
+            else if (selectedIndex == 4)
             {
+                //  Other entries
                 chosenList = chosenList.Where((x) => x.ReportCategory.Id == 4).ToList();
             }
 
@@ -113,27 +131,26 @@ namespace RojakJelah
 
             txtSelectedListItem.Text = ""; // Reset selected list item
             pageState._currentList.Clear();
-            if (selectedIndex == filterEntries.Length - 4 || selectedIndex == filterEntries.Length - 3)
+            
+            List<Report> orderedList = new List<Report>();
+
+            if (sortIndex == 0) 
             {
-                List<Report> orderedList = new List<Report>();
-
-                if (selectedIndex == filterEntries.Length - 4)
-                {
-                    //  Date (asc.)
-                    orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
-                }
-                else
-                {
-                    //  Date (dsc.)
-                    orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
-                }
-
-                pageState._currentList.AddRange(orderedList);
+                //  Author
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy.Username));
+            } 
+            else if (sortIndex == 1)
+            {
+                //  Date (asc.)
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
             }
             else
             {
-                pageState._currentList.AddRange(finalList);
+                //  Date (dsc.)
+                orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
             }
+
+            pageState._currentList.AddRange(orderedList);
         }
 
         protected void TxtSearch_TextChanged(object sender, EventArgs e)
@@ -187,7 +204,8 @@ namespace RojakJelah
             txtSelectedListItem.Text = String.Empty;
             txtSearch.Text = String.Empty;
             cboFilter.SelectedIndex = 0;
-            CboFilter_SelectedIndexChanged(sender, e);
+            cboSorts.SelectedIndex = 0;
+            CboSortAndFilter_SelectedIndexChanged(sender, e);
         }
 
         protected void BtnResolve_Click(object sender, EventArgs e)
@@ -204,7 +222,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                TxtSearch_TextChanged(sender, e);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -238,7 +256,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                TxtSearch_TextChanged(sender, e);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -270,7 +288,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                TxtSearch_TextChanged(sender, e);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message

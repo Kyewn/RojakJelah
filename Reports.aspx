@@ -16,15 +16,21 @@
             </div>
             <div class="divInline">
                 <h6>Limit rows</h6>
-                <asp:DropDownList ID="ddlLimitRows" runat="server" AutoPostBack="true" CssClass="cboFilter" OnSelectedIndexChanged="CboFilter_SelectedIndexChanged"></asp:DropDownList>
+                <asp:DropDownList ID="ddlLimitRows" runat="server" AutoPostBack="true" CssClass="cboFilter" OnSelectedIndexChanged="CboSortAndFilter_SelectedIndexChanged"></asp:DropDownList>
             </div>
         </div> 
         <div class="contentContainer">
             <div class="leftContainer">
                 <div class="searchContainer">
                     <div class="filterContainer">
-                        <h6>Sorts & Filters</h6>
-                        <asp:DropDownList ID="cboFilter" class="cboFilter" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CboFilter_SelectedIndexChanged"></asp:DropDownList>
+                        <div>
+                            <h6>Sorts</h6>
+                            <asp:DropDownList ID="cboSorts" class="cboFilter" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CboSortAndFilter_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
+                        <div>
+                            <h6>Filters</h6>
+                            <asp:DropDownList ID="cboFilter" class="cboFilter" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CboSortAndFilter_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
                     </div>
                     <div class="searchGroup">
                         <div class="searchBarContainer">
