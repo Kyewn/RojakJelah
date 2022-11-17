@@ -20,7 +20,7 @@ namespace RojakJelah
         DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
         private ReportsPageState pageState;
         private string[] sortEntries = new string[] {
-            "Author", "Date (asc.)", "Date (dsc.)"
+            "Date (dsc.)", "Date (asc.)", "Author"
         };
         private string[] filterEntries = new string[] {
             "All issues", "Duplicate entries", "Incorrect entries", "Inappropriate entries", "Other issues", "Resolved", "Closed"
@@ -127,7 +127,7 @@ namespace RojakJelah
             }
 
             List<Report> finalList = !String.IsNullOrEmpty(txtSearch.Text) ?
-                HandleFilterList(selectedIndex, txtSearch.Text, chosenList) : chosenList;
+                HandleFilterList(txtSearch.Text, chosenList) : chosenList;
 
             txtSelectedListItem.Text = ""; // Reset selected list item
             pageState._currentList.Clear();
@@ -136,8 +136,8 @@ namespace RojakJelah
 
             if (sortIndex == 0) 
             {
-                //  Author
-                orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy.Username));
+                //  Date (dsc.)
+                orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
             } 
             else if (sortIndex == 1)
             {
@@ -146,8 +146,8 @@ namespace RojakJelah
             }
             else
             {
-                //  Date (dsc.)
-                orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
+                //  Author
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy?.Username));
             }
 
             pageState._currentList.AddRange(orderedList);
@@ -157,7 +157,6 @@ namespace RojakJelah
         {
             txtSelectedListItem.Text = ""; // Reset selected list item
             var searchKeys = txtSearch.Text.ToLower().Trim();
-            var filter = cboFilter.SelectedIndex; 
             var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
             List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
             List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).Take(limitRowCount).ToList();
@@ -166,15 +165,15 @@ namespace RojakJelah
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2)
             {
-                filteredList = HandleFilterList(filter, searchKeys, resolvedReportList);
+                filteredList = HandleFilterList(searchKeys, resolvedReportList);
             }
             else if (cboFilter.SelectedIndex == filterEntries.Length - 1)
             {
-                filteredList = HandleFilterList(filter, searchKeys, closedReportList);
+                filteredList = HandleFilterList(searchKeys, closedReportList);
             }
             else
             {
-                filteredList = HandleFilterList(filter, searchKeys, reportList);
+                filteredList = HandleFilterList(searchKeys, reportList);
             }
 
             pageState._currentList.Clear();
@@ -460,52 +459,16 @@ namespace RojakJelah
             }
         }
 
-        private List<Report> HandleFilterList(int filter, string searchKeys, List<Report> reportList)
+        private List<Report> HandleFilterList(string searchKeys, List<Report> reportList)
         {
-            List<Report> filteredList = new List<Report>();
-            List<Report> orderedList = new List<Report>();
-            
-            switch (filter)
-            {
-                case 0: case 1: case 2: case 3: case 4: case 8: case 9:
-                    //  Duplicate entries, Incorrect entries, Inappropriate entries, Other issues, Resolved, Closed
-                    var searchForEntry = reportList
-                        .Where((x) => (x.DictionaryEntry?.Slang?.WordValue.ToLower().Contains(searchKeys.ToLower()) ?? false) || 
-                        (x.DictionaryEntry?.Translation?.WordValue.ToLower().Contains(searchKeys.ToLower()) ?? false)).ToList();
-                    var searchForDescription = reportList
-                        .Where((x) => x.Description != null)
-                        .Where((x) => x.Description.ToLower().Contains(searchKeys.ToLower())).ToList();
-
-                    List<Report> chosenConditionList = new List<Report>();
-
-                    if (searchForEntry.Count != 0)
-                    {
-                        chosenConditionList = searchForEntry;
-                    } else if (searchForDescription.Count != 0)
-                    {
-                        chosenConditionList = searchForDescription;
-                    }
-
-                    filteredList.AddRange(chosenConditionList);
-                    break;
-                case 5:
-                    //  Author
-                    filteredList.AddRange(reportList
-                        .Where((x) => x.CreatedBy.Username.ToLower().Contains(searchKeys.ToLower())));
-                    break;
-                case 6:
-                    //  Date (asc.)
-                    orderedList.AddRange(reportList.OrderBy((x) => x.CreationDate));
-                    filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));
-                    break;
-                case 7:
-                    //  Date (dsc.)
-                    orderedList.AddRange(reportList.OrderByDescending((x) => x.CreationDate));
-                    filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));
-                    break;
-            }
-
-            return filteredList;
+            //  Filters - search by slang, translation, date, author, description
+            //  Duplicate entries, Incorrect entries, Inappropriate entries, Other issues, Resolved, Closed
+         return reportList
+                .Where((x) => (x.DictionaryEntry?.Slang?.WordValue.ToLower().Contains(searchKeys.ToLower()) ?? false) ||
+                (x.DictionaryEntry?.Translation?.WordValue.ToLower().Contains(searchKeys.ToLower()) ?? false) ||
+                (x.CreatedBy?.Username.ToLower().Contains(searchKeys.ToLower()) ?? false) ||
+                (x.CreationDate.ToShortDateString().ToLower().Contains(searchKeys.ToLower())) ||
+                (x.Description != null && x.Description.ToLower().Contains(searchKeys.ToLower()))).ToList();
         }
 
         /// <summary>
