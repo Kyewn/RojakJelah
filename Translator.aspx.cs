@@ -111,20 +111,28 @@ namespace RojakJelah
                 string currentTranslation = dictionaryEntry.Translation.WordValue;
                 string currentSlang = dictionaryEntry.Slang.WordValue;
 
-                // Get hash index (a = 0, b = 1, c = 2 ...)
-                int index = currentTranslation[0] % HashDivisor;
+                try
+                {
 
-                // If rojakHashtable already contains this translation, add the slang to existing slang list of the slang
-                if (rojakHashtable[index].ContainsKey(currentTranslation))
-                {
-                    rojakHashtable[index][currentTranslation].Add(currentSlang);
+                    // Get hash index (a = 0, b = 1, c = 2 ...)
+                    int index = currentTranslation[0] % HashDivisor;
+
+                    // If rojakHashtable already contains this translation, add the slang to existing slang list of the slang
+                    if (rojakHashtable[index].ContainsKey(currentTranslation))
+                    {
+                        rojakHashtable[index][currentTranslation].Add(currentSlang);
+                    }
+                    // Else, create a new slang list before adding
+                    else
+                    {
+                        List<string> slangList = new List<string>();
+                        slangList.Add(currentSlang);
+                        rojakHashtable[index].Add(currentTranslation, slangList);
+                    }
                 }
-                // Else, create a new slang list before adding
-                else
+                catch (Exception ex)
                 {
-                    List<string> slangList = new List<string>();
-                    slangList.Add(currentSlang);
-                    rojakHashtable[index].Add(currentTranslation, slangList);
+                    ShowNotification();
                 }
             }
 
