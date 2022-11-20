@@ -34,6 +34,16 @@
             <div class="translate-input">
                 <div class="title">
                     <h5>Source message</h5>
+                    <button id="btnHelp" class="button-secondary" type="button">
+                        <i class="fa-solid fa-question fa-xs"></i>
+                        <span class="help-message">
+                            Enter text here for translation.
+                            <br /><br />
+                            <b>Translatable</b> words/phrases may have different, <u>random</u> outputs.
+                            <br /> <br />
+                            <b>Translated</b> Rojak words/phrases are <u>underlined</u>, and their corresponding synonyms are displayed when hovered.
+                        </span>
+                    </button>
                 </div>
 
                 <div class="translate-container">
@@ -90,7 +100,7 @@
 
                 <div class="output-container">
                     <div class="output-text">
-                        <p id="txtOutput" runat="server"></p>
+                        <div id="txtOutput" runat="server"></div>
                     </div>
                     <img id="startQuote" src="Content/image/translatorOutput_startQuote.svg" />
                     <img id="endQuote" src="Content/image/translatorOutput_endQuote.svg" />

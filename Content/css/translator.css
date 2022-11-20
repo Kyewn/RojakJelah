@@ -503,9 +503,46 @@
     position: relative;
 }
 
+.translate .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1rem;
+}
+
 .translate .title h5 {
     color: var(--primary-color);
     font-size: 20px;
+}
+
+#btnHelp {
+    padding: 0 0.5rem;
+    position: relative;
+    height: auto;
+    margin-bottom: 0.4rem;
+    border-radius: 50%;
+}
+
+.help-message {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 2rem;
+    padding: 1rem 1rem;
+    width: 300px;
+    border: none;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    font-size: 12px;
+    opacity: 0.95;
+    text-align: left;
+    cursor: default;
+    animation: fadeIn 0.3s ease-out;
+}
+
+#btnHelp:hover .help-message {
+    display: block;
 }
 
 .translate .translate-container {
@@ -619,12 +656,68 @@
     right: 0;
 }
 
-.output-container p {
+.output-container div {
     font-weight: 600;
     color: #323232;
     text-align: justify;
     word-break: break-word;
 }
+
+.translated-word {
+    display: inline-block;
+}
+
+.translated-word p {
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--primary-color);
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    transition: 0.3s ease-out;
+}
+
+.translated-word p:hover {
+    color: #626262;
+    text-decoration-color: var(--primary-color-hover);
+}
+
+.translation-synonym-wrapper {
+    display: none;
+    position: absolute;
+    z-index: 10;
+}
+
+.translation-synoynms {
+    margin-top: 0.2rem;
+    padding: 0.5rem 1rem;
+    position: absolute;
+    background-color: var(--primary-color-hover);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    font-family: 'Rubik', Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    animation: expand 0.5s ease-out;
+}
+
+.translated-word:hover > div {
+    display: block;
+}
+
+.translation-synoynms ul {
+    margin: 0;
+    padding: 0 1.5rem;
+    list-style-type: disc;
+    text-align: left;
+}
+
+
 
 /* Translate Button  */
 .translate .translate-container .translate-button {
@@ -1248,5 +1341,27 @@
     to {
         top: 0;
         opacity: 1;
+    }
+}
+
+@keyframes expand {
+    from {
+        max-width: 0;
+        opacity: 0.8;
+    }
+
+    to {
+        max-width: 500px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.95;
     }
 }

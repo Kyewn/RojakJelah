@@ -46,6 +46,13 @@ namespace RojakJelah
             public string Shape;
         }
 
+        private class OutputWord
+        {
+            public string WordValue;
+            public bool IsRojak;
+            public List<string> Synonyms;
+        }
+
         private enum TokenShape
         {
             AllCaps,
@@ -288,7 +295,7 @@ namespace RojakJelah
             #endregion
 
             #region Morphological Analyzing & Translation
-            List<List<string>> translatedSentenceList = new List<List<string>>();
+            List<List<OutputWord>> translatedSentenceList = new List<List<OutputWord>>();
 
             if ((correctedSentenceList != null) && (correctedSentenceList.Count() > 0))
             {
@@ -311,7 +318,7 @@ namespace RojakJelah
                 // Translate each sentence
                 foreach (List<Token> correctedSentence in correctedSentenceList)
                 {
-                    var translatedSentence = new List<string>();
+                    var translatedSentence = new List<OutputWord>();
                     int resultedIncrement = 0;
 
                     // Iterate through the tokens in each sentence
@@ -349,9 +356,16 @@ namespace RojakJelah
                                 string matchedSlang = matchedSlangList.ElementAt(randomizer.Next(0, matchedSlangList.Count));
                                 string shape = correctedSentence.ElementAt(i).Shape;
 
-                                translatedSentence.Add(shape == TokenShape.AllCaps.ToString() ? matchedSlang.ToUpper() :
-                                    shape == TokenShape.Proper.ToString() ? Char.ToUpper(matchedSlang[0]) + matchedSlang.Substring(1) :
-                                    matchedSlang);
+                                OutputWord outputWord = new OutputWord()
+                                {
+                                    WordValue = shape == TokenShape.AllCaps.ToString() ? matchedSlang.ToUpper() :
+                                                shape == TokenShape.Proper.ToString() ? Char.ToUpper(matchedSlang[0]) + matchedSlang.Substring(1) :
+                                                matchedSlang,
+                                    IsRojak = true,
+                                    Synonyms = matchedSlangList.FindAll(x => x != matchedSlang)
+                                };
+
+                                translatedSentence.Add(outputWord);
 
                                 isTranslated = true;
                                 resultedIncrement = increment;
@@ -361,7 +375,14 @@ namespace RojakJelah
                                 // If the single word is reached with still no matched slang, add the word into current output sentence
                                 if (increment == 1)
                                 {
-                                    translatedSentence.Add(word);
+                                    OutputWord outputWord = new OutputWord()
+                                    {
+                                        WordValue = word,
+                                        IsRojak = false,
+                                        Synonyms = null
+                                    };
+
+                                    translatedSentence.Add(outputWord);
 
                                     isTranslated = true;
                                     resultedIncrement = increment;
@@ -386,7 +407,7 @@ namespace RojakJelah
                 int i = 0;
 
                 // Reconstruct each sentence
-                foreach (List<string> translatedSentence in translatedSentenceList)
+                foreach (List<OutputWord> translatedSentence in translatedSentenceList)
                 {
                     int currSentenceOffsetStart = Int32.Parse(((CoreSentence)inputSentenceList.ElementAt(i)).charOffsets().first().ToString());
                     int currSentenceOffsetEnd = Int32.Parse(((CoreSentence)inputSentenceList.ElementAt(i)).charOffsets().second().ToString());
@@ -399,7 +420,7 @@ namespace RojakJelah
                         int prevSentenceOffsetEnd = Int32.Parse(((CoreSentence)inputSentenceList.ElementAt(i - 1)).charOffsets().second().ToString());
                         int separatorTextLength = inputText.Length - prevSentenceOffsetEnd - inputText.Substring(currSentenceOffsetStart).Length;
                         string separatorText = inputText.Substring(prevSentenceOffsetEnd, separatorTextLength);
-
+                        
                         if (separatorText.Contains(Environment.NewLine))
                         {
                             // Add new line before new sentence
@@ -419,14 +440,48 @@ namespace RojakJelah
                     }
 
                     // Add words into the sentence
-                    foreach (string word in translatedSentence)
+                    foreach (OutputWord word in translatedSentence)
                     {
-                        outputText += word;
-                        outputToSave += word;
+                        // Highlight translated Rojak words
+                        if (word.IsRojak)
+                        {
+                            outputText += "<span class='translated-word'>" +
+                                            $"<p>{word.WordValue}</p>" +
+                                            "<div class='translation-synonym-wrapper'>"+
+                                                "<span class='translation-synoynms'>";
 
+                            // Add translation synonyms
+                            if ((word.Synonyms != null) && (word.Synonyms.Count > 0))
+                            {
+                                outputText += "<ul>";
+
+                                foreach (string synonym in word.Synonyms)
+                                {
+                                    outputText += $"<li>{synonym}</li>";
+                                }
+
+                                outputText += "</ul>";
+                            }
+                            else
+                            {
+                                outputText += "No synonyms";
+                            }
+
+                            outputText += "</div>" +
+                                        "</span>" +
+                                    "</span>";
+                        }
+                        else
+                        {
+                            outputText += word.WordValue;
+                        }
+
+                        outputToSave += word.WordValue;
+
+                        // Add grammatically correct spacing
                         if ((j + 1) < translatedSentence.Count)
                         {
-                            string nextWord = translatedSentence.ElementAt(j + 1);
+                            string nextWord = translatedSentence.ElementAt(j + 1).WordValue;
 
                             outputText += (nextWord.Length == 1 && Char.IsPunctuation(nextWord[0])) ? "" : " ";
                             outputToSave += (nextWord.Length == 1 && Char.IsPunctuation(nextWord[0])) ? "" : " ";
@@ -444,29 +499,32 @@ namespace RojakJelah
             #endregion
 
             // Save translation into session (most recent translation & translation history)
-            List<SavedTranslation> translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
-            int translationId = (int) Session[StrTranslationHistoryCount];
-            translationId++;
-            Session[StrTranslationHistoryCount] = translationId;
-
-            SavedTranslation mostRecentTranslation = new SavedTranslation()
+            if (!String.IsNullOrWhiteSpace(inputText) && !String.IsNullOrWhiteSpace(outputToSave))
             {
-                Id = translationId,
-                Input = inputText,
-                Output = outputToSave,
-                CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name) ?? null,
-                CreationDate = DateTime.Now
-            };
+                List<SavedTranslation> translationHistory = Session[StrTranslationHistory] as List<SavedTranslation>;
+                int translationId = (int)Session[StrTranslationHistoryCount];
+                translationId++;
+                Session[StrTranslationHistoryCount] = translationId;
 
-            Session[StrMostRecentTranslation] = mostRecentTranslation;
-            translationHistory.Add(mostRecentTranslation);
+                SavedTranslation mostRecentTranslation = new SavedTranslation()
+                {
+                    Id = translationId,
+                    Input = inputText,
+                    Output = outputToSave,
+                    CreatedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name) ?? null,
+                    CreationDate = DateTime.Now
+                };
+
+                Session[StrMostRecentTranslation] = mostRecentTranslation;
+                translationHistory.Add(mostRecentTranslation);
+            }
 
             // Update "Save Translation" button icon
             if (User.Identity.IsAuthenticated)
             {
-                List<SavedTranslation> savedTranslations = dataContext.SavedTranslations.ToList();
+                List<SavedTranslation> savedTranslations = dataContext.SavedTranslations.ToList().FindAll(x => x.CreatedBy.Username == User.Identity.Name);
 
-                bool isDuplicate = savedTranslations.Any(x => (x.Input == mostRecentTranslation.Input) && (x.Output == mostRecentTranslation.Output));
+                bool isDuplicate = savedTranslations.Any(x => (x.Input == inputText) && (x.Output == outputToSave));
 
                 iconSave.Attributes.Add("class", isDuplicate ? IconSolidBookmark : IconRegularBookmark);
                 hfDuplicateTranslation.Value = isDuplicate ? "true" : "false";
