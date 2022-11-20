@@ -76,7 +76,9 @@ namespace RojakJelah
 
                 //  listItemContainer
                 var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
-                List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
+                List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1)
+                    .Take(limitRowCount)
+                    .OrderByDescending((x) => x.CreationDate).ToList();
                 pageState._currentList.AddRange(suggestionList);
             }
         }

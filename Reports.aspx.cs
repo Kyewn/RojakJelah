@@ -66,7 +66,9 @@ namespace RojakJelah
 
                 //  listItemContainer
                 var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
-                List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
+                List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1)
+                    .Take(limitRowCount)
+                    .OrderByDescending((x) => x.CreationDate).ToList();
                 pageState._currentList.AddRange(reportList);
             }
         }
