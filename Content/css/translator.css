@@ -123,7 +123,6 @@
     border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.4);
     overflow-y: initial;
-    animation: slideIn .3s ease-out forwards;
 }
 
 .modal-content {
@@ -315,7 +314,7 @@
     outline: none;
 }
 
-.modal-textinput {
+.modal-textinput, .aspNetDisabled {
     padding: 0.5rem 1rem;
     resize: none;
     border: 2px solid var(--primary-color);
@@ -339,7 +338,7 @@
 /* Report Modal */
 #dlgReport {
     width: 40%;
-    height: 70%;
+    height: 80%;
 }
 
 #divReportModalBody {
@@ -352,16 +351,44 @@
     width: 60%;
 }
 
+#divReportModalBody > div {
+    margin-bottom: 1em;
+}
 
+#divReportModalBody > div:last-child {
+    margin-bottom: 0;
+}
+
+.mdlReport-topInputRow {
+    display: flex;
+    align-items: center;
+}
+
+    .mdlReport-topInputRow > div {
+        flex: 0.5;
+    }
+    
+    .mdlReport-topInputRow > div:first-child {
+        margin-right: 2em;
+    }
+    
+    .mdlReport-topInputRow select {
+        width: 100%;
+        transition: all .3s ease-out;
+    }
+
+        .mdlReport-topInputRow select:disabled {
+            border: 2px solid var(--theme-gray-dark);
+        }
 
 /* Banner Section */
 .translate-content {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin: auto;
-  width: 85%;
-  height: 90vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    width: 85%;
+    height: 90vh;
 }
 
 .banner .banner-container {

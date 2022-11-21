@@ -158,14 +158,326 @@ namespace RojakJelah
 
                     RenderDictionaryResult(false, false, false, true);
 
-                    MaintainScrollPosition();
-                    ShowNotification(IconCheck, "Delete success", "The dictionary entry has been deleted successfully.", false);
+                    ShowNotification(IconCheck, "Delete succcess", "The dictionary entry has been deleted successfully.", false);
                 }
                 catch (Exception ex)
                 {
                     ShowNotification();
                 }
             }
+        }
+
+        protected void DdlReportCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+            var reportCategoryList = dataContext.ReportCategories.OrderBy(x => x.Id).ToList();
+
+            if (ddlReportCategory.SelectedIndex + 1 == reportCategoryList.Last().Id)
+            {
+                // Other category
+                divEntryInput.Style.Add("display", "none");
+            }
+            else
+            {
+                // "Entry issue" category
+                divEntryInput.Style.Add("display", "flex");
+            }
+
+            //  Keep report modal open without animation
+            ShowModal(mdlReport);
+            dlgReport.Style.Remove("animation");
+        }
+
+        protected void TxtReportSlang_TextChanged(object sender, EventArgs e)
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+            var txtProblemSlang = txtReportSlang.Text.ToLower().Trim();
+            var matchingSlangEntries = dataContext.DictionaryEntries.
+                Where((x) => x.Slang.WordValue.ToLower() == txtProblemSlang).ToList();
+
+            // Clear everything before determining existence
+            ddlReportTranslation.Items.Clear();
+            if (matchingSlangEntries.Count != 0)
+            {
+                foreach (var entry in matchingSlangEntries)
+                {
+                    ddlReportTranslation.Items.Add(entry.Translation.WordValue);
+                }
+                // Enable dropdown
+                ddlReportTranslation.Enabled = true;
+            }
+            else
+            {
+                // Disable dropdown
+                ddlReportTranslation.Enabled = false;
+            }
+
+            //  Keep report modal open without animation
+            ShowModal(mdlReport);
+            dlgReport.Style.Remove("animation");
+        }
+
+        protected void BtnSubmitReport_Click(object sender, EventArgs e)
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+            String notificationTitle, notificationMessage;
+
+            var reportCategoryList = dataContext.ReportCategories.OrderBy(x => x.Id).ToList();
+            var reportDescription = String.IsNullOrEmpty(txtReportDescription.InnerText) || String.IsNullOrWhiteSpace(txtReportDescription.InnerText) ?
+                        null : txtReportDescription.InnerText;
+            var reportStatus = dataContext.ReportStatuses.Where((x) => x.Id == 1).First();
+            User reportAuthor;
+            var reportCategory = reportCategoryList.Where((x) => x.Id == ddlReportCategory.SelectedIndex + 1).First();
+            var otherCategory = reportCategoryList.Last();
+
+            // Assign report author
+            try
+            {
+                reportAuthor = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+            } catch
+            {
+                reportAuthor = null;
+            }
+
+            if (ddlReportCategory.SelectedIndex + 1 == otherCategory.Id)
+            {
+                //  Error catching
+                //  Description empty
+                if (String.IsNullOrEmpty(txtReportDescription.InnerText) ||
+                    String.IsNullOrWhiteSpace(txtReportDescription.InnerText))
+                {
+                    notificationTitle = "Empty description";
+                    notificationMessage = "Other issues require a description, please try again.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    //  Keep modal open without animation
+                    ShowModal(mdlReport);
+                    dlgReport.Style.Remove("animation");
+                    return;
+                }
+
+                try
+                {
+                    // Insert new report
+                    Report newReport = new Report()
+                    {
+                        ReportCategory = reportCategory,
+                        Description = reportDescription,
+                        ReportStatus = reportStatus,
+                        CreatedBy = reportAuthor,
+                        CreationDate = DateTime.Now,
+                        ModifiedBy = reportAuthor,
+                        ModificationDate = DateTime.Now,
+                    };
+                    dataContext.Reports.Add(newReport);
+                    dataContext.SaveChanges();
+
+                    ResetReportModal(sender, e);
+
+                    // Show notification
+                    notificationTitle = "Report submitted";
+                    notificationMessage = "The report has been submitted for reviewing, thank you for your contribution!";
+
+                    ShowNotification(IconCheck, notificationTitle, notificationMessage, false);
+                }
+                catch (Exception ex)
+                {
+                    // Display error notification
+                    ShowNotification();
+                }
+            }
+            else
+            {
+                //  Error catching
+                //  Empty slang/translation 
+                if (String.IsNullOrEmpty(txtReportSlang.Text) ||
+                    String.IsNullOrWhiteSpace(txtReportSlang.Text) ||
+                    String.IsNullOrEmpty(ddlReportTranslation.SelectedValue) ||
+                    String.IsNullOrWhiteSpace(ddlReportTranslation.SelectedValue))
+                {
+                    notificationTitle = "Empty required input fields";
+                    notificationMessage = "Slang and translation inputs must have a value. As this usually happens when users input an incorrect entry, please check if the entry exists and try again.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    //  Keep modal open without animation
+                    ShowModal(mdlReport);
+                    dlgReport.Style.Remove("animation");
+                    return;
+                }
+
+                var reportEntry = dataContext.DictionaryEntries
+                    .Where((x) => x.Slang.WordValue.ToLower() == txtReportSlang.Text.ToLower())
+                    .Where((x) => x.Translation.WordValue.ToLower() == ddlReportTranslation.SelectedValue.ToLower())
+                    .First();
+
+                try
+                {
+                    // Insert new report
+                    Report newReport = new Report()
+                    {
+                        ReportCategory = reportCategory,
+                        DictionaryEntry = reportEntry,
+                        Description = reportDescription,
+                        ReportStatus = reportStatus,
+                        CreatedBy = reportAuthor,
+                        CreationDate = DateTime.Now,
+                        ModifiedBy = reportAuthor,
+                        ModificationDate = DateTime.Now,
+                    };
+                    dataContext.Reports.Add(newReport);
+                    dataContext.SaveChanges();
+
+                    ResetReportModal(sender, e);
+
+                    // Show notification
+                    notificationTitle = "Report submitted";
+                    notificationMessage = "The report has been submitted for reviewing, thank you for your contribution!";
+
+                    ShowNotification(IconCheck, notificationTitle, notificationMessage, false);
+                }
+                catch (Exception ex)
+                {
+                    // Display error notification
+                    ShowNotification();
+                }
+            }
+        }
+
+        protected void BtnCancelReport_Click(object sender, EventArgs e)
+        {
+            // Reset control values
+            ResetReportModal();
+            mdlReport.Style.Add("display", "none");
+        }
+
+        protected void BtnSubmitSuggestion_Click(object sender, EventArgs e)
+        {
+            DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+            User suggestionAuthor;
+            string notificationTitle, notificationMessage;
+
+            // Assign suggestion author
+            try
+            {
+                suggestionAuthor = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+            }
+            catch
+            {
+                suggestionAuthor = null;
+            }
+
+            //  Check if dictionary pair already exist
+            DictionaryEntry existingSlangTranslationPair;
+
+            try
+            {
+                //  Catch error thrown when system doesnt recognize new words that doesn't exist in DB
+                //  Force the system to accept new words
+                existingSlangTranslationPair = dataContext.DictionaryEntries
+                    .Where(x => x.Slang.WordValue.ToLower() == txtSlang.Value.ToLower())
+                    .Where(x => x.Translation.WordValue.ToLower() == txtTranslation.Value.ToLower()).First();
+            }
+            catch
+            {
+                existingSlangTranslationPair = null;
+            }
+
+            try
+            {
+                //  Error catching
+                //  Required inputs empty
+                if (String.IsNullOrWhiteSpace(txtSlang.Value) || String.IsNullOrEmpty(txtSlang.Value) ||
+                    String.IsNullOrWhiteSpace(txtTranslation.Value) || String.IsNullOrEmpty(txtTranslation.Value))
+                {
+                    // Display error notification
+                    notificationTitle = "Required fields are empty";
+                    notificationMessage = "Slang and Translation fields must be filled.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    ShowModal(mdlSuggestion);
+                    return;
+                }
+
+                //  Same slang-translation input
+                if (txtSlang.Value.ToLower() == txtTranslation.Value.ToLower())
+                {
+                    // Display error notification
+                    notificationTitle = "Identical words";
+                    notificationMessage = "Slangs and translations must be different words.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    ShowModal(mdlSuggestion);
+                    return;
+                }
+
+                //  Existing pair in dictionary
+                if (existingSlangTranslationPair != null)
+                {
+                    // Display error notification
+                    notificationTitle = "Word pair already exist";
+                    notificationMessage = "The slang-translation pair already exist in the dictionary.";
+
+                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
+                    ShowModal(mdlSuggestion);
+                    return;
+                }
+
+                //  Submit suggestion
+                Suggestion newSuggestion = new Suggestion()
+                {
+                    Slang = txtSlang.Value.Trim(),
+                    Translation = txtTranslation.Value.Trim(),
+                    Language = dataContext.Languages.Find(int.Parse(ddlLanguage.SelectedValue)),
+                    Example = String.IsNullOrEmpty(txtExample.Value.Trim()) || String.IsNullOrEmpty(txtExample.Value.Trim()) ?
+                              null : txtExample.Value.Trim(),
+                    CreatedBy = suggestionAuthor,
+                    CreationDate = DateTime.Now,
+                    ModifiedBy = suggestionAuthor,
+                    ModificationDate = DateTime.Now,
+                    SuggestionStatus = dataContext.SuggestionStatuses.Find(1),
+                };
+                dataContext.Suggestions.Add(newSuggestion);
+                dataContext.SaveChanges();
+
+                ResetSuggestionModal();
+                mdlSuggestion.Style.Add("display", "none");
+
+                //  Send success message
+                notificationTitle = "Suggestion submitted";
+                notificationMessage = "The suggestion has been submitted for reviewing, thank you for your contribution!";
+                ShowNotification(IconCheck, notificationTitle, notificationMessage, false);
+            }
+            catch (Exception ex)
+            {
+                // Display error notification
+                ShowNotification();
+            }
+        }
+
+        protected void BtnCancelSuggestion_Click(object sender, EventArgs e)
+        {
+            ResetSuggestionModal();
+            mdlSuggestion.Style.Add("display", "none");
+        }
+
+        protected void ResetSuggestionModal()
+        {
+            // Reset control values
+            ddlLanguage.SelectedIndex = 0;
+            txtSlang.Value = String.Empty;
+            txtTranslation.Value = String.Empty;
+            txtExample.Value = String.Empty;
+        }
+
+        protected void ResetReportModal()
+        {
+            // Reset control values
+            ddlReportCategory.SelectedIndex = 0;
+            txtReportSlang.Text = String.Empty;
+            ddlReportTranslation.Items.Clear();
+            ddlReportTranslation.Enabled = false;
+            txtReportDescription.InnerText = String.Empty;
         }
 
         /// <summary>
@@ -470,6 +782,22 @@ namespace RojakJelah
                 $"$('#divDictionary').scrollTop({hfScrollPosition.Value});" +
                 "}";
             ClientScript.RegisterStartupScript(this.GetType(), "ScrollToView", scriptScrollToView, true);
+        }
+
+        protected void ResetReportModal(object sender, EventArgs e)
+        {
+            // Reset control values
+            ddlReportCategory.SelectedIndex = 0;
+            txtReportSlang.Text = String.Empty;
+            ddlReportTranslation.Items.Clear();
+            ddlReportTranslation.Enabled = false;
+            txtReportDescription.InnerText = String.Empty;
+            DdlReportCategory_SelectedIndexChanged(sender, e);
+
+            //  Prevent keeping modal visible
+            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
+            body.Style.Add("overflow-y", "auto");
+            mdlReport.Style.Add("display", "hidden");
         }
     }
 }

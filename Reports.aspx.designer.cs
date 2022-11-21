@@ -15,6 +15,24 @@ namespace RojakJelah
     {
 
         /// <summary>
+        /// ddlLimitRows control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLimitRows;
+
+        /// <summary>
+        /// cboSorts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboSorts;
+
+        /// <summary>
         /// cboFilter control.
         /// </summary>
         /// <remarks>
@@ -184,6 +202,24 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblDate;
+
+        /// <summary>
+        /// lblModifyBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblModifyBy;
+
+        /// <summary>
+        /// lblModifyDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblModifyDate;
 
         /// <summary>
         /// notification control.

@@ -119,6 +119,7 @@ body {
     border-radius: 6px;
     box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4) !important;
     transition: opacity 0.1s linear;
+    z-index: 10000;
 }
 
 
@@ -475,12 +476,14 @@ body {
     color: var(--primary-color-active);
 }
 
-.aspNetDisabled {
+.pager-previous-next.aspNetDisabled {
+    border: none;
     color: var(--primary-color-hover);
     opacity: 0.7;
 }
 
-.aspNetDisabled:active {
+.pager-previous-next.aspNetDisabled:active {
+    border: none;
     color: var(--primary-color-hover);
     opacity: 0.7;
 }
@@ -538,7 +541,6 @@ body {
     border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.4);
     overflow-y: initial;
-    animation: slideIn .3s ease-out forwards;
 }
 
 .modal-content {
@@ -709,7 +711,7 @@ body {
     outline: none;
 }
 
-.modal-textinput {
+.modal-textinput, .aspNetDisabled {
     padding: 0.5rem 1rem;
     resize: none;
     border: 2px solid var(--primary-color);
@@ -733,7 +735,7 @@ body {
 /* Report Modal */
 #dlgReport {
     width: 40%;
-    height: 70%;
+    height: 80%;
 }
 
 #divReportModalBody {
@@ -745,6 +747,36 @@ body {
 #ddlReportCategory {
     width: 60%;
 }
+
+#divReportModalBody > div {
+    margin-bottom: 1em;
+}
+
+    #divReportModalBody > div:last-child {
+        margin-bottom: 0;
+    }
+
+.mdlReport-topInputRow {
+    display: flex;
+    align-items: center;
+}
+
+    .mdlReport-topInputRow > div {
+        flex: 0.5;
+    }
+
+        .mdlReport-topInputRow > div:first-child {
+            margin-right: 2em;
+        }
+
+    .mdlReport-topInputRow select {
+        width: 100%;
+        transition: all .3s ease-out;
+    }
+
+        .mdlReport-topInputRow select:disabled {
+            border: 2px solid var(--theme-gray-dark);
+        }
 
 /* Suggestion Modal */
 #dlgSuggestion {

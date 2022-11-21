@@ -19,8 +19,15 @@ namespace RojakJelah
     {
         DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
         private ReportsPageState pageState;
+        private string[] sortEntries = new string[] {
+            "Author", "Date (asc.)", "Date (dsc.)"
+        };
         private string[] filterEntries = new string[] {
-            "Duplicate entries", "Incorrect entries", "Inappropriate entries", "Author", "Date (asc.)", "Date (dsc.)", "Resolved", "Closed"
+            "All issues", "Duplicate entries", "Incorrect entries", "Inappropriate entries", "Other issues", "Resolved", "Closed"
+        };
+        private int[] limitRowEntries = new int[]
+        {
+            10,50,100
         };
 
         //  FontAwesome icons
@@ -37,6 +44,13 @@ namespace RojakJelah
             // If page first loads, otherwise ignores POST requests
             if (!Page.IsPostBack)
             {
+                //  cboSorts
+                cboSorts.Items.Clear();
+                foreach (string entry in sortEntries)
+                {
+                    cboSorts.Items.Add(entry);
+                }
+                
                 //  cboFilter
                 cboFilter.Items.Clear();
                 foreach (string entry in filterEntries)
@@ -44,8 +58,15 @@ namespace RojakJelah
                     cboFilter.Items.Add(entry);
                 }
 
+                ddlLimitRows.Items.Clear();
+                foreach (int entry in limitRowEntries)
+                {
+                    ddlLimitRows.Items.Add(entry.ToString());
+                }
+
                 //  listItemContainer
-                List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).ToList();
+                var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+                List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
                 pageState._currentList.AddRange(reportList);
             }
         }
@@ -58,38 +79,51 @@ namespace RojakJelah
             ViewState["pageState"] = pageState;
         }
 
-        protected void CboFilter_SelectedIndexChanged(object sender, EventArgs e)
+        protected void CboSortAndFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedIndex = cboFilter.SelectedIndex;
-            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).ToList();
-            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).ToList();
-            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).ToList();
+            var sortIndex = cboSorts.SelectedIndex;
+            var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
+            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).Take(limitRowCount).ToList();
+            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).Take(limitRowCount).ToList();
             List<Report> chosenList = new List<Report>();
 
-            if (cboFilter.SelectedIndex == filterEntries.Length - 2)
+            if (selectedIndex == filterEntries.Length - 2)
             {
+                //  Resolved
                 chosenList.AddRange(resolvedReportList);
             }
-            else if (cboFilter.SelectedIndex == filterEntries.Length - 1)
+            else if (selectedIndex == filterEntries.Length - 1)
             {
+                //  Closed
                 chosenList.AddRange(closedReportList);
             }
             else
             {
+                //  Open
                 chosenList.AddRange(reportList);
             }
 
-            if (cboFilter.SelectedIndex == 0)
+            if (selectedIndex == 1)
             {
+                //  Duplicate entries
                 chosenList = chosenList.Where((x) => x.ReportCategory.Id == 1).ToList();
             }
-            else if (cboFilter.SelectedIndex == 1)
+            else if (selectedIndex == 2)
             {
+                //  Incorrect entries
                 chosenList = chosenList.Where((x) => x.ReportCategory.Id == 2).ToList();
             }
-            else if (cboFilter.SelectedIndex == 2)
+            else if (selectedIndex == 3)
             {
+                //  Inappropriate entries
                 chosenList = chosenList.Where((x) => x.ReportCategory.Id == 3).ToList();
+            } 
+            else if (selectedIndex == 4)
+            {
+                //  Other entries
+                chosenList = chosenList.Where((x) => x.ReportCategory.Id == 4).ToList();
             }
 
             List<Report> finalList = !String.IsNullOrEmpty(txtSearch.Text) ?
@@ -97,37 +131,37 @@ namespace RojakJelah
 
             txtSelectedListItem.Text = ""; // Reset selected list item
             pageState._currentList.Clear();
-            if (selectedIndex == filterEntries.Length - 4 || selectedIndex == filterEntries.Length - 3)
+            
+            List<Report> orderedList = new List<Report>();
+
+            if (sortIndex == 0) 
             {
-                List<Report> orderedList = new List<Report>();
-
-                if (selectedIndex == filterEntries.Length - 4)
-                {
-                    //  Date (asc.)
-                    orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
-                }
-                else
-                {
-                    //  Date (dsc.)
-                    orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
-                }
-
-                pageState._currentList.AddRange(orderedList);
+                //  Author
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy.Username));
+            } 
+            else if (sortIndex == 1)
+            {
+                //  Date (asc.)
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
             }
             else
             {
-                pageState._currentList.AddRange(finalList);
+                //  Date (dsc.)
+                orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
             }
+
+            pageState._currentList.AddRange(orderedList);
         }
 
         protected void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             txtSelectedListItem.Text = ""; // Reset selected list item
             var searchKeys = txtSearch.Text.ToLower().Trim();
-            var filter = cboFilter.SelectedIndex;
-            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).ToList();
-            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).ToList();
-            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).ToList();
+            var filter = cboFilter.SelectedIndex; 
+            var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
+            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
+            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).Take(limitRowCount).ToList();
+            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).Take(limitRowCount).ToList();
             List<Report> filteredList = new List<Report>();
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2)
@@ -170,7 +204,8 @@ namespace RojakJelah
             txtSelectedListItem.Text = String.Empty;
             txtSearch.Text = String.Empty;
             cboFilter.SelectedIndex = 0;
-            CboFilter_SelectedIndexChanged(sender, e);
+            cboSorts.SelectedIndex = 0;
+            CboSortAndFilter_SelectedIndexChanged(sender, e);
         }
 
         protected void BtnResolve_Click(object sender, EventArgs e)
@@ -182,12 +217,12 @@ namespace RojakJelah
                 //  Update report status
                 Report resolvedRecord = dataContext.Reports.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
                 resolvedRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 2);
+                resolvedRecord.ModifiedBy = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+                resolvedRecord.ModificationDate = DateTime.Now;
                 dataContext.SaveChanges();
 
                 //  Update UI
-                Report resolvedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                resolvedUIRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 2);
-                pageState._currentList.Remove(resolvedUIRecord);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -216,12 +251,12 @@ namespace RojakJelah
                 //  Update report status
                 Report closedRecord = dataContext.Reports.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
                 closedRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 3);
+                closedRecord.ModifiedBy = dataContext.Users.Where((x) => x.Username.ToLower() == Page.User.Identity.Name).First();
+                closedRecord.ModificationDate = DateTime.Now;
                 dataContext.SaveChanges();
 
                 //  Update UI
-                Report closedUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                closedUIRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 3);
-                pageState._currentList.Remove(closedUIRecord);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -253,9 +288,7 @@ namespace RojakJelah
                 dataContext.SaveChanges();
 
                 //  Update UI
-                Report targetUIRecord = pageState._currentList.SingleOrDefault(x => x.Id.ToString() == lblId.InnerText);
-                targetUIRecord.ReportStatus = dataContext.ReportStatuses.SingleOrDefault(x => x.Id == 3);
-                pageState._currentList.Remove(targetUIRecord);
+                CboSortAndFilter_SelectedIndexChanged(sender, e);
                 txtSelectedListItem.Text = ""; // Reset selected list item index
 
                 // Send notification message
@@ -298,11 +331,11 @@ namespace RojakJelah
                             </div>
                             <div class='itemDetail'>
                                 <span>Slang</span>
-                                <span>{item.DictionaryEntry.Slang.WordValue}</span>
+                                <span>{item.DictionaryEntry?.Slang?.WordValue ?? "-"}</span>
                             </div>
                             <div class='itemDetail'>
                                 <span>Translation</span>
-                                <span>{item.DictionaryEntry.Translation.WordValue}</span>
+                                <span>{item.DictionaryEntry?.Translation?.WordValue ?? "-"}</span>
                             </div>
                            <div class='itemDetail'>
                                 <span>Issue Category</span>
@@ -310,7 +343,7 @@ namespace RojakJelah
                             </div>
                             <div class='itemDetail'>
                                 <span>Created by</span>
-                                <span>{item.CreatedBy.Username}</span>
+                                <span>{item.CreatedBy?.Username ?? "-"}</span>
                             </div>
                             <div class='itemDetail'>
                                 <span>Created at</span>
@@ -321,7 +354,7 @@ namespace RojakJelah
                         <div class='bottomRow'>
                             <div class='itemDetail'>
                                 <span>Description</span>
-                                <span>{item.Description ?? "None"}</span>
+                                <span>{item.Description ?? "-"}</span>
                             </div>
                         </div>";
             var topRowLiteralControl = new LiteralControl(topRowLiteralHTML);
@@ -364,24 +397,28 @@ namespace RojakJelah
                     Report selectedItem = reportList.Find((x) => x.Id.ToString() == txtSelectedListItem.Text);
 
                     lblId.InnerText = selectedItem.Id.ToString();
-                    lblSlang.InnerText = selectedItem.DictionaryEntry.Slang.WordValue;
-                    lblTranslation.InnerText = selectedItem.DictionaryEntry.Translation.WordValue;
+                    lblSlang.InnerText = selectedItem.DictionaryEntry?.Slang?.WordValue ?? "-";
+                    lblTranslation.InnerText = selectedItem.DictionaryEntry?.Translation?.WordValue ?? "-";
                     lblCategory.InnerText = selectedItem.ReportCategory.Name;
-                    lblAuthor.InnerText = selectedItem.CreatedBy.Username;
+                    lblAuthor.InnerText = selectedItem.CreatedBy?.Username ?? "-";
                     lblDate.InnerText = selectedItem.CreationDate.ToShortDateString();
-                    lblDescription.InnerText = selectedItem.Description ?? "None";
+                    lblModifyBy.InnerText = selectedItem.ModifiedBy?.Username ?? "-";
+                    lblModifyDate.InnerText = selectedItem.ModificationDate.ToShortDateString();
+                    lblDescription.InnerText = selectedItem.Description ?? "-";
                 }
                 else
                 {
                     //  If user didn't interact with list items yet
                     //  Select first item details and display menu
                     lblId.InnerText = pageState._currentList[0].Id.ToString();
-                    lblSlang.InnerText = pageState._currentList[0].DictionaryEntry.Slang.WordValue;
-                    lblTranslation.InnerText = pageState._currentList[0].DictionaryEntry.Translation.WordValue;
+                    lblSlang.InnerText = pageState._currentList[0].DictionaryEntry?.Slang?.WordValue ?? "-";
+                    lblTranslation.InnerText = pageState._currentList[0].DictionaryEntry?.Translation?.WordValue ?? "-";
                     lblCategory.InnerText = pageState._currentList[0].ReportCategory.Name;
-                    lblAuthor.InnerText = pageState._currentList[0].CreatedBy.Username;
+                    lblAuthor.InnerText = pageState._currentList[0].CreatedBy?.Username ?? "-";
                     lblDate.InnerText = pageState._currentList[0].CreationDate.ToShortDateString();
-                    lblDescription.InnerText = pageState._currentList[0].Description ?? "None";
+                    lblModifyBy.InnerText = pageState._currentList[0].ModifiedBy?.Username ?? "-";
+                    lblModifyDate.InnerText = pageState._currentList[0].ModificationDate.ToShortDateString();
+                    lblDescription.InnerText = pageState._currentList[0].Description ?? "-";
                 }
 
                 // Apply selected css to selected list item
@@ -430,11 +467,11 @@ namespace RojakJelah
             
             switch (filter)
             {
-                case 0: case 1: case 2: case 6: case 7:
-                    //  Duplicate entries, Incorrect entries, Inappropriate entries, Resolved, Closed
+                case 0: case 1: case 2: case 3: case 4: case 8: case 9:
+                    //  Duplicate entries, Incorrect entries, Inappropriate entries, Other issues, Resolved, Closed
                     var searchForEntry = reportList
-                        .Where((x) => x.DictionaryEntry.Slang.WordValue.ToLower().Contains(searchKeys.ToLower()) || 
-                        x.DictionaryEntry.Translation.WordValue.ToLower().Contains(searchKeys.ToLower())).ToList();
+                        .Where((x) => (x.DictionaryEntry?.Slang?.WordValue.ToLower().Contains(searchKeys.ToLower()) ?? false) || 
+                        (x.DictionaryEntry?.Translation?.WordValue.ToLower().Contains(searchKeys.ToLower()) ?? false)).ToList();
                     var searchForDescription = reportList
                         .Where((x) => x.Description != null)
                         .Where((x) => x.Description.ToLower().Contains(searchKeys.ToLower())).ToList();
@@ -451,17 +488,17 @@ namespace RojakJelah
 
                     filteredList.AddRange(chosenConditionList);
                     break;
-                case 3:
+                case 5:
                     //  Author
                     filteredList.AddRange(reportList
                         .Where((x) => x.CreatedBy.Username.ToLower().Contains(searchKeys.ToLower())));
                     break;
-                case 4:
+                case 6:
                     //  Date (asc.)
                     orderedList.AddRange(reportList.OrderBy((x) => x.CreationDate));
                     filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));
                     break;
-                case 5:
+                case 7:
                     //  Date (dsc.)
                     orderedList.AddRange(reportList.OrderByDescending((x) => x.CreationDate));
                     filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));

@@ -158,6 +158,8 @@ function closeNotification(notification) {
 function showModal(selectedModal) {
     $(document.body).css("overflow", "hidden");
     selectedModal.css("display", "flex");
+    $("#dlgReport").css("animation", "slideIn .3s ease-out forwards");
+    $("#dlgSuggestion").css("animation", "slideIn .3s ease-out forwards");
 }
 
 function closeModal(selectedModal) {
