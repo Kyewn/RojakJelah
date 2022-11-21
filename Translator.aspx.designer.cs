@@ -105,6 +105,15 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlSavedTranslations;
 
         /// <summary>
+        /// dlgSavedTranslation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dlgSavedTranslation;
+
+        /// <summary>
         /// divSavedTranslationsModalBody control.
         /// </summary>
         /// <remarks>
@@ -139,6 +148,15 @@ namespace RojakJelah
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlTranslationHistory;
+
+        /// <summary>
+        /// dlgHistory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dlgHistory;
 
         /// <summary>
         /// divTranslationHistoryModalBody control.
@@ -186,13 +204,76 @@ namespace RojakJelah
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mdlReport;
 
         /// <summary>
+        /// dlgReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dlgReport;
+
+        /// <summary>
         /// ddlReportCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect ddlReportCategory;
+        protected global::System.Web.UI.WebControls.DropDownList ddlReportCategory;
+
+        /// <summary>
+        /// divEntryInput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEntryInput;
+
+        /// <summary>
+        /// txtReportSlang control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtReportSlang;
+
+        /// <summary>
+        /// ddlReportTranslation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlReportTranslation;
+
+        /// <summary>
+        /// txtReportDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtReportDescription;
+
+        /// <summary>
+        /// btnSubmitReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSubmitReport;
+
+        /// <summary>
+        /// btnCancelReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelReport;
 
         /// <summary>
         /// notification control.

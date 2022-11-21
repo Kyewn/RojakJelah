@@ -144,7 +144,7 @@
     <!-- Modals -->
     <!-- Saved Translations Modal -->
     <div id="mdlSavedTranslations" class="modal-window" ClientIDMode="Static" runat="server">
-        <div class="modal-dialog">
+        <div id="dlgSavedTranslation" class="modal-dialog" runat="server">
             <div class="modal-content">
                 <div class="modal-header">
                     <i class="modal-icon fa-solid fa-star"></i>
@@ -168,7 +168,7 @@
     
     <!-- Translation History Modal -->
     <div id="mdlTranslationHistory" class="modal-window" ClientIDMode="Static" runat="server">
-        <div class="modal-dialog">
+        <div id="dlgHistory" class="modal-dialog" runat="server">
             <div class="modal-content">
                 <div class="modal-header">
                     <i class="modal-icon fa-solid fa-clock-rotate-left"></i>
@@ -197,7 +197,7 @@
 
     <!-- Report Modal -->
     <div id="mdlReport" class="modal-window" ClientIDMode="Static" runat="server">
-        <div id="dlgReport" class="modal-dialog">
+        <div id="dlgReport" ClientIDMode="Static" class="modal-dialog" runat="server">
             <div class="modal-content">
                 <div class="modal-header">
                     <i class="modal-icon fa-solid fa-circle-exclamation"></i>
@@ -209,17 +209,26 @@
                 <div id="divReportModalBody" class="modal-body">
                     <div class="modal-inputfield">
                         <label class="modal-inputlabel">Issue Category *</label>
-                        <select id="ddlReportCategory" class="modal-dropdown" runat="server" ClientIDMode="static">
-                        </select>
+                        <asp:DropDownList ID="ddlReportCategory" ClientIDMode="static" runat="server" class="modal-dropdown" AutoPostback="true" OnSelectedIndexChanged="DdlReportCategory_SelectedIndexChanged"></asp:DropDownList>
+                    </div>
+                    <div id="divEntryInput" class="mdlReport-topInputRow" runat="server">
+                        <div class="modal-inputfield">
+                            <label class="modal-inputlabel">Problem slang *</label>
+                            <asp:TextBox ID="txtReportSlang" runat="server" class="modal-textinput" placeholder="e.g. hello world" AutoPostback="true" OnTextChanged="TxtReportSlang_TextChanged"></asp:TextBox>
+                        </div>
+                        <div class="modal-inputfield">
+                            <label class="modal-inputlabel">Problem translation *</label>
+                            <asp:DropDownList ID="ddlReportTranslation" ClientIDMode="static" runat="server" class="modal-dropdown" Enabled="false"></asp:DropDownList>
+                        </div>
                     </div>
                     <div class="modal-inputfield">
-                        <label class="modal-inputlabel">Description *</label>
-                        <textarea class="modal-textinput" rows="5" maxlength="500" placeholder="Describe your issue"></textarea>
+                        <label class="modal-inputlabel">Description</label>
+                        <textarea ID="txtReportDescription" runat="server" class="modal-textinput" rows="5" maxlength="500" placeholder="Describe your issue"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="button-primary">Submit</button>
-                    <button class="button-secondary">Cancel</button>
+                    <asp:Button ID="btnSubmitReport" runat="server" class="button-primary" Text="Submit" OnClick="BtnSubmitReport_Click" />
+                    <asp:Button ID="btnCancelReport" runat="server" class="button-secondary" Text="Cancel" OnClick="BtnCancelReport_Click" />
                 </div>
             </div>
         </div>

@@ -56,11 +56,11 @@ namespace RojakJelah.Database.Configuration
                 .WithMany()
                 .Map(x => x.MapKey("suggestion_status_id"));
 
-            HasRequired(x => x.CreatedBy)
+            HasOptional(x => x.CreatedBy)
                 .WithMany()
                 .Map(x => x.MapKey("created_by"));
-            
-            HasRequired(x => x.ModifiedBy)
+
+            HasOptional(x => x.ModifiedBy)
                 .WithMany()
                 .Map(x => x.MapKey("modified_by"));
         }

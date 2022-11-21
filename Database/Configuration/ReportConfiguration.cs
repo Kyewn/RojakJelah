@@ -31,10 +31,14 @@ namespace RojakJelah.Database.Configuration
 
             Property(x => x.CreationDate)
                 .HasColumnName("creation_date")
+                .IsRequired();      
+
+            Property(x => x.ModificationDate)
+                .HasColumnName("modification_date")
                 .IsRequired();
 
             // Foreign Keys
-            HasRequired(x => x.DictionaryEntry)
+            HasOptional(x => x.DictionaryEntry)
                 .WithMany()
                 .Map(x => x.MapKey("dictionary_entry_id"));
 
@@ -46,9 +50,13 @@ namespace RojakJelah.Database.Configuration
                 .WithMany()
                 .Map(x => x.MapKey("report_status_id"));
 
-            HasRequired(x => x.CreatedBy)
+            HasOptional(x => x.CreatedBy)
                 .WithMany()
                 .Map(x => x.MapKey("created_by"));
+
+            HasOptional(x => x.ModifiedBy)
+                .WithMany()
+                .Map(x => x.MapKey("modified_by"));
         }
     }
 }
