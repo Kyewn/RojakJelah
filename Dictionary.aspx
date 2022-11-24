@@ -70,7 +70,7 @@
                             </div>
                             <div class="dictionary-item-text">
                                 <p class="content-title">Example</p>
-                                <p class="content-text"><%# (Eval("Example").ToString() == "") ? "-" : Eval("Example") %></p>
+                                <p class="content-text"><%# (Eval("Example") == null || Eval("Example").ToString() == "") ? "-" : Eval("Example") %></p>
                             </div>
                             <div class="dictionary-item-text">
                                 <p class="content-title">Language</p>
