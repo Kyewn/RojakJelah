@@ -3,10 +3,8 @@ using RojakJelah.Database.Entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -54,6 +52,7 @@ namespace RojakJelah
         {
             // Reset state of controls that may persist in postback
             notification.Style.Add("display", "none");
+            mdlEditDictionaryEntry.Style.Add("display", "none");
 
             if (!IsPostBack)
             {
@@ -64,10 +63,22 @@ namespace RojakJelah
                     SearchKey = ""
                 };
 
-                PrepopulateControls();
-            }
+                if (User.Identity.IsAuthenticated)
+                {
+                    string currentUserName = User.Identity.Name;
 
-            PopulateDictionary();
+                    if (!String.IsNullOrWhiteSpace(currentUserName))
+                    {
+                        DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+                        string currentUserRole = dataContext.Users.SingleOrDefault(x => x.Username == currentUserName).Role.Name;
+
+                        ViewState["UserRole"] = currentUserRole ?? null;
+                    }
+                }
+
+                PrepopulateControls();
+                PopulateDictionary();
+            }
         }
 
         protected void DdlSort_SelectedIndexChanged(object sender, EventArgs e)
@@ -90,33 +101,69 @@ namespace RojakJelah
                 SearchKey = txtSearch.Value.Trim().ToLower()
             };
 
+            dictionaryDataPager.SetPageProperties(0, 20, true);
+
             RenderDictionaryResult(true, true, true, false);
         }
 
+
         /// <summary>
-        /// Deletes the specified dictionary entry.
+        /// Handles Dictionary ListView item commands
         /// </summary>
-        protected void BtnDelete_Click(Object sender, EventArgs e)
+        protected void LvDictionary_ItemCommand(object sender, ListViewCommandEventArgs e)
         {
-           try
+            // Edit dictionatry entry
+            if (e.CommandName == "Modify")
             {
-                DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+                try
+                {
+                    DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
 
-                // Get dictionary entry ID
-                Button sourceButton = sender as Button;
-                int dictionaryEntryId = Int32.Parse(sourceButton.Attributes["data-entryid"]);
+                    ListViewDataItem dataItem = e.Item as ListViewDataItem;
+                    int dictionaryEntryId = Int32.Parse(lvDictionary.DataKeys[dataItem.DisplayIndex].Value.ToString());
 
-                // Remove dictionary entry from database
-                dataContext.DictionaryEntries.Remove(dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId));
-                dataContext.SaveChanges();
+                    var selectedDictionaryEntry = dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId);
 
-                RenderDictionaryResult(false, false, false, true);
+                    // Update edit modal field values
+                    txtDictionaryEntryId.InnerText = selectedDictionaryEntry.Id.ToString();
+                    txtEditSlang.InnerText = selectedDictionaryEntry.Slang.WordValue;
+                    txtEditTranslation.InnerText = selectedDictionaryEntry.Translation.WordValue;
+                    ddlEditLanguage.SelectedIndex = selectedDictionaryEntry.Slang.Language.Id - 1;
+                    txtEditExample.Value = selectedDictionaryEntry.Example;
 
-                ShowNotification(IconCheck, "Delete succcess", "The dictionary entry has been deleted successfully.", false);
+                    RenderDictionaryResult(false, false, false, true);
+
+                    MaintainScrollPosition();
+                    ShowModal(mdlEditDictionaryEntry);
+                }
+                catch (Exception ex)
+                {
+                    ShowNotification();
+                }
             }
-            catch (Exception ex)
+            // Delete dictionary entry
+            else if (e.CommandName == "Remove")
             {
-                ShowNotification();
+                try
+                {
+                    DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+                    // Get dictionary entry ID
+                    ListViewDataItem dataItem = e.Item as ListViewDataItem;
+                    int dictionaryEntryId = Int32.Parse(lvDictionary.DataKeys[dataItem.DisplayIndex].Value.ToString());
+
+                    // Remove dictionary entry from database
+                    dataContext.DictionaryEntries.Remove(dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId));
+                    dataContext.SaveChanges();
+
+                    RenderDictionaryResult(false, false, false, true);
+
+                    ShowNotification(IconCheck, "Delete succcess", "The dictionary entry has been deleted successfully.", false);
+                }
+                catch (Exception ex)
+                {
+                    ShowNotification();
+                }
             }
         }
 
@@ -237,12 +284,7 @@ namespace RojakJelah
                 catch (Exception ex)
                 {
                     // Display error notification
-                    notificationTitle = "Unknown error";
-                    notificationMessage = "An unexpected error has occured, please contact support.";
-
-                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
-
-                    Debug.WriteLine(ex.ToString());
+                    ShowNotification();
                 }
             }
             else
@@ -297,12 +339,7 @@ namespace RojakJelah
                 catch (Exception ex)
                 {
                     // Display error notification
-                    notificationTitle = "Unknown error";
-                    notificationMessage = "An unexpected error has occured, please contact support.";
-
-                    ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
-
-                    Debug.WriteLine(ex.ToString());
+                    ShowNotification();
                 }
             }
         }
@@ -414,12 +451,7 @@ namespace RojakJelah
             catch (Exception ex)
             {
                 // Display error notification
-                notificationTitle = "Unknown error";
-                notificationMessage = "An unexpected error has occured, please contact support.";
-
-                ShowNotification(IconExclamation, notificationTitle, notificationMessage, true);
-
-                Debug.WriteLine(ex.ToString());
+                ShowNotification();
             }
         }
 
@@ -427,17 +459,6 @@ namespace RojakJelah
         {
             ResetSuggestionModal();
             mdlSuggestion.Style.Add("display", "none");
-        }
- 
-        /// <summary>
-        /// Shows the specified modal.
-        /// </summary>
-        /// <param name="modal">Modal to show.</param>
-        protected void ShowModal(HtmlGenericControl modal)
-        {
-            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
-            body.Style.Add("overflow-y", "hidden");
-            modal.Style.Add("display", "flex");
         }
 
         protected void ResetSuggestionModal()
@@ -457,6 +478,52 @@ namespace RojakJelah
             ddlReportTranslation.Items.Clear();
             ddlReportTranslation.Enabled = false;
             txtReportDescription.InnerText = String.Empty;
+        }
+
+        /// <summary>
+        /// Updates the specified dictionary entry.
+        /// </summary>
+        protected void BtnConfirmEdit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataContext dataContext = new DataContext(ConnectionStrings.RojakJelahConnection);
+
+                // Get dictionary entry ID
+                int dictionaryEntryId = Int32.Parse(txtDictionaryEntryId.InnerText);
+
+                // Get DictionaryEntry entity
+                var dictionaryEntry = dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId);
+
+                // Update language and example
+                int selectedLanguageId = Int32.Parse(ddlEditLanguage.Items[ddlEditLanguage.SelectedIndex].Value);
+                dictionaryEntry.Slang.Language = dataContext.Languages.SingleOrDefault(x => x.Id == selectedLanguageId) ?? dictionaryEntry.Slang.Language;
+                dictionaryEntry.Example = txtEditExample.Value.Trim();
+                dictionaryEntry.ModifiedBy = dataContext.Users.SingleOrDefault(x => x.Username == User.Identity.Name);
+                dictionaryEntry.ModificationDate = DateTime.Now;
+                dataContext.SaveChanges();
+
+                RenderDictionaryResult(false, false, false, true);
+
+                MaintainScrollPosition();
+                ResetEditModal();
+                CloseModal(mdlEditDictionaryEntry);
+                ShowNotification(IconCheck, "Edit success", "The dictionary entry has been updated.", false);
+            }
+            catch (Exception ex)
+            {
+                ShowNotification();
+            }
+        }
+
+        /// <summary>
+        /// Closes edit modal and resets input fields.
+        /// </summary>
+        protected void BtnCancelEdit_Click(object sender, EventArgs e)
+        {
+            MaintainScrollPosition();
+            ResetEditModal();
+            CloseModal(mdlEditDictionaryEntry);
         }
 
         /// <summary>
@@ -492,6 +559,7 @@ namespace RojakJelah
             foreach (var language in languageList)
             {
                 ddlLanguage.Items.Add(new ListItem(language.Name, language.Id.ToString()));
+                ddlEditLanguage.Items.Add(new ListItem(language.Name, language.Id.ToString()));
             }
         }
 
@@ -600,82 +668,35 @@ namespace RojakJelah
                 ShowNotification();
             }
 
-            sctDictionary.Controls.Clear();
-
             // Populate dictionary container
             if ((filteredEntries == null) || (filteredEntries.Count == 0))
             {
-                // Empty dictionary
-                LiteralControl dictionaryEmpty = new LiteralControl($@"
-                    <div class='dictionary-empty'>
-                        <i class='fa-regular fa-circle-xmark fa-2xl'></i>
-                        <h4>No entries found</h4>
-                    </div>
-                ");
+                lvDictionary.DataSource = null;
+                lvDictionary.DataBind();
 
-                sctDictionary.Controls.Add(dictionaryEmpty);
+                dictionaryDataPagerInfo.InnerText = "";
             }
             else
             {
-                int count = 0;
+                lvDictionary.DataSource = filteredEntries;
+                lvDictionary.DataBind();
 
-                foreach (var dictionaryEntry in filteredEntries)
-                {
-                    count++;
-
-                    // Dictionary item container
-                    Panel dictionaryItem = new Panel();
-                    dictionaryItem.CssClass = "dictionary-item";
-
-                    // Dictionary item text content
-                    LiteralControl dictionaryItemContent = new LiteralControl($@"
-                        <div class='dictionary-item-content'>
-                            <h4 class='dictionary-item-title'>{dictionaryEntry.Slang.WordValue}</h4>
-                            <div class='dictionary-item-text'>
-                                <p class='content-title'>Meaning</p>
-                                <p class='content-text'>{dictionaryEntry.Translation.WordValue}</p>
-                            </div>
-                            <div class='dictionary-item-text'>
-                                <p class='content-title'>Example</p>
-                                <p class='content-text'>{dictionaryEntry.Example ?? "None"}</p>
-                            </div>
-                            <div class='dictionary-item-text'>
-                                <p class='content-title'>Language</p>
-                                <p class='content-text'>{dictionaryEntry.Slang.Language.Name}</p>
-                            </div>
-                        </div>
-                        ");
-
-                    // Add item text content to item container
-                    dictionaryItem.Controls.Add(dictionaryItemContent);
-
-                    // Add dictionary item controls if user is authorized
-                    if (userIsAuthorized)
-                    {
-                        Panel dictionaryItemControls = new Panel();
-                        dictionaryItemControls.CssClass = "dictionary-item-controls";
-
-                        Button btnDelete = new Button();
-                        btnDelete.ID = "btnDelete" + dictionaryEntry.Id;
-                        btnDelete.ClientIDMode = ClientIDMode.Static;
-                        btnDelete.CssClass = "button-secondary button-delete";
-                        btnDelete.Text = "Delete";
-                        btnDelete.Attributes.Add("data-entryid", dictionaryEntry.Id.ToString());
-                        btnDelete.Click += new EventHandler(BtnDelete_Click);
-                        btnDelete.OnClientClick = $"confirmDelete(event, '{btnDelete.ID}');";
-                        
-                        dictionaryItemControls.Controls.Add(btnDelete);
-
-                        dictionaryItem.Controls.Add(dictionaryItemControls);
-                    }
-
-                    // Add dictionary entry to container
-                    sctDictionary.Controls.Add(dictionaryItem);
-                }    
+                dictionaryDataPagerInfo.InnerText = $"Showing {dictionaryDataPager.StartRowIndex + 1} - {dictionaryDataPager.StartRowIndex + lvDictionary.Items.Count}";
             }
+
+            dictionaryDataPager.Visible = filteredEntries.Count == 0 ? false : true;
 
             // Update entry count text
             entryCountText.InnerText = filteredEntries.Count + (filteredEntries.Count == 1 ? " entry " : " entries ") + "found";
+        }
+
+        protected void OnPagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+        {
+            dictionaryDataPager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+
+            RenderDictionaryResult(false, false, false, true);
+
+            dictionaryDataPagerInfo.InnerText = $"Showing {e.StartRowIndex + 1} - {e.StartRowIndex + lvDictionary.Items.Count}";
         }
 
         protected static string GetEnumDescription(Enum selectedEnum)
@@ -690,6 +711,36 @@ namespace RojakJelah
             }
 
             return selectedEnum.ToString();
+        }
+
+        /// <summary>
+        /// Resets input fields in Edit modal.
+        /// </summary>
+        protected void ResetEditModal()
+        {
+            txtDictionaryEntryId.InnerText = "";
+            txtEditSlang.InnerText = "";
+            txtEditTranslation.InnerText = "";
+            ddlEditLanguage.SelectedIndex = 0;
+            txtEditExample.Value = "";
+        }
+
+        /// <summary>
+        /// Shows the specified modal.
+        /// </summary>
+        /// <param name="modal">Modal to show.</param>
+        protected void ShowModal(HtmlGenericControl modal)
+        {
+            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
+            body.Style.Add("overflow-y", "hidden");
+            modal.Style.Add("display", "flex");
+        }
+
+        protected void CloseModal(HtmlGenericControl modal)
+        {
+            HtmlGenericControl body = Master.FindControl("body") as HtmlGenericControl;
+            body.Style.Add("overflow-y", "auto");
+            modal.Style.Add("display", "none");
         }
 
         /// <summary>
@@ -720,6 +771,17 @@ namespace RojakJelah
             notificationTitle.InnerText = title;
             notificationMessage.InnerHtml = message;
             notification.Style.Add("display", "block");
+        }
+
+        /// <summary>
+        /// Maintains scroll position of the dictionary container.
+        /// </summary>
+        protected void MaintainScrollPosition()
+        {
+            string scriptScrollToView = @"window.onload = function scrollToView() {" +
+                $"$('#divDictionary').scrollTop({hfScrollPosition.Value});" +
+                "}";
+            ClientScript.RegisterStartupScript(this.GetType(), "ScrollToView", scriptScrollToView, true);
         }
 
         protected void ResetReportModal(object sender, EventArgs e)
