@@ -25,7 +25,7 @@ namespace RojakJelah
             "All suggestions", "Approved", "Rejected"
         };
         private string[] sortEntries = new string[] { 
-            "Slang", "Translation", "Author", "Date (asc.)", "Date (dsc.)" 
+            "Date (dsc.)", "Date (asc.)", "Slang", "Translation", "Author"
         };
         private int[] limitRowEntries = new int[]
         {
@@ -76,7 +76,9 @@ namespace RojakJelah
 
                 //  listItemContainer
                 var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
-                List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
+                List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1)
+                    .Take(limitRowCount)
+                    .OrderByDescending((x) => x.CreationDate).ToList();
                 pageState._currentList.AddRange(suggestionList);
             }
         }
@@ -116,7 +118,7 @@ namespace RojakJelah
             }
 
             List<Suggestion> finalList = !String.IsNullOrEmpty(txtSearch.Text) ? 
-                HandleFilterList(selectedIndex, txtSearch.Text, chosenList) : chosenList;
+                HandleFilterList(txtSearch.Text, chosenList) : chosenList;
 
             txtSelectedListItem.Text = ""; // Reset selected list item
             pageState._currentList.Clear();
@@ -125,28 +127,28 @@ namespace RojakJelah
 
             if (sortIndex == 0)
             {
-                //  Slang
-                orderedList.AddRange(finalList.OrderBy((x) => x.Slang));
+                //  Date (dsc.)
+                orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
             }
             else if (sortIndex == 1)
-            {
-                //  Translation
-                orderedList.AddRange(finalList.OrderBy((x) => x.Translation));
-            }
-            else if (sortIndex == 2)
-            {
-                //  Author
-                orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy.Username));
-            }
-            else if (sortIndex == 3)
             {
                 //  Date (asc.)
                 orderedList.AddRange(finalList.OrderBy((x) => x.CreationDate));
             }
+            else if (sortIndex == 2)
+            {
+                //  Slang
+                orderedList.AddRange(finalList.OrderBy((x) => x.Slang));
+            }
+            else if (sortIndex == 3)
+            {
+                //  Translation
+                orderedList.AddRange(finalList.OrderBy((x) => x.Translation));
+            }
             else
             {
-                //  Date (dsc.)
-                orderedList.AddRange(finalList.OrderByDescending((x) => x.CreationDate));
+                //  Author
+                orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy?.Username));
             }
 
             pageState._currentList.AddRange(orderedList);
@@ -156,7 +158,6 @@ namespace RojakJelah
         {
             txtSelectedListItem.Text = ""; // Reset selected list item
             var searchKeys = txtSearch.Text.ToLower().Trim();
-            var filter = cboFilter.SelectedIndex;
             var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
             List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
             List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).Take(limitRowCount).ToList();
@@ -164,11 +165,11 @@ namespace RojakJelah
             List<Suggestion> filteredList = new List<Suggestion>();
 
             if (cboFilter.SelectedIndex == filterEntries.Length - 2) {
-              filteredList = HandleFilterList(filter, searchKeys, approvedSuggestionList);
+              filteredList = HandleFilterList(searchKeys, approvedSuggestionList);
             } else if (cboFilter.SelectedIndex == filterEntries.Length - 1) {
-              filteredList = HandleFilterList(filter, searchKeys, rejectedSuggestionList);
+              filteredList = HandleFilterList(searchKeys, rejectedSuggestionList);
             } else {
-              filteredList = HandleFilterList(filter, searchKeys, suggestionList);
+              filteredList = HandleFilterList(searchKeys, suggestionList);
             }
 
             pageState._currentList.Clear();
@@ -633,40 +634,17 @@ namespace RojakJelah
             }
         }
 
-        private List<Suggestion> HandleFilterList(int filter, string searchKeys, List<Suggestion> suggestionList)
+        private List<Suggestion> HandleFilterList(string searchKeys, List<Suggestion> suggestionList)
         {
-            List<Suggestion> filteredList = new List<Suggestion>();
-            List<Suggestion> orderedList = new List<Suggestion>();
-
-            switch (filter)
-            {
-                case 0:
-                case 5: 
-                case 6:
-                    //  Slang, Approved, Rejected
-                    filteredList.AddRange(suggestionList.Where((x) => x.Slang.ToLower().Contains(searchKeys.ToLower())));
-                    break;
-                case 1:
-                    //  Translation
-                    filteredList.AddRange(suggestionList.Where((x) => x.Translation.ToLower().Contains(searchKeys.ToLower())));
-                    break;
-                case 2:
-                    //  Created by
-                    filteredList.AddRange(suggestionList.Where((x) => x.CreatedBy.Username.ToLower().Contains(searchKeys.ToLower())));
-                    break;
-                case 3:
-                    //  Date (asc.)
-                    orderedList.AddRange(suggestionList.OrderBy((x) => x.CreationDate));
-                    filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));
-                    break;
-                case 4:
-                    //  Date (dsc.)
-                    orderedList.AddRange(suggestionList.OrderByDescending((x) => x.CreationDate));
-                    filteredList.AddRange(orderedList.Where((x) => x.CreationDate.ToShortDateString().Contains(searchKeys)));
-                    break;
-            }
-
-            return filteredList;
+            //  Filters - search by slang, translation, example, date, author, language
+            //  Duplicate entries, Incorrect entries, Inappropriate entries, Other issues, Resolved, Closed
+            return suggestionList
+                   .Where((x) => (x.Slang.ToLower().Contains(searchKeys.ToLower())) ||
+                   (x.Translation.ToLower().Contains(searchKeys.ToLower())) ||
+                   (x.CreatedBy?.Username.ToLower().Contains(searchKeys.ToLower()) ?? false) ||
+                   (x.CreationDate.ToShortDateString().ToLower().Contains(searchKeys.ToLower())) ||
+                   (x.Language.Name.ToLower().Contains(searchKeys.ToLower())) ||
+                   (x.Example != null && x.Example.ToLower().Contains(searchKeys.ToLower()))).ToList();
         }
         private void HideModal()
         {
