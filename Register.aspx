@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="RojakJelah.Register" %>
+﻿<%@ Page Title="Register | RojakJelah" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="RojakJelah.Register" %>
 
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
     <link rel="stylesheet" type="text/css" href="<%= Page.ResolveUrl("~/Content/css/register.css") %>" />

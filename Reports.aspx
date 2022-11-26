@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Manage Reports" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reports.aspx.cs" Inherits="RojakJelah.Reports" %>
+﻿<%@ Page Title="Manage Reports | RojakJelah" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reports.aspx.cs" Inherits="RojakJelah.Reports" %>
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
     <link href="<%= Page.ResolveUrl("~/Content/css/reports.css")%>" type="text/css" rel="stylesheet" />
 </asp:Content>
