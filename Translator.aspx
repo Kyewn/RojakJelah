@@ -13,18 +13,16 @@
     <!-- Translate Section -->
     <section class="translate-content">
         <!-- Banner -->
-        <div class="banner">
-            <div class="banner-container">
-                <div class="banner-left">
-                    <img src="Content/image/textual_col_whitebg.svg" alt="Logo">
+        <div class="banner-container">
+            <div class="banner-left">
+                <img src="Content/image/textual_col_whitebg.svg" alt="Logo">
+            </div>
+            <div class="banner-right">
+                <div class="title">
+                    <h1>Be a <span>True</span> Malaysian</h1>
                 </div>
-                <div class="banner-right">
-                    <div class="title">
-                        <h1>Be a <span>True</span> Malaysian</h1>
-                    </div>
-                    <div class="info">
-                        <p>No need to pilih language anymore lah, become the CEO of Bahasa Rojak</p>
-                    </div>
+                <div class="info">
+                    <p>No need to pilih language anymore lah, become the CEO of Bahasa Rojak</p>
                 </div>
             </div>
         </div>
