@@ -154,44 +154,6 @@ namespace RojakJelah
             pageState._currentList.AddRange(orderedList);
         }
 
-        protected void TxtSearch_TextChanged(object sender, EventArgs e)
-        {
-            txtSelectedListItem.Text = ""; // Reset selected list item
-            var searchKeys = txtSearch.Text.ToLower().Trim();
-            var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
-            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
-            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).Take(limitRowCount).ToList();
-            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).Take(limitRowCount).ToList();
-            List<Suggestion> filteredList = new List<Suggestion>();
-
-            if (cboFilter.SelectedIndex == filterEntries.Length - 2) {
-              filteredList = HandleFilterList(searchKeys, approvedSuggestionList);
-            } else if (cboFilter.SelectedIndex == filterEntries.Length - 1) {
-              filteredList = HandleFilterList(searchKeys, rejectedSuggestionList);
-            } else {
-              filteredList = HandleFilterList(searchKeys, suggestionList);
-            }
-
-            pageState._currentList.Clear();
-            if (String.IsNullOrEmpty(searchKeys) || searchKeys.Length == 0) {
-                if (cboFilter.SelectedIndex == filterEntries.Length - 2)
-                {
-                    pageState._currentList.AddRange(approvedSuggestionList);
-                }
-                else if (cboFilter.SelectedIndex == filterEntries.Length - 1)
-                {
-                    pageState._currentList.AddRange(rejectedSuggestionList);
-                }
-                else
-                {
-                    pageState._currentList.AddRange(suggestionList);
-                }
-            }
-            else {
-                pageState._currentList.AddRange(filteredList);
-            }
-        }
-
         protected void BtnReset_Click(object sender, EventArgs e)
         {
             txtSelectedListItem.Text = String.Empty;
