@@ -86,9 +86,9 @@ namespace RojakJelah
             var selectedIndex = cboFilter.SelectedIndex;
             var sortIndex = cboSorts.SelectedIndex;
             var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
-            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).Take(limitRowCount).ToList();
-            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).Take(limitRowCount).ToList();
-            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).Take(limitRowCount).ToList();
+            List<Report> reportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 1).ToList();
+            List<Report> resolvedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 2).ToList();
+            List<Report> closedReportList = dataContext.Reports.Where(x => x.ReportStatus.Id == 3).ToList();
             List<Report> chosenList = new List<Report>();
 
             if (selectedIndex == filterEntries.Length - 2)
@@ -152,7 +152,7 @@ namespace RojakJelah
                 orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy?.Username));
             }
 
-            pageState._currentList.AddRange(orderedList);
+            pageState._currentList.AddRange(orderedList.Take(limitRowCount));
         }
 
         protected void BtnReset_Click(object sender, EventArgs e)

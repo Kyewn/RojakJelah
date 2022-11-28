@@ -96,9 +96,9 @@ namespace RojakJelah
             var selectedIndex = cboFilter.SelectedIndex;
             var sortIndex = cboSorts.SelectedIndex;
             var limitRowCount = limitRowEntries[ddlLimitRows.SelectedIndex];
-            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).Take(limitRowCount).ToList();
-            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).Take(limitRowCount).ToList();
-            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).Take(limitRowCount).ToList();
+            List<Suggestion> suggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 1).ToList();
+            List<Suggestion> approvedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 2).ToList();
+            List<Suggestion> rejectedSuggestionList = dataContext.Suggestions.Where(x => x.SuggestionStatus.Id == 3).ToList();
             List<Suggestion> chosenList = new List<Suggestion>();
 
             if (selectedIndex == filterEntries.Length - 2)
@@ -151,7 +151,7 @@ namespace RojakJelah
                 orderedList.AddRange(finalList.OrderBy((x) => x.CreatedBy?.Username));
             }
 
-            pageState._currentList.AddRange(orderedList);
+            pageState._currentList.AddRange(orderedList.Take(limitRowCount));
         }
 
         protected void BtnReset_Click(object sender, EventArgs e)

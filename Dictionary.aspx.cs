@@ -152,8 +152,11 @@ namespace RojakJelah
                     // Get dictionary entry ID
                     ListViewDataItem dataItem = e.Item as ListViewDataItem;
                     int dictionaryEntryId = Int32.Parse(lvDictionary.DataKeys[dataItem.DisplayIndex].Value.ToString());
-
+                    
                     // Find associated dictionary entry-related report and change the entry to null
+                    DictionaryEntry targetEntry = dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId);
+                    string entrySlang = targetEntry.Slang.WordValue;
+                    string entryTranslation = targetEntry.Translation.WordValue;
                     var entryReports = dataContext.Reports.Where((x) => x.DictionaryEntry.Id == dictionaryEntryId);
                     ReportCategory otherCategory = dataContext.ReportCategories.Find(4);
                     
@@ -168,7 +171,7 @@ namespace RojakJelah
                                     entry.DictionaryEntry = null;
                                     entry.ReportCategory = otherCategory;
                                     //  Set informative description for null entry report
-                                    entry.Description = "This report was made for a dictionary entry, but it has already been deleted.";
+                                    entry.Description = $"This report was made for a dictionary entry, but it has already been deleted. (Slang: {entrySlang}, Translation: {entryTranslation})";
                                 }
                                 transaction.Commit();
                             }
