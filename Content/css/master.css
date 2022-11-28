@@ -485,8 +485,36 @@ footer {
 }
 
 @media screen and (min-width: 1000px) {
-    .links {
+    .mobileLinks {
+        top: unset;
+        right: unset;
+        justify-content: unset;
+        z-index: unset;
+        border: unset;
+        border-radius: unset;
+        padding: unset;
+        background: unset;
+        flex-direction: unset;
         display: flex;
+        height: inherit;
+        margin: 0;
+        align-items: center;
+    }
+
+    .links-dropdown {
+        flex: 1;
+        display: flex;
+        position: relative;
+        justify-content: flex-end;
+    }
+
+    .mobileLinks li {
+        height: inherit;
+        padding: 0;
+    }
+
+    .mobileLinks a, .mobileLinks i {
+        color: white;
     }
 }
 
