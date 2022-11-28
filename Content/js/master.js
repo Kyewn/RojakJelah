@@ -26,7 +26,7 @@ const links = document.querySelector('.mobileLinks');
 
 // Hide mobile nav menu on body click
 body.addEventListener('click', (e) => {
-    if (links.classList.contains('show-links') && !e.target.closest('nav')) {
+    if (links && links.classList.contains('show-links') && !e.target.closest('nav')) {
         links.classList.remove('show-links');
         // Prevent postback
         e.preventDefault();
