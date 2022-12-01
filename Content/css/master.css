@@ -123,9 +123,9 @@ nav {
     cursor: pointer;
 }
 
-.nav-toggle:hover {
-    color: hsl(209, 61%, 16%);
-}
+    .nav-toggle:hover {
+        color: var(--secondary-color-yellow);
+    }
 
 .nav-header .logo {
     display: flex;
