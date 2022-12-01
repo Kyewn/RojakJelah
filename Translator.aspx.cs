@@ -694,7 +694,8 @@ namespace RojakJelah
             {
                 // Other category
                 divEntryInput.Style.Add("display", "none");
-            } else
+            }
+            else
             {
                 // "Entry issue" category
                 divEntryInput.Style.Add("display", "flex");
@@ -786,7 +787,7 @@ namespace RojakJelah
                         CreatedBy = reportAuthor,
                         CreationDate = DateTime.Now,
                         ModifiedBy = reportAuthor,
-                        ModificationDate = DateTime.Now,
+                        ModificationDate = DateTime.Now
                     };
                     dataContext.Reports.Add(newReport);
                     dataContext.SaveChanges();
@@ -804,7 +805,8 @@ namespace RojakJelah
                     // Display error notification
                     ShowNotification();
                 }
-            } else
+            }
+            else
             {
                 //  Error catching
                 //  Empty slang/translation 
@@ -840,7 +842,7 @@ namespace RojakJelah
                         CreatedBy = reportAuthor,
                         CreationDate = DateTime.Now,
                         ModifiedBy = reportAuthor,
-                        ModificationDate = DateTime.Now,
+                        ModificationDate = DateTime.Now
                     };
                     dataContext.Reports.Add(newReport);
                     dataContext.SaveChanges();
