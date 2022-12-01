@@ -122,6 +122,11 @@ body {
     z-index: 10000;
 }
 
+.searchBarGroup {
+    flex: 0.8;
+    display:flex;
+    flex-direction: row;
+}
 
 /* Dropdown */
 /* Custom Dropdowns */
@@ -139,7 +144,8 @@ body {
 .dropdown-selected:after {
     position: absolute;
     content: "";
-    top: 14px;
+    top: 50%;
+    transform: translateY(-25%);
     right: 10px;
     width: 0;
     height: 0;
@@ -150,7 +156,7 @@ body {
 /* Point the arrow upwards when the select box is open (active) */
 .dropdown-selected.select-arrow-active:after {
     border-color: transparent transparent #fff transparent;
-    top: 7px;
+    transform: translateY(-75%);
 }
 
 /* Style selected item and same-as-selected option */
@@ -259,7 +265,7 @@ body {
     box-shadow: 0 0 0 1px var(--primary-color-hover);
 }
 
-#ddlSort:hover {
+#ddlSort:active {
     border: 2px solid var(--primary-color-active);
     box-shadow: 0 0 0 1px var(--primary-color-active);
 }
@@ -269,7 +275,7 @@ body {
 }
 
 #txtSearch {
-    flex: 0.55;
+    flex: 0.75;
     margin-left: -1px;
     padding: 0 1rem;
     border: 1px solid var(--primary-color);
@@ -865,7 +871,10 @@ body {
     line-height: 1em;
 }
 
-
+#dictionaryDataPager {
+    word-break: break-word;
+    line-height: 3rem;
+}
 
 @keyframes slideIn {
     from {
@@ -879,40 +888,135 @@ body {
     }
 }
 
-@media screen and (max-width: 992px) {
-    .dictionary-header .header-search {
-        margin-top: 20px;
+@media screen and (max-width: 1000px) {
+    .body-content {
+        padding: 0;
     }
-}
 
-@media screen and (max-width: 767px) {
-    .dictionary-header .header-search .search-box {
-        width: 60%;
+    .dictionary-header-text, .dictionary-header-text h1 {
+        font-size: 20px;
     }
-}
 
-@media screen and (max-width: 560px) {
-    .dictionary-header .header-search .search-box {
-        width: 50%;
+    #entryCountText {
+        font-size: 10px;
     }
-}
 
-@media screen and (max-width: 468px) {
-    .dictionary-header .header-search {
+    .dictionary-controls {
+        flex-direction: column;
+    }
+
+    .search-bar {
+        flex-direction: column;
+    }
+
+    #ddlSort {
+        padding: 8px 8px;
+        margin-bottom: 1rem;
+        margin-right: unset;
+    }
+
+    #ddlSort, .dropdown-selected, #txtSearch {
+        font-size: 14px;
+    }
+
+    #divFilterDdl {
+        flex: 0.3;
+    }
+
+    .dropdown-selected {
+        border: 2px solid var(--primary-color);
+    }
+    
+    #txtSearch {
+        flex: 0.65;
+    }
+
+    .dictionary-buttons {
+        margin-top: 1rem;
+        justify-content: space-between;
+    }
+
+    .dictionary-pager {
+        flex-direction: column;
+    }
+
+    #dictionaryDataPagerInfo {
+        margin-top: 1rem;
+    }
+
+    .dictionary-item-text {
         flex-direction: column;
         align-items: flex-start;
+        justify-content: center;
     }
 
-    .dictionary-header .header-search .search-box {
+    .notification {
+        top: 3rem;
+    }
+
+    .modal-window {
+        height: 110vh;
+        align-items: center;
+        transform: translateY(-5vh);
+    }
+
+    .modal-dialog, #dlgReport, #dlgSuggestion {
+        padding: .5rem 1rem .2rem 1rem;
         width: 100%;
     }
 
-    .dictionary-header .header-search .add-suggest {
-        margin-top: 20px;
+    .modal-title {
+        font-size: 18px;
+        flex: unset;
+    }
+
+    .modal-empty {
+        padding: 0 1.5em;
+    }
+
+    .mdlReport-topInputRow {
+        flex-direction: column;
+    }
+
+        .mdlReport-topInputRow > div {
+            width: 100%;
+        }
+
+            .mdlReport-topInputRow > div:first-child {
+                margin-right: unset;
+                margin-bottom: 1em;
+            }
+
+    #divReportModalBody {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #divSuggestionModalBody {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #divSuggestionModalBody .modal-inputfield {
+        width: 90%;
+        margin-top: 1rem;
+    }
+
+    #dlgEditDictionaryEntry {
+        width: 100%;
+    }
+
+    .pager-previous-next.aspNetDisabled {
+        padding: 0.5rem;
     }
 }
 
 @media screen and (max-width: 492px) {
+    #ddlSort, .dropdown-selected, #txtSearch {
+        font-size: 10px;
+    }
+
     .dictionary-container .dictionary-item .item-content {
         flex-direction: column;
     }
@@ -923,5 +1027,13 @@ body {
 
     .dictionary-container .dictionary-item .item-content .right-item {
         width: 100%;
+    }
+
+    #divFilterDdl {
+        flex: 0.5;
+    }
+
+    #txtSearch {
+        flex: 0.45;
     }
 }

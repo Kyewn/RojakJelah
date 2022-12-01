@@ -45,6 +45,39 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ejml-core-0.39, Version=0.39.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\ejml-core-0.39.dll</HintPath>
+    </Reference>
+    <Reference Include="ejml-ddense-0.39, Version=0.39.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\ejml-ddense-0.39.dll</HintPath>
+    </Reference>
+    <Reference Include="ejml-simple-0.39, Version=0.39.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\ejml-simple-0.39.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Java, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>packages\IKVM.8.2.1\lib\net461\IKVM.Java.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Reflection, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>packages\IKVM.8.2.1\lib\net461\IKVM.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>packages\IKVM.8.2.1\lib\net461\IKVM.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime.JNI, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>packages\IKVM.8.2.1\lib\net461\IKVM.Runtime.JNI.dll</HintPath>
+    </Reference>
+    <Reference Include="javax.json, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\javax.json.dll</HintPath>
+    </Reference>
+    <Reference Include="joda-time, Version=2.10.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\joda-time.dll</HintPath>
+    </Reference>
+    <Reference Include="jollyday, Version=0.4.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\jollyday.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -100,6 +133,18 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-java-3.19.2, Version=3.19.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\protobuf-java-3.19.2.dll</HintPath>
+    </Reference>
+    <Reference Include="slf4j-api, Version=1.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\slf4j-api.dll</HintPath>
+    </Reference>
+    <Reference Include="slf4j-simple, Version=1.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\slf4j-simple.dll</HintPath>
+    </Reference>
+    <Reference Include="stanford-corenlp-4.5.0, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\stanford-corenlp-4.5.0.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -114,8 +159,8 @@
       <HintPath>packages\System.Diagnostics.DiagnosticSource.5.0.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -200,6 +245,9 @@
     </Reference>
     <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.WebData.3.2.7\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+    <Reference Include="xom, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stanford.NLP.CoreNLP.4.5.0\lib\net461\xom.dll</HintPath>
     </Reference>
     <Reference Include="ZstdNet, Version=1.4.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>packages\MySql.Data.8.0.30\lib\net452\ZstdNet.dll</HintPath>
@@ -409,6 +457,14 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\deterministic-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\fastneural-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\neural-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\coref\properties\statistical-english.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\dcoref\coref.properties" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\models\pos-tagger\english-left3words-distsim.tagger" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\models\pos-tagger\english-left3words-distsim.tagger.props" />
+    <Content Include="StanfordCoreNLP\stanford-corenlp-4.5.0-models\edu\stanford\nlp\pipeline\StanfordCoreNLP.properties" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -431,7 +487,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55955</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44327/</IISUrl>
+          <IISUrl>https://localhost:44326/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

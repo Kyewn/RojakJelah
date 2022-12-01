@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Translator.aspx.cs" Inherits="RojakJelah.Translator" %>
+﻿<%@ Page Title="RojakJelah | Translator" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Translator.aspx.cs" Inherits="RojakJelah.Translator" %>
 
 <asp:Content ID="PageStylesheet" ContentPlaceHolderID="PageStylesheet" runat="server">
     <link rel="stylesheet" type="text/css" href="<%= Page.ResolveUrl("~/Content/css/translator.css")%>" />
@@ -13,18 +13,16 @@
     <!-- Translate Section -->
     <section class="translate-content">
         <!-- Banner -->
-        <div class="banner">
-            <div class="banner-container">
-                <div class="banner-left">
-                    <img src="Content/image/textual_col_whitebg.svg" alt="Logo">
+        <div class="banner-container">
+            <div class="banner-left">
+                <img src="Content/image/textual_col_whitebg.svg" alt="Logo">
+            </div>
+            <div class="banner-right">
+                <div class="title">
+                    <h1>Be a <span>True</span> Malaysian</h1>
                 </div>
-                <div class="banner-right">
-                    <div class="title">
-                        <h1>Be a <span>True</span> Malaysian</h1>
-                    </div>
-                    <div class="info">
-                        <p>No need to pilih language anymore lah, become the CEO of Bahasa Rojak</p>
-                    </div>
+                <div class="info">
+                    <p>No need to pilih language anymore lah, become the CEO of Bahasa Rojak</p>
                 </div>
             </div>
         </div>
@@ -34,11 +32,24 @@
             <div class="translate-input">
                 <div class="title">
                     <h5>Source message</h5>
+                    <button id="btnHelp" class="button-secondary" type="button">
+                        <i class="fa-solid fa-question fa-xs"></i>
+                        <span class="help-message">
+                            Enter text here for translation.
+                            <br /><br />
+                            <b>Translatable</b> words/phrases may have different, <u>random</u> outputs.
+                            <br /> <br />
+                            <b>Translated</b> Rojak words/phrases are <u>underlined</u>, and their corresponding synonyms are displayed when hovered.
+                        </span>
+                    </button>
                 </div>
 
                 <div class="translate-container">
                     <!-- Translation Input Field -->
-                    <textarea id="txtInput" class="context" runat="server" rows="3" maxlength="5000" placeholder="Enter message here..." spellcheck="true"></textarea>
+                    <grammarly-editor-plugin class="translate-textinput">
+                        <textarea id="txtInput" runat="server" rows="3" maxlength="5000" placeholder="Enter message here" spellcheck="true"></textarea>
+                    </grammarly-editor-plugin>
+
                     <!-- Translate Buttons  -->
                     <div class="translate-button">
                         <asp:Button ID="btnTranslate" class="btnTranslate" runat="server" OnClick="BtnTranslate_Click" Text="Translate" />
@@ -75,15 +86,20 @@
 
             <!-- Translate Output  -->
             <div class="translate-output">
+                <asp:HiddenField ID="hfDuplicateTranslation" runat="server" ClientIDMode="Static"/>
+
                 <div class="translate-output-title">
                     <h5>Translation</h5>
-                    <asp:LinkButton ID="lnkSaveTranslation" CssClass="translate-btn-save" runat="server" ClientIDMode="Static" OnClick="LnkSaveTranslation_Click">
+                    <asp:LinkButton ID="lnkSaveTranslation" CssClass="translate-btn-save" runat="server" OnClick="LnkSaveTranslation_Click" OnClientClick="confirmSave(event, this.id);" ClientIDMode="Static">
                         <i id="iconSave" class="fa-regular fa-bookmark" runat="server"></i>
                         <span id="tooltipSave" class="tool-tip">Save translation</span>
                     </asp:LinkButton>
                 </div>
-                <div class="output">
-                    <p id="txtOutput" runat="server"></p>
+
+                <div class="output-container">
+                    <div class="output-text">
+                        <div id="txtOutput" runat="server"></div>
+                    </div>
                     <img id="startQuote" src="Content/image/translatorOutput_startQuote.svg" />
                     <img id="endQuote" src="Content/image/translatorOutput_endQuote.svg" />
                 </div>
@@ -137,7 +153,11 @@
                 </div>
                 <div id="divSavedTranslationsModalBody" class="modal-body" CientIDMode="Static" runat="server">
                 </div>
-                <div class="modal-footer">
+                <div id="divSavedTranslationsModalFooter" class="modal-footer">
+                    <asp:LinkButton ID="lnkDownloadSavedTranslations" class="button-primary" runat="server" ClientIDMode="Static" OnClick="LnkDownloadSavedTranslations_Click">
+                        <i class="fa-solid fa-download"></i>
+                        Download
+                    </asp:LinkButton>
                     <p id="savedTranslationFooterText" runat="server"></p>
                 </div>
             </div>
@@ -157,7 +177,16 @@
                 </div>
                 <div id="divTranslationHistoryModalBody" class="modal-body" CientIDMode="Static" runat="server">
                 </div>
-                <div class="modal-footer">
+                <div id="divTranslationHistoryModalFooter" class="modal-footer">
+                    <div class="modal-footer-controls">
+                        <asp:LinkButton ID="lnkDownloadTranslationHistory" class="button-primary" runat="server" ClientIDMode="Static" OnClick="LnkDownloadTranslationHistory_Click">
+                            <i class="fa-solid fa-download"></i>
+                            Download
+                        </asp:LinkButton>
+                        <asp:LinkButton ID="lnkClearTranslationHistory" class="button-secondary" runat="server" ClientIDMode="Static" OnClick="LnkClearTranslationHistory_Click">
+                            Clear History
+                        </asp:LinkButton>
+                    </div>
                     <p id="translationHistoryFooterText" runat="server"></p>
                 </div>
             </div>

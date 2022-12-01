@@ -1,23 +1,170 @@
 <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="RojakJelah.Site_Mobile" %>
-<%@ Register Src="~/ViewSwitcher.ascx" TagPrefix="friendlyUrls" TagName="ViewSwitcher" %>
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head runat="server">
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RojakJeLah</title>
+
+    <!-- Google Font  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css">
+
+    <!-- RojakJelah CSS -->
+    <link rel="stylesheet" href="Content/css/master.css" />
+    <!-- ContentPlaceHolder for individual page stylesheets -->
+    <asp:ContentPlaceHolder ID="PageStylesheet" runat="server">
+    </asp:ContentPlaceHolder>
 </head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-        <h1>Mobile Master Page</h1>
-        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
-        <section class="content-wrapper main-content clear-fix">
-            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
-        </section>
-        <friendlyUrls:ViewSwitcher runat="server" />
-    </div>
+
+<body id="body" runat="server">
+    <form id="mainForm" runat="server">
+        <!-- Header Section  -->
+        <header id="pageHeader" runat="server">
+            <!-- Navbar -->
+            <nav id="nav">
+                <div class="nav-center">
+                    <!-- Nav Header -->
+                    <div id="navHeader" class="nav-header" runat="server">
+                        <a href="Translator.aspx">
+                            <div class="logo">
+                                <img src="/Content/image/rojakjelah_logo-icon_bw.png" alt="logo" />
+                                <p>RojakJelah</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Nav Links -->
+                    <div class="links-dropdown">
+                        <!-- Nav toggle for small screens -->
+                        <div class="nav-toggle">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                        <ul ID="mobileNavLinks" ClientIDMode="Static" class="mobileLinks" runat="server">
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkBack" runat="server" class="scroll-link" href="Translator.aspx">
+                                    <i class="fa-solid fa-left-long"></i>
+                                    Back
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkTranslator" runat="server" class="scroll-link" href="Translator.aspx">
+                                    <i class="fa-sharp fa-solid fa-message"></i>
+                                    Translator
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkDictionary" runat="server" class="scroll-link" href="Dictionary.aspx">
+                                    <i class="fa-solid fa-file-contract"></i>
+                                    Dictionary
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkAbout" runat="server" class="scroll-link" href="About.aspx">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    About
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkSuggestions" runat="server" class="scroll-link" href="Suggestions.aspx">
+                                    <i class="fa-solid fa-spell-check"></i>
+                                    Suggestions
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkReports" runat="server" class="scroll-link" href="Reports.aspx">
+                                    <i class="fa-sharp fa-solid fa-flag"></i>
+                                    Reports
+                                </asp:LinkButton>
+                            </li>
+                            <li runat="server">
+                                <asp:LinkButton ID="lnkAdminPanel" runat="server" class="scroll-link" href="Suggestions.aspx" Visible="false">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                    Admin panel
+                                </asp:LinkButton>
+                            </li>
+                            <li>
+                                <a id="lnkLogin" runat="server" class="scroll-link" href="Login.aspx">
+                                    <i class="fa-solid fa-right-to-bracket"></i>
+                                    Login
+                                </a>
+                            </li>
+                            <li>
+                                <asp:LinkButton ID="lnkLogout" runat="server" class="scroll-link" OnClick="LnkLogout_Click" Visible="false">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    Logout
+                                </asp:LinkButton>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container body-content">
+            <!-- ContentPlaceHolder for main body content -->
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
     </form>
+
+    <!-- Footer -->
+    <footer id="pageFooter" class="footer" runat="server">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="logo">
+                    <img src="Content/image/rojakjelah_text-icon_white.png" alt="Logo">
+                    <p>
+                        <span id="date"></span>
+                        . &copy; All rights reserved
+                    </p>
+                </div>
+                <div class="menu">
+                    <h4>Navigation</h4>
+                    <div class="link">
+                        <a href="#" class="scroll-link">Translator</a>
+                        <a target="_blank" href="/Dictionary" class="scroll-link">Dictionary</a>
+                        <a target="_blank" href="/About" class="scroll-link">About</a>
+                    </div>
+                </div>
+                <div class="menu">
+                    <h4>Privacy</h4>
+                    <div class="link">
+                        <a href="#" class="scroll-link">Terms of use</a>
+                        <a href="#" class="scroll-link">Privacy Policy</a>
+                        <a href="#" class="scroll-link">Cookies</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-right">
+                <img src="Content/image/rojakjelah_logo-icon_bw_blackbg.png" alt="Footer RojakJelah Logo">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back-to-top Button -->
+    <a class="top-link" href="#pageHeader">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="Content/js/bootstrap.min.js"></script>
+    <script src="Content/js/master.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <!-- ContentPlaceHolder for individual page JS -->
+    <asp:ContentPlaceHolder ID="PageJavaScript" runat="server">
+    </asp:ContentPlaceHolder>
 </body>
+
 </html>
+

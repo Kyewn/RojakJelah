@@ -9,6 +9,7 @@
     --notification-error: #d35555;
     --notification-success: #5aad7f;
     --theme-gray-dark: #9F9F9F;
+    --theme-white: #f5f5f5;
 }
 
 html {
@@ -107,21 +108,24 @@ nav {
     padding: 0;
 }
 
+.show-links {
+    display: flex !important;
+ }
+
 .nav-toggle {
     display: none;
     position: relative;
-    z-index: 9999;
     font-size: 1.5rem;
     color: #fff;
     background: transparent;
     border-color: transparent;
-    transition: all 0.3s linear;
+    transition: all 0.3s ease-out;
     cursor: pointer;
 }
 
-.nav-toggle:hover {
-    color: hsl(209, 61%, 16%);
-}
+    .nav-toggle:hover {
+        color: var(--secondary-color-yellow);
+    }
 
 .nav-header .logo {
     display: flex;
@@ -147,17 +151,36 @@ nav {
     align-items: center
 }
 
-.links-container {
+.mobileLinks {
+    position: absolute;
+    top: 10vh;
+    right: 1rem;
+    display: none;
+    flex-direction:column;
+    margin: 0;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 9999;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 0;
+    background: #fff;
+}
+
+.links-container, .links-dropdown {
     height: 100%;
     overflow: hidden;
 }
 
-.show-links {
-    height: 200px;
-}
-
 .links li {
     height: inherit;
+}
+
+.mobileLinks li {
+    width: 100%;
+    font-size: 18px;
+    padding: 0.5rem 0;
+    transition: all .3s ease-out;
 }
 
 .scroll-link i {
@@ -171,9 +194,9 @@ nav {
     border-bottom: 2px solid #e8ac13;
 }
 
-.links a {
+.links a, .mobileLinks a {
+    width: inherit;
     height: inherit;
-    background: #d35555;
     color: #fff;
     font-size: 17px;
     text-transform: capitalize;
@@ -185,11 +208,19 @@ nav {
     transition: all .3s ease-out;
 }
 
+.mobileLinks a, .mobileLinks i {
+    color: var(--primary-color);
+}
+
 .scroll-link:hover {
     background: var(--primary-color-hover);
 }
 
 .scroll-link:active {
+    background: var(--primary-color-active);
+}
+
+.mobileLinks li:active, mobileLinks li:hover {
     background: var(--primary-color-active);
 }
 
@@ -291,17 +322,7 @@ ul.notification-message {
     width: 100%;
 }
 
-/* Responsive Section  */
-@media screen and (min-width: 800px) {
-}
-
 @media screen and (max-width: 1024px) {
-    body {
-        width: 100%;
-        margin: auto;
-        margin-top: 0;
-    }
-
     .fixed-nav {
         left: 0;
         width: 100%;
@@ -309,25 +330,6 @@ ul.notification-message {
 
     .nav-center {
         width: 90vw;
-    }
-}
-
-@media screen and (max-width: 800px) {
-
-    .nav-toggle {
-        display: inline-block;
-    }
-
-    .links {
-        display: none;
-    }
-
-    .nav-header .logo img {
-        margin-top: 0;
-    }
-
-    .nav-header .logo p {
-        margin-top: 0;
     }
 }
 
@@ -479,5 +481,75 @@ footer {
 
     100% {
         transform: scale(1);
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .mobileLinks {
+        top: unset;
+        right: unset;
+        justify-content: unset;
+        z-index: unset;
+        border: unset;
+        border-radius: unset;
+        padding: unset;
+        background: unset;
+        flex-direction: unset;
+        display: flex;
+        height: inherit;
+        margin: 0;
+        align-items: center;
+    }
+
+    .links-dropdown {
+        flex: 1;
+        display: flex;
+        position: relative;
+        justify-content: flex-end;
+    }
+
+    .mobileLinks li {
+        height: inherit;
+        padding: 0;
+    }
+
+    .mobileLinks a, .mobileLinks i {
+        color: white;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .links {
+        display: none;
+    }
+
+    .links-dropdown {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-toggle {
+        display: inline-block;
+    }
+
+    .nav-header .logo img {
+        margin-top: 0;
+    }
+
+    .nav-header .logo p {
+        margin-top: 0;
+    }
+
+    .scroll-link.active {
+        background: unset;
+        border-bottom: unset;
+    }
+
+    .scroll-link:hover {
+        background: unset;
+    }
+
+    .scroll-link:active {
+        background: unset;
     }
 }

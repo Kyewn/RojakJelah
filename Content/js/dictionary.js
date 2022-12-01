@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    // Unset overflow hidden from body
+    $('body').css("overflow-y", "unset");
 
     // ********** Tooltip **********
     var timeoutId;

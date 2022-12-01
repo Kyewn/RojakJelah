@@ -3,6 +3,7 @@ using RojakJelah.Database.Entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI.HtmlControls;
@@ -151,6 +152,38 @@ namespace RojakJelah
                     // Get dictionary entry ID
                     ListViewDataItem dataItem = e.Item as ListViewDataItem;
                     int dictionaryEntryId = Int32.Parse(lvDictionary.DataKeys[dataItem.DisplayIndex].Value.ToString());
+                    
+                    // Find associated dictionary entry-related report and change the entry to null
+                    DictionaryEntry targetEntry = dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId);
+                    string entrySlang = targetEntry.Slang.WordValue;
+                    string entryTranslation = targetEntry.Translation.WordValue;
+                    var entryReports = dataContext.Reports.Where((x) => x.DictionaryEntry.Id == dictionaryEntryId);
+                    ReportCategory otherCategory = dataContext.ReportCategories.Find(4);
+                    
+                    if (entryReports.ToList().Count != 0)
+                    {
+                        using (DbContextTransaction transaction = dataContext.Database.BeginTransaction())
+                        {
+                            try
+                            {
+                                foreach (Report entry in entryReports)
+                                {
+                                    entry.DictionaryEntry = null;
+                                    entry.ReportCategory = otherCategory;
+                                    //  Set informative description for null entry report
+                                    entry.Description = $"This report was made for a dictionary entry, but it has already been deleted. (Slang: {entrySlang}, Translation: {entryTranslation})";
+                                }
+                                transaction.Commit();
+                            }
+                            catch (Exception ex)
+                            {
+                                transaction.Rollback();
+                                throw ex;
+                            }
+                        }
+
+                        dataContext.SaveChanges();
+                    }
 
                     // Remove dictionary entry from database
                     dataContext.DictionaryEntries.Remove(dataContext.DictionaryEntries.SingleOrDefault(x => x.Id == dictionaryEntryId));
