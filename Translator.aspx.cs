@@ -244,7 +244,7 @@ namespace RojakJelah
             }
             #endregion
 
-            #region Tokenization Corrector
+            #region Tokenization Correction
             var correctedSentenceList = new List<List<Token>>();
 
             if ((tokenizedSentenceList != null) && (tokenizedSentenceList.Count > 0))
@@ -406,7 +406,7 @@ namespace RojakJelah
             }
             #endregion
 
-            #region Sentence Composer
+            #region Sentence Reconstruction
             string outputText = "";
             string outputToSave = "";
 
