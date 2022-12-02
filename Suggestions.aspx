@@ -35,7 +35,7 @@
                     <div class="searchGroup">
                         <div class="searchBarContainer">
                             <h6>Search</h6>
-                            <asp:TextBox ID="txtSearch" class="txtSearch" placeholder="e.g. Hello World" runat="server" AutoPostBack="True" OnTextChanged="TxtSearch_TextChanged"></asp:TextBox>
+                            <asp:TextBox ID="txtSearch" class="txtSearch" placeholder="e.g. Hello World" runat="server" AutoPostBack="True" OnTextChanged="CboSortAndFilter_SelectedIndexChanged"></asp:TextBox>
                         </div>
                         <asp:ImageButton ID="btnSearch" ClientIDMode="Static" runat="server" ImageUrl="~/Content/image/searchIcon.svg" />
                     </div>

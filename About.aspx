@@ -9,8 +9,8 @@
             <h1>About Us</h1>
         </div>
         <div class="about-info">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, vel ducimus, doloremque veritatis quis earum
-                ut odit fugit molestiae numquam error? Et laborum tenetur error sint? Quaerat eius debitis vel.</p>
+            <p>RojakJelah is a Bahasa Rojak translation platform where users can exchange ideas and information about Bahasa Rojak. Bahasa Rojak itself is a weird language, so why not make a translator for it? 
+                Powered by hardcore Malaysian users, we think that users would enjoy using the translator whether if its for entertainment or if they are genuinely interested in knowing how the language works.</p>
         </div>
 
 
@@ -41,11 +41,11 @@
                         <div class="about-info">
                             <p>This translator system is made possible by these fantastic people: </p>
                             <ul>
-                                <li>Name</li>
-                                <li>Name</li>
-                                <li>Name</li>
-                                <li>Name</li>
-                                <li>Name</li>
+                                <li>0205096 Thor Wen Zheng</li>
+                                <li>0204677 Lim Zhe Yuan</li>
+                                <li>0205213 Deshigan A/L Ganesan</li>
+                                <li>0205430 Tan Peng Heng</li>
+                                <li>0205603 Khor Han Yang</li>
                             </ul>
                         </div>
                     </div>

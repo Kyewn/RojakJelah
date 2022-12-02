@@ -24,15 +24,17 @@
                 <asp:DropDownList ID="ddlSort" runat="server" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="DdlSort_SelectedIndexChanged">
                     <asp:ListItem value="" Text="Sort by:" Selected="True" disabled />
                 </asp:DropDownList>
-                <div id="divFilterDdl" class="dropdown">
-                    <select id="ddlSearchFilter" runat="server">
-                        <option value="" disabled selected>Search by:</option>
-                    </select>
+                <div class="searchBarGroup">
+                    <div id="divFilterDdl" class="dropdown">
+                        <select id="ddlSearchFilter" runat="server">
+                            <option value="" disabled selected>Search by:</option>
+                        </select>
+                    </div>
+                    <input type="text" id="txtSearch" ClientIDMode="Static" runat="server" placeholder="Search..." autocomplete="off"/>
+                    <asp:LinkButton ID="lnkSearch" CssClass="button-small" runat="server" ClientIDMode="Static" OnClick="LnkSearch_Click">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </asp:LinkButton>
                 </div>
-                <input type="text" id="txtSearch" ClientIDMode="Static" runat="server" placeholder="Search..." autocomplete="off"/>
-                <asp:LinkButton ID="lnkSearch" CssClass="button-small" runat="server" ClientIDMode="Static" OnClick="LnkSearch_Click">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </asp:LinkButton>
             </div>
             <div class="dictionary-buttons">
                 <button type="button" id="btnReport" class="button-small" runat="server" onclick="showModal($('#mdlReport'))">
@@ -101,7 +103,7 @@
         </div>
         <div class="dictionary-pager">
             <div class="dictionary-data-pager">
-                <asp:DataPager ID="dictionaryDataPager" runat="server" PagedControlID="lvDictionary" PageSize="20">
+                <asp:DataPager ID="dictionaryDataPager" ClientIDMode="Static" runat="server" PagedControlID="lvDictionary" PageSize="20">
                     <Fields>
                         <asp:NextPreviousPagerField ButtonType="Link" ButtonCssClass="pager-previous-next" ShowFirstPageButton="false" ShowPreviousPageButton="true" ShowNextPageButton="false" />
                         <asp:NumericPagerField ButtonType="Link" NumericButtonCssClass="pager-button" CurrentPageLabelCssClass="pager-button-current" />

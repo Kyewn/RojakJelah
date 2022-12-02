@@ -4,27 +4,40 @@ window.addEventListener('load', () => {
     const date = document.getElementById('date');
     date.innerHTML = new Date().getFullYear();
 
-    const navLinks = document.querySelectorAll('.links li a');
     if (window.location.pathname == "/Translator" || window.location.pathname == "/") {
         document.querySelector(".nav-header").style.visibility = 'hidden';
+    }
+
+    const navLinks = document.querySelectorAll('.mobileLinks li');
+
+    for (let i = 0; i < navLinks.length; i++) {
+        // ********** remove padding for hidden links ************
+        let linkDisplay = navLinks[i].querySelector('a')?.style.display
+        if (linkDisplay == 'none' || !(navLinks[i].querySelector('a') instanceof HTMLAnchorElement)) {
+            navLinks[i].style.padding = 0;
+        }
     }
 });
 
 // ********** close links ************
-const navToggle = document.querySelector('.nav-toggle');
-const linksContainer = document.querySelector('.links-container');
-const links = document.querySelector('.links');
+const navBar = document.querySelector('.nav-center');
+const body = document.querySelector('body');
+const links = document.querySelector('.mobileLinks');
 
-navToggle.addEventListener('click', () => {
-    // linksContainer.classList.toggle('show-links')
+// Hide mobile nav menu on body click
+body.addEventListener('click', (e) => {
+    if (links && links.classList.contains('show-links') && !e.target.closest('nav')) {
+        links.classList.remove('show-links');
+        // Prevent postback
+        e.preventDefault();
+    }
+});
 
-    //add extra links
-    const containerHeight = linksContainer.getBoundingClientRect().height;
-    const linksHeight = links.getBoundingClientRect().height;
-    if (containerHeight === 0) {
-        linksContainer.style.height = `${linksHeight}px`
-    } else {
-        linksContainer.style.height = 0;
+navBar.addEventListener('click', (e) => {
+    if (e.target.closest('.nav-toggle')) {
+        links.classList.toggle('show-links');
+        // Prevent postback
+        e.preventDefault();
     }
 });
 
