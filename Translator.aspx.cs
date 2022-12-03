@@ -1,6 +1,5 @@
 ﻿using edu.stanford.nlp.ling;
 using edu.stanford.nlp.pipeline;
-using edu.stanford.nlp.util;
 using java.util;
 using RojakJelah.Database;
 using RojakJelah.Database.Entity;
@@ -244,7 +243,7 @@ namespace RojakJelah
             }
             #endregion
 
-            #region Tokenization Corrector
+            #region Tokenization Correction
             var correctedSentenceList = new List<List<Token>>();
 
             if ((tokenizedSentenceList != null) && (tokenizedSentenceList.Count > 0))
@@ -406,7 +405,7 @@ namespace RojakJelah
             }
             #endregion
 
-            #region Sentence Composer
+            #region Sentence Reconstruction
             string outputText = "";
             string outputToSave = "";
 
@@ -692,15 +691,16 @@ namespace RojakJelah
 
             if (ddlReportCategory.SelectedIndex + 1 == reportCategoryList.Last().Id)
             {
-                // Other category
+                // "Other" category
                 divEntryInput.Style.Add("display", "none");
-            } else
+            }
+            else
             {
                 // "Entry issue" category
                 divEntryInput.Style.Add("display", "flex");
             }
 
-            //  Keep report modal open without animation
+            // Keep report modal open without animation
             ShowModal(mdlReport);
             dlgReport.Style.Remove("animation");
         }
@@ -786,7 +786,7 @@ namespace RojakJelah
                         CreatedBy = reportAuthor,
                         CreationDate = DateTime.Now,
                         ModifiedBy = reportAuthor,
-                        ModificationDate = DateTime.Now,
+                        ModificationDate = DateTime.Now
                     };
                     dataContext.Reports.Add(newReport);
                     dataContext.SaveChanges();
@@ -804,7 +804,8 @@ namespace RojakJelah
                     // Display error notification
                     ShowNotification();
                 }
-            } else
+            }
+            else
             {
                 //  Error catching
                 //  Empty slang/translation 
@@ -840,7 +841,7 @@ namespace RojakJelah
                         CreatedBy = reportAuthor,
                         CreationDate = DateTime.Now,
                         ModifiedBy = reportAuthor,
-                        ModificationDate = DateTime.Now,
+                        ModificationDate = DateTime.Now
                     };
                     dataContext.Reports.Add(newReport);
                     dataContext.SaveChanges();
