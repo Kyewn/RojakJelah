@@ -82,11 +82,6 @@ namespace RojakJelah
                 PrepopulateControls();
                 PopulateDictionary();
             }
-            else
-            {
-                // Maintain most recent search results
-                RenderDictionaryResult(true, true, true, true);
-            }
         }
 
         protected void DdlSort_SelectedIndexChanged(object sender, EventArgs e)
