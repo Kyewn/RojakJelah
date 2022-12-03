@@ -1,6 +1,5 @@
 ﻿using edu.stanford.nlp.ling;
 using edu.stanford.nlp.pipeline;
-using edu.stanford.nlp.util;
 using java.util;
 using RojakJelah.Database;
 using RojakJelah.Database.Entity;
