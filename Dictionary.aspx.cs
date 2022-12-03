@@ -54,6 +54,8 @@ namespace RojakJelah
             // Reset state of controls that may persist in postback
             notification.Style.Add("display", "none");
             mdlEditDictionaryEntry.Style.Add("display", "none");
+            mdlReport.Style.Add("display", "none");
+            mdlSuggestion.Style.Add("display", "none");
 
             if (!IsPostBack)
             {
@@ -79,6 +81,11 @@ namespace RojakJelah
 
                 PrepopulateControls();
                 PopulateDictionary();
+            }
+            else
+            {
+                // Maintain most recent search results
+                RenderDictionaryResult(true, true, true, true);
             }
         }
 
@@ -306,6 +313,7 @@ namespace RojakJelah
                     dataContext.Reports.Add(newReport);
                     dataContext.SaveChanges();
 
+                    MaintainScrollPosition();
                     ResetReportModal(sender, e);
 
                     // Show notification
@@ -380,6 +388,7 @@ namespace RojakJelah
         protected void BtnCancelReport_Click(object sender, EventArgs e)
         {
             // Reset control values
+            MaintainScrollPosition();
             ResetReportModal();
             mdlReport.Style.Add("display", "none");
         }
@@ -473,6 +482,7 @@ namespace RojakJelah
                 dataContext.Suggestions.Add(newSuggestion);
                 dataContext.SaveChanges();
 
+                MaintainScrollPosition();
                 ResetSuggestionModal();
                 mdlSuggestion.Style.Add("display", "none");
 
@@ -490,6 +500,7 @@ namespace RojakJelah
 
         protected void BtnCancelSuggestion_Click(object sender, EventArgs e)
         {
+            MaintainScrollPosition();
             ResetSuggestionModal();
             mdlSuggestion.Style.Add("display", "none");
         }
