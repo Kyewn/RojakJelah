@@ -692,7 +692,7 @@ namespace RojakJelah
 
             if (ddlReportCategory.SelectedIndex + 1 == reportCategoryList.Last().Id)
             {
-                // Other category
+                // "Other" category
                 divEntryInput.Style.Add("display", "none");
             }
             else
@@ -701,7 +701,7 @@ namespace RojakJelah
                 divEntryInput.Style.Add("display", "flex");
             }
 
-            //  Keep report modal open without animation
+            // Keep report modal open without animation
             ShowModal(mdlReport);
             dlgReport.Style.Remove("animation");
         }
